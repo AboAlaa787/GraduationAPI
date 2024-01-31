@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,3 +19,5 @@ Route::get('/', function () {
 });
 
 require __DIR__.'/auth.php';
+use Illuminate\Http\Request;
+
