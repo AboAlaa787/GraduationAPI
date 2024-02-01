@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('center_name');
             $table->string('phone')->nullable();
             $table->integer('devices_count')->default(0);
-            $table->string('user_name');
-            $table->unique(['center_id','user_name']);
+            $table->string('email');
+            $table->unique(['center_id','email']);
             $table->string('name');
             $table->string('last_name');
             $table->foreignId('rule_id')->nullable()->constrained()->nullOnDelete();
