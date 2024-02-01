@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return ['Laravel' => app()->version()];
 });
-
+Route::view('/test','name');
 require __DIR__.'/auth.php';
 use Illuminate\Http\Request;
 

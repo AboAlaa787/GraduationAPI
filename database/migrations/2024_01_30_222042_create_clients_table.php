@@ -21,6 +21,7 @@ return new class extends Migration
             $table->unique(['center_id','user_name']);
             $table->string('name');
             $table->string('last_name');
+            $table->foreignId('rule_id')->nullable()->constrained()->nullOnDelete();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('address');
