@@ -18,7 +18,6 @@ class UsersServicesController extends Controller
 
     public function store(CreateUserRequest $request)
     {
-        // $request->validate();
         $request['password'] = Hash::make($request['password']);
         $message['user'] = User::create($request->all());
         $message['token'] = $message['user']->plainTextToken;
