@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class DeviceCompletedController extends Controller
+class CompletedDeviceController extends Controller
 {
     //
 }

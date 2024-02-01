@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -31,7 +32,7 @@ class Client extends Model
 
     public function devices_completed(): HasMany
     {
-        return $this->hasMany(DeviceCompleted::class);
+        return $this->hasMany(CompletedDevice::class);
     }
 
     public function permissions(): HasMany
@@ -44,13 +45,13 @@ class Client extends Model
         return $this->hasMany(Order::class);
     }
 
-    public function rule(): HasOne
+    public function rule(): BelongsTo
     {
-        return $this->hasOne(Rule::class);
+        return $this->belongsTo(Rule::class);
     }
 
-    public function center(): HasOne
+    public function center(): BelongsTo
     {
-        return $this->hasOne(Center::class);
+        return $this->belongsTo(Center::class);
     }
 }

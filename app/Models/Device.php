@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 
@@ -27,16 +28,16 @@ class Device extends Model
         'date_receipt'
     ];
 
-    public function client():HasOne
+    public function client():BelongsTo
     {
-        return $this->hasOne(Client::class);
+        return $this->belongsTo(Client::class);
     }
-    public function user():HasOne
+    public function user():BelongsTo
     {
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class);
     }
-    public function center():HasOne
+    public function center():BelongsTo
     {
-        return $this->hasOne(Center::class);
+        return $this->belongsTo(Center::class);
     }
 }

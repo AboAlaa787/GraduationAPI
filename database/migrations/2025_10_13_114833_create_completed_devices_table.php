@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('devices_completed', function (Blueprint $table) {
+        Schema::create('completed_devices', function (Blueprint $table) {
             $table->id();
             $table->string('model');
             $table->string('imei')->nullable();
@@ -38,6 +38,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('devices_completed');
+        Schema::dropIfExists('completed_devices');
     }
 };

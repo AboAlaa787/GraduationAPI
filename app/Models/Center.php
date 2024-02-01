@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Center extends Model
 {
@@ -18,33 +19,33 @@ class Center extends Model
         'logo'
     ];
 
-    public function users()
+    public function users():HasMany
     {
         return $this->hasMany(User::class);
     }
 
-    public function services()
+    public function services():HasMany
     {
         return $this->hasMany(Service::class);
     }
 
-    public function clients()
+    public function clients():HasMany
     {
         return $this->hasMany(Client::class);
     }
 
-    public function orders()
+    public function orders():HasMany
     {
         return $this->hasMany(User::class);
     }
 
-    public function deveices()
+    public function devices():HasMany
     {
         return $this->hasMany(Device::class);
     }
 
-    public function devices_completed()
+    public function completed_devices():HasMany
     {
-        return $this->hasMany(DeviceCompleted::class);
+        return $this->hasMany(CompletedDevice::class);
     }
 }
