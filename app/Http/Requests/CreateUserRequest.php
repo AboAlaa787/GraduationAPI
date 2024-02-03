@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use \App\Rules\AlphaNumeric;
 use Illuminate\Validation\Rules;
 
 class CreateUserRequest extends FormRequest
@@ -19,18 +19,25 @@ class CreateUserRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, ValidationRule|array<mixed>|string>
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            'email' => [
+            'username' => [
                 'required',
+<<<<<<< HEAD
                 'max:50',
                 'string',
                 'email',
                 'lowercase',
                 'unique:users,email,NULL,id,center_id,' . $this->input('center_id')
+=======
+                'max:20',
+                'min:5',
+                new AlphaNumeric,
+                'unique:users,username,NULL,id,center_id,' . $this->input('center_id')
+>>>>>>> 9912189c778b1639e1d39681648a0f08d1430f3b
             ],
             'name' => [
                 'required',
@@ -63,11 +70,10 @@ class CreateUserRequest extends FormRequest
             ]
         ];
     }
-
     public function messages()
     {
         return [
-            'email.required' => 'The email field is required.',
+            'username.required' => 'The username field is required.',
             // custom error messages for other fields if needed
         ];
     }
