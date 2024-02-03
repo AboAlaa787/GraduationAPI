@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules;
 
-class CreateUserRequest extends FormRequest
+class UpdateUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,10 +26,9 @@ class CreateUserRequest extends FormRequest
         return [
             'email' => [
                 'required',
-                'max:50',
+                'max:30',
                 'string',
                 'email',
-                'lowercase',
                 'unique:users,email,NULL,id,center_id,' . $this->input('center_id')
             ],
             'name' => [
@@ -49,29 +48,12 @@ class CreateUserRequest extends FormRequest
                 'confirmed',
                 Rules\Password::defaults()
             ],
-            'rule_id' => [
-                'required',
-                'numeric'
-            ],
-            'center_id' => [
-                'required',
-                'numeric'
-            ],
             'phone' => [
                 'max:10',
                 'min:10'
             ]
         ];
     }
-
-    public function messages()
-    {
-        return [
-            'email.required' => 'The email field is required.',
-            // custom error messages for other fields if needed
-        ];
-    }
-
     public function response(array $errors)
     {
         // Returning a JSON response with the error messages

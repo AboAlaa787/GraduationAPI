@@ -19,12 +19,11 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::prefix('/users')->group(function (){
+    Route::controller(UsersServicesController::class)->group(function (){
+            Route::post('login','login');
+    });
+});
 Route::resource('/users',UsersServicesController::class);
-/*Route::post('/users/create', [UsersServicesController::class, 'store']);
-Route::post('/users/login', [UsersServicesController::class, 'login'])
-    ->middleware('guest')
-    ->name('login');
-Route::get('/center/{id}',function ($id){
-    $center=\App\Models\Center::find($id);
-    return response()->json(['users'=>$center->services]);
-});*/
+
+
