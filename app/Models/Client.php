@@ -20,7 +20,7 @@ class Client extends Model
         'center_name',
         'phone',
         'devices_count',
-        'user_name',
+        'email',
         'password',
         'address',
     ];
