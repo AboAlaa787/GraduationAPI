@@ -2,42 +2,46 @@
 
 namespace App\Traits;
 
-use Illuminate\Http\Request;
-
-
 trait CRUDTrait
 {
     use ApiResponseTrait;
+
     public function get_data($model)
     {
         return $this->apiResponse($model::all());
     }
-    public function store_data(Request $request, $model)
+
+    public function show_data($model, $id)
     {
-        $new_data = $model::create($request->all());
-        if ($new_data) {
-            return $this->apiResponse($new_data, 201);
+        $object = $model::find($id);
+        if (!$object) {
+            return $this->apiResponse(null, 404, 'There is no item with id ' . $id);
         }
-        return $this->apiResponse($new_data, 400);
+        return $this->apiResponse($object);
     }
-    public function update_data(Request $request, $id, $model)
+
+    public function store_data($request, $model)
     {
-        $new_data = $model::find($id);
-        if (!$new_data) {
-            return $this->apiResponse(null, 404);
-        }
-        $new_data->update($request->all());
-        return $this->apiResponse($new_data, 201);
+        return $this->apiResponse($model::create($request->all()), 201, 'Add successful');
     }
+
+    public function update_data($request, $id, $model)
+    {
+        $object = $model::find($id);
+        if (!$object) {
+            return $this->apiResponse(null, 404, 'There is no item with id ' . $id);
+        }
+        $object->update($request->all());
+        return $this->apiResponse($object, 201, 'Update successful');
+    }
+
     public function delete_data($id, $model)
     {
         $delete = $model::find($id);
         if (!$delete) {
-            return $this->apiResponse(null, 404);
+            return $this->apiResponse(null, 404, 'There is no item with id ' . $id);
         }
         $delete->destroy($id);
-        if ($delete) {
-            return $this->apiResponse(null, 200);
-        }
+        return $this->apiResponse('Delete successfully', 200);
     }
 }

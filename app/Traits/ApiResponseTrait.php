@@ -2,14 +2,15 @@
 
 namespace App\Traits;
 
+
+
 trait ApiResponseTrait
 {
-    public function apiResponse($data = null, $status = 200)
+    public function apiResponse($body = null, $status = 200, $message = 'Successful')
     {
-        $array = [
-            'data' => $data,
-            'status' => $status,
-        ];
-        return response($array, $status);
+        $array['message']=$message;
+        $array['body']=$body;
+        $array['status']=$status;
+        return response()->json($array);
     }
 }

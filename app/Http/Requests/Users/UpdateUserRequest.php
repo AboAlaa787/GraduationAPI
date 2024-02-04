@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Users;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use \App\Rules\AlphaNumeric;
 use Illuminate\Validation\Rules;
 
-class CreateUserRequest extends FormRequest
+class UpdateUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -19,50 +19,30 @@ class CreateUserRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            'username' => [
-                'required',
-<<<<<<< HEAD
-                'max:50',
+            'email' => [
+                'max:30',
                 'string',
                 'email',
-                'lowercase',
                 'unique:users,email,NULL,id,center_id,' . $this->input('center_id')
-=======
-                'max:20',
-                'min:5',
-                new AlphaNumeric,
-                'unique:users,username,NULL,id,center_id,' . $this->input('center_id')
->>>>>>> 9912189c778b1639e1d39681648a0f08d1430f3b
             ],
             'name' => [
-                'required',
                 'max:20',
                 'min:2',
                 'alpha',
             ],
             'last_name' => [
-                'required',
                 'max:20',
                 'min:2',
                 'alpha',
             ],
             'password' => [
-                'required',
                 'confirmed',
                 Rules\Password::defaults()
-            ],
-            'rule_id' => [
-                'required',
-                'numeric'
-            ],
-            'center_id' => [
-                'required',
-                'numeric'
             ],
             'phone' => [
                 'max:10',
@@ -70,14 +50,6 @@ class CreateUserRequest extends FormRequest
             ]
         ];
     }
-    public function messages()
-    {
-        return [
-            'username.required' => 'The username field is required.',
-            // custom error messages for other fields if needed
-        ];
-    }
-
     public function response(array $errors)
     {
         // Returning a JSON response with the error messages

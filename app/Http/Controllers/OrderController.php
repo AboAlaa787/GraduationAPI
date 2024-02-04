@@ -14,15 +14,23 @@ class OrderController extends Controller
     {
         return $this->get_data(Order::class);
     }
+
+    public function show($id)
+    {
+        return $this->show_data(Order::class, $id);
+    }
+
     public function store(Request $request)
     {
         return $this->store_data($request, Order::class);
     }
+
     public function update(Request $request, $id)
     {
         return $this->update_data($request, $id, Order::class);
     }
-    public function distroy($id)
+
+    public function destroy($id)
     {
         return $this->delete_data($id, Order::class);
     }

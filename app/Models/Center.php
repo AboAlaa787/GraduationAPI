@@ -48,4 +48,5 @@ class Center extends Model
     {
         return $this->hasMany(CompletedDevice::class);
     }
+
 }

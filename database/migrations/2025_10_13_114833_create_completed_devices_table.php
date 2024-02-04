@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('model');
             $table->string('imei')->nullable();
+            $table->string('code')->unique();
             $table->foreignId('client_id')->nullable()->constrained()->nullOnDelete();
             $table->string('client_name');
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
@@ -24,11 +25,11 @@ return new class extends Migration
             $table->string('problem');
             $table->double('cost')->nullable();
             $table->enum('status',DeviceStatus::values());
-            $table->foreignId('center_id')->constrained()->cascadeOnDelete();
-            $table->string('center_name');
+            #$table->foreignId('center_id')->constrained()->cascadeOnDelete();
             $table->text('fix_steps')->nullable();
             $table->date('date_receipt');
             $table->date('date_delivery')->default(now());
+            $table->date('date_warranty')->default(now()->addDays(7));
             $table->timestamps();
         });
     }

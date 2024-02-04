@@ -14,6 +14,10 @@ class ProductController extends Controller
     {
         return $this->get_data(Product::class);
     }
+    public function show($id)
+    {
+        return $this->show_data(Product::class,$id);
+    }
     public function store(Request $request)
     {
         return $this->store_data($request, Product::class);
@@ -22,7 +26,7 @@ class ProductController extends Controller
     {
         return $this->update_data($request, $id, Product::class);
     }
-    public function distroy($id)
+    public function destroy($id)
     {
         return $this->delete_data($id, Product::class);
     }

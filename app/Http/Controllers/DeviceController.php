@@ -14,15 +14,23 @@ class DeviceController extends Controller
     {
         return $this->get_data(Device::class);
     }
+
+    public function show($id)
+    {
+        return $this->show_data(Device::class, $id);
+    }
+
     public function store(Request $request)
     {
         return $this->store_data($request, Device::class);
     }
+
     public function update(Request $request, $id)
     {
         return $this->update_data($request, $id, Device::class);
     }
-    public function distroy($id)
+
+    public function destroy($id)
     {
         return $this->delete_data($id, Device::class);
     }

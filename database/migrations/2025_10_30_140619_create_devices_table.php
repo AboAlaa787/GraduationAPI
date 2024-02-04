@@ -16,20 +16,22 @@ return new class extends Migration
             $table->id();
             $table->string('model');
             $table->string('imei')->nullable();
+            $table->string('code')->unique();
             $table->foreignId('client_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
-            $table->integer('client_piority');
-            $table->integer('manager_piority');
-            $table->unique(['manager_piority','user_id']);
-            $table->unique(['client_piority','client_id']);
+            $table->integer('client_priority');
+            $table->integer('manager_priority');
+            $table->unique(['manager_priority','user_id']);
+            $table->unique(['client_priority','client_id']);
             $table->text('info')->nullable();
             $table->string('problem')->nullable();
             $table->double('cost')->nullable();
             $table->text('fix_steps')->nullable();
             $table->enum('status',DeviceStatus::values())->default(DeviceStatus::NotStarted);
             $table->boolean('client_approval');
-            $table->foreignId('center_id')->constrained()->cascadeOnDelete();
+            #$table->foreignId('center_id')->constrained()->cascadeOnDelete();
             $table->date('date_receipt')->default(now());
+            $table->integer('warranty_days')->default(7);
             $table->timestamps();
         });
     }
