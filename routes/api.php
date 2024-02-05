@@ -24,28 +24,35 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('users/login', [UsersServicesController::class, 'login'])->name('login');
+
+Route::get('/not_authenticated', function () {
+    return response()->json(['message' => 'Unauthenticated']);
+})->name('not_authenticated');
+
+Route::middleware(['auth:sanctum'])->group(function () {
+
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+
+    Route::resource('/users', UsersServicesController::class);
+
+    Route::resource('/centers', CenterController::class);
+
+    Route::resource('/services', ServiceController::class);
+
+    Route::resource('/rules', RuleController::class);
+
+    Route::resource('/clients', ClientController::class);
+
+    Route::resource('/products', ProductController::class);
+
+    Route::resource('/permissions', PermissionController::class);
+
+    Route::resource('/orders', OrderController::class);
+
+    Route::resource('/devices', DeviceController::class);
+
+    Route::resource('/completed_devices', CompletedDeviceController::class);
 });
-
-Route::post('users/login', [UsersServicesController::class, 'login']);
-
-Route::resource('/users', UsersServicesController::class);
-
-Route::resource('/centers', CenterController::class);
-
-Route::resource('/services', ServiceController::class);
-
-Route::resource('/rules', RuleController::class);
-
-Route::resource('/clients', ClientController::class);
-
-Route::resource('/products', ProductController::class);
-
-Route::resource('/permissions', PermissionController::class);
-
-Route::resource('/orders', OrderController::class);
-
-Route::resource('/devices', DeviceController::class);
-
-Route::resource('/completed_devices', CompletedDeviceController::class);

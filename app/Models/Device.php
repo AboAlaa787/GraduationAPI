@@ -14,10 +14,11 @@ class Device extends Model
     protected $fillable=[
         'model',
         'imei',
+        'code',
         'client_id',
         'user_id',
-        'client_piority',
-        'manager_piority',
+        'client_priority',
+        'manager_priority',
         'info',
         'problem',
         'cost',

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Permission extends Model
@@ -19,8 +20,8 @@ class Permission extends Model
     /**
      * Get the users associated with the model.
      */
-    public function users(): HasMany
+    public function users(): BelongsToMany
     {
-        return $this->hasMany(Permission_user::class);
+        return $this->belongsToMany(User::class, 'permission_users');
     }
 }

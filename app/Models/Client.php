@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -35,9 +36,9 @@ class Client extends Model
         return $this->hasMany(CompletedDevice::class);
     }
 
-    public function permissions(): HasMany
+    public function permissions(): BelongsToMany
     {
-        return $this->hasMany(Permission_user::class);
+        return $this->belongsToMany(Permission::class, 'permission_clients');
     }
 
     public function orders(): HasMany

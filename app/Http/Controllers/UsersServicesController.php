@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Users\CreateUserRequest;
 use App\Http\Requests\Users\UpdateUserRequest;
+use App\Models\Permission;
 use App\Models\User;
 use App\Traits\CRUDTrait;
 use Illuminate\Auth\Events\Registered;

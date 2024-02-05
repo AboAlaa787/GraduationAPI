@@ -61,9 +61,9 @@ class User extends Authenticatable
         return $this->hasMany(CompletedDevice::class);
     }
 
-    public function permissions(): HasMany
+    public function permissions()
     {
-        return $this->hasMany(Permission_user::class);
+        return $this->belongsToMany(Permission::class, 'permission_users');
     }
 
     public function orders(): HasMany

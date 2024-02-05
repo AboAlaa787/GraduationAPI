@@ -25,7 +25,7 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'email' => [
-                'max:30',
+                'max:50',
                 'string',
                 'email',
                 'unique:users,email,NULL,id,center_id,' . $this->input('center_id')

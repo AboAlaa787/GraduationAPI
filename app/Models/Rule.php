@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Rule extends Model
@@ -19,11 +20,17 @@ class Rule extends Model
     {
         return $this->hasMany(User::class);
     }
+
     /**
      * Get the clients associated with the model.
      */
     public function clients(): HasMany
     {
         return $this->hasMany(Client::class);
+    }
+
+    public function permissions(): BelongsToMany
+    {
+        return $this->belongsToMany(Permission::class, 'permissions_rules');
     }
 }

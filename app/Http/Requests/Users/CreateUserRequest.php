@@ -30,7 +30,6 @@ class CreateUserRequest extends FormRequest
                 'string',
                 'email',
                 'lowercase',
-                'max:20',
                 'min:5',
             ],
             'name' => [

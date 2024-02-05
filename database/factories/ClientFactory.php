@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
  */
 class ClientFactory extends Factory
 {
+
     /**
      * Define the model's default state.
      *
