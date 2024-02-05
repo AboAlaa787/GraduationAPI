@@ -2,35 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Devices\CreateDeviceRequest;
+use App\Http\Requests\Devices\UpdateDeviceRequest;
 use App\Models\Device;
 use App\Traits\CRUDTrait;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class DeviceController extends Controller
 {
     use CRUDTrait;
 
-    public function index()
+    public function index(): JsonResponse
     {
         return $this->get_data(Device::class);
     }
 
-    public function show($id)
+    public function show($id): JsonResponse
     {
         return $this->show_data(Device::class, $id);
     }
 
-    public function store(Request $request)
+    public function store(CreateDeviceRequest $request): JsonResponse
     {
         return $this->store_data($request, Device::class);
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateDeviceRequest $request, $id): JsonResponse
     {
         return $this->update_data($request, $id, Device::class);
     }
 
-    public function destroy($id)
+    public function destroy($id): JsonResponse
     {
         return $this->delete_data($id, Device::class);
     }

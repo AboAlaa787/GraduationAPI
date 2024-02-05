@@ -48,4 +48,4 @@ Route::resource('/orders', OrderController::class);
 
 Route::resource('/devices', DeviceController::class);
 
-Route::resource('/completed_device', CompletedDeviceController::class);
+Route::resource('/completed_devices', CompletedDeviceController::class);

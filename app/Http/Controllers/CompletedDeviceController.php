@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CompletedDevices\CreateCompletedDeviceRequest;
+use App\Http\Requests\CompletedDevices\UpdateCompletedDeviceRequest;
 use App\Models\CompletedDevice;
 use App\Traits\CRUDTrait;
 use Illuminate\Http\JsonResponse;
@@ -21,12 +23,12 @@ class CompletedDeviceController extends Controller
         return $this->show_data(CompletedDevice::class,$id);
     }
 
-    public function store(Request $request)
+    public function store(CreateCompletedDeviceRequest $request)
     {
         return $this->store_data($request, CompletedDevice::class);
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateCompletedDeviceRequest $request, $id)
     {
         return $this->update_data($request, $id, CompletedDevice::class);
     }
