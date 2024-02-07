@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Device;
 use App\Models\User;
 
+
 class DevicePolicy
 {
     /**
@@ -12,7 +13,6 @@ class DevicePolicy
      */
     public function viewAny(User $user): bool
     {
-        return true;
     }
 
     /**
@@ -20,7 +20,6 @@ class DevicePolicy
      */
     public function view(User $user, Device $device): bool
     {
-        return true;
     }
 
     /**
@@ -31,13 +30,11 @@ class DevicePolicy
         $permissions = $user->permissions()->where('name', 'اضافة جهاز')->first();
         return (bool)$permissions;
     }
-
     /**
      * Determine whether the user can update the model.
      */
     public function update(User $user, Device $device): bool
     {
-        return true;
     }
 
     /**
@@ -45,7 +42,6 @@ class DevicePolicy
      */
     public function delete(User $user, Device $device): bool
     {
-        return true;
     }
 
     /**
@@ -53,14 +49,12 @@ class DevicePolicy
      */
     public function restore(User $user, Device $device): bool
     {
-        return true;
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Device $device): bool
+    public function forceDelete(User $user): bool
     {
-        return true;
     }
 }
