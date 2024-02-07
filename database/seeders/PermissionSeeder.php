@@ -15,11 +15,17 @@ class PermissionSeeder extends Seeder
     {
         $permissions=[
             'اضافة جهاز',
-            'تسليم جهاز',
-            'تعديل جهاز',
+            'حذف جهاز',
+            'تعديل بيانات جهاز',
+            'استعلام عن جهاز',
+            'اضافة مستخدم',
+            'حذف مستخدم',
+            'تعديل بيانات مستخدم',
+            'استعلام عن مستخدم',
             ];
         foreach ($permissions as $permission) {
             Permission::create(['name'=>$permission]);
         }
     }
 }
+    

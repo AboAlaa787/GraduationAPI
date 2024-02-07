@@ -20,16 +20,19 @@ class UsersServicesController extends Controller
 
     public function index(): JsonResponse
     {
+        $this->authorize('viewAny',User::class);
         return $this->get_data(User::class);
     }
 
     public function show($id): JsonResponse
     {
+        $this->authorize('view',User::class);
         return $this->show_data(User::class, $id);
     }
 
     public function update(UpdateUserRequest $request, $id): JsonResponse
     {
+        $this->authorize('update',User::class);
         $user = User::find($id);
         if (!$user) {
             return $this->apiResponse(null, 404, 'There is not item with id ' . $id);
@@ -61,6 +64,7 @@ class UsersServicesController extends Controller
 
     public function store(CreateUserRequest $request)
     {
+        $this->authorize('create',User::class);
         $request['password'] = Hash::make($request['password']);
         $message['user'] = User::create($request->all());
         $message['token'] = $message['user']->createToken('any')->plainTextToken;
