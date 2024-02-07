@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Device;
 use App\Models\User;
 
+
 class DevicePolicy
 {
     /**
@@ -50,5 +51,21 @@ class DevicePolicy
     {
         $permissions = $user->permissions()->where('name', 'حذف جهاز')->first();
         return (bool)$permissions;
+    }
+
+    /**
+     * Determine whether the user can restore the model.
+     */
+    public function restore(User $user, Device $device): bool
+    {
+        return true;
+    }
+
+    /**
+     * Determine whether the user can permanently delete the model.
+     */
+    public function forceDelete(User $user): bool
+    {
+        return true;
     }
 }
