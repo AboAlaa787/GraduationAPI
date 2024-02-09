@@ -67,6 +67,7 @@ trait CRUDTrait
         foreach ($columns as $column) {
             $object->$column = $request[$column];
         }
+        $object->save();
         return $this->apiResponse($object, 201, 'Update successful');
     }
 
