@@ -4,6 +4,7 @@ namespace App\Http\Requests\Users;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\Rules;
 
 class UpdateUserRequest extends FormRequest
@@ -28,7 +29,7 @@ class UpdateUserRequest extends FormRequest
                 'max:50',
                 'string',
                 'email',
-                'unique:users,email,NULL,id,center_id,' . $this->input('center_id')
+                'unique:users'
             ],
             'name' => [
                 'max:20',
@@ -50,7 +51,7 @@ class UpdateUserRequest extends FormRequest
             ]
         ];
     }
-    public function response(array $errors)
+    public function response(array $errors): JsonResponse
     {
         // Returning a JSON response with the error messages
         return response()->json(['errors' => $errors], 422);

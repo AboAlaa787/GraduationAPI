@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->double('price');
-            //$table->foreignId('center_id')->constrained()->cascadeOnDeletea();
             $table->time('time_required')->default(10000);
             $table->timestamps();
         });

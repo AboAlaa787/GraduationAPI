@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Order;
 use App\Models\Client;
+use App\Models\Order;
 use App\Models\User;
 
 class OrderPolicy
@@ -15,7 +15,7 @@ class OrderPolicy
     {
         $permissions = $user->permissions()->where('name', 'عرض الطلبات')->first();
         return (bool)$permissions
-            || $user->rule_id === $user->rule()->where('name', 'مدير')->first()->id;
+            || $user->rule()->first()->name === 'مدير';
     }
 
     /**

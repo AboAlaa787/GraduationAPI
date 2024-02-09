@@ -2,31 +2,53 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Products\CreateProductRequest;
+use App\Http\Requests\Products\UpdateProductRequest;
 use App\Models\Product;
 use App\Traits\CRUDTrait;
-use Illuminate\Http\Request;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\JsonResponse;
 
 class ProductController extends Controller
 {
     use CRUDTrait;
 
-    public function index()
+    /**
+     * @throws AuthorizationException
+     */
+    public function index(): JsonResponse
     {
         return $this->get_data(Product::class);
     }
-    public function show($id)
+
+    /**
+     * @throws AuthorizationException
+     */
+    public function show($id): JsonResponse
     {
-        return $this->show_data(Product::class,$id);
+        return $this->show_data(Product::class, $id);
     }
-    public function store(Request $request)
+
+    /**
+     * @throws AuthorizationException
+     */
+    public function store(CreateProductRequest $request): JsonResponse
     {
         return $this->store_data($request, Product::class);
     }
-    public function update(Request $request, $id)
+
+    /**
+     * @throws AuthorizationException
+     */
+    public function update(UpdateProductRequest $request, $id): JsonResponse
     {
         return $this->update_data($request, $id, Product::class);
     }
-    public function destroy($id)
+
+    /**
+     * @throws AuthorizationException
+     */
+    public function destroy($id): JsonResponse
     {
         return $this->delete_data($id, Product::class);
     }

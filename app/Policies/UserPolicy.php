@@ -12,14 +12,14 @@ class UserPolicy
      */
     public function viewAny(User $user): bool
     {
-        $permissions = $user->permissions()->where('name', 'استعلام عن مستخدم')->first();
+        $permissions = $user->permissions()->where('name', 'استعلام عن مستخدمين')->first();
         return (bool)$permissions;
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, User $model): bool
+    public function view(User $user): bool
     {
         $permissions = $user->permissions()->where('name', 'استعلام عن مستخدم')->first();
         return (bool)$permissions;

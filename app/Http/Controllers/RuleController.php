@@ -2,33 +2,53 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ruleRequest;
+use App\Http\Requests\Rules\CreateRuleRequest;
+use App\Http\Requests\Rules\UpdateRuleRequest;
 use App\Models\Rule;
 use App\Traits\CRUDTrait;
-
-use function PHPUnit\Framework\returnSelf;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\JsonResponse;
 
 class RuleController extends Controller
 {
     use CRUDTrait;
 
-    public function index()
+    /**
+     * @throws AuthorizationException
+     */
+    public function index(): JsonResponse
     {
         return $this->get_data(Rule::class);
     }
-    public function show($id)
+
+    /**
+     * @throws AuthorizationException
+     */
+    public function show($id): JsonResponse
     {
-        return $this->show_data(Rule::class,$id);
+        return $this->show_data(Rule::class, $id);
     }
-    public function store(ruleRequest $request)
+
+    /**
+     * @throws AuthorizationException
+     */
+    public function store(CreateRuleRequest $request): JsonResponse
     {
         return $this->store_data($request, Rule::class);
     }
-    public function update(ruleRequest $request, $id)
+
+    /**
+     * @throws AuthorizationException
+     */
+    public function update(UpdateRuleRequest $request, $id): JsonResponse
     {
         return $this->update_data($request, $id, Rule::class);
     }
-    public function destroy($id)
+
+    /**
+     * @throws AuthorizationException
+     */
+    public function destroy($id): JsonResponse
     {
         return $this->delete_data($id, Rule::class);
     }

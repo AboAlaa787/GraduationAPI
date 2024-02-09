@@ -26,12 +26,19 @@ class Client extends Model
         'address',
     ];
 
+    protected $relations=[
+        'completed_devices',
+        'devices',
+        'permissions',
+        'orders'
+    ];
+
     public function devices(): HasMany
     {
         return $this->hasMany(Device::class);
     }
 
-    public function devices_completed(): HasMany
+    public function completed_devices(): HasMany
     {
         return $this->hasMany(CompletedDevice::class);
     }

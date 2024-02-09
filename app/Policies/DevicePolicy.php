@@ -13,7 +13,7 @@ class DevicePolicy
      */
     public function viewAny(User $user): bool
     {
-        $permissions = $user->permissions()->where('name', 'استعلام عن جهاز')->first();
+        $permissions = $user->permissions()->where('name', 'استعلام عن اجهزة')->first();
         return (bool)$permissions;
     }
 

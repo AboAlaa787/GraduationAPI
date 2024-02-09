@@ -6,45 +6,49 @@ use App\Http\Requests\Centers\CreateCenterRequest;
 use App\Http\Requests\Centers\UpdateCenterRequest;
 use App\Models\Center;
 use App\Traits\CRUDTrait;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\JsonResponse;
 
 class CenterController extends Controller
 {
     use CRUDTrait;
 
-    public function index()
+    /**
+     * @throws AuthorizationException
+     */
+    public function index(): JsonResponse
     {
         return $this->get_data(Center::class);
     }
 
-    public function show($id)
+    /**
+     * @throws AuthorizationException
+     */
+    public function show($id): JsonResponse
     {
-        return $this->show_data(Center::class,$id);
+        return $this->show_data(Center::class, $id);
     }
 
-    public function store(CreateCenterRequest $request)
+    /**
+     * @throws AuthorizationException
+     */
+    public function store(CreateCenterRequest $request): JsonResponse
     {
         return $this->store_data($request, Center::class);
     }
 
-    public function update(UpdateCenterRequest $request, $id)
+    /**
+     * @throws AuthorizationException
+     */
+    public function update(UpdateCenterRequest $request, $id): JsonResponse
     {
-        $object = Center::find($id);
-        if (!$object) {
-            return $this->apiResponse(null, 404, 'There is no item with id ' . $id);
-        }
-        if ($request['status'])
-            $object->status = $request['status'];
-        if ($request['address'])
-            $object->address = $request['address'];
-        if ($request['start_work'])
-            $object->start_work = $request['start_work'];
-        if ($request['end_work'])
-            $object->end_work = $request['end_work'];
-        $object->save();
-        return $this->apiResponse($object, 200, 'Update successful');
+        return $this->update_data($request, $id, Center::class);
     }
 
-    public function destroy($id)
+    /**
+     * @throws AuthorizationException
+     */
+    public function destroy($id): JsonResponse
     {
         return $this->delete_data($id, Center::class);
     }

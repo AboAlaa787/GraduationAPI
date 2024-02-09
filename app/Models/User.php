@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -51,17 +52,24 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    protected $relations=[
+        'completed_devices',
+        'devices',
+        'permissions',
+        'orders'
+    ];
+
     public function devices(): HasMany
     {
         return $this->hasMany(Device::class);
     }
 
-    public function devices_completed(): HasMany
+    public function completed_devices(): HasMany
     {
         return $this->hasMany(CompletedDevice::class);
     }
 
-    public function permissions()
+    public function permissions():BelongsToMany
     {
         return $this->belongsToMany(Permission::class, 'permission_users');
     }

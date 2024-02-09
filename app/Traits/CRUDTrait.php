@@ -2,41 +2,80 @@
 
 namespace App\Traits;
 
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Validator;
+
 trait CRUDTrait
 {
     use ApiResponseTrait;
 
-    public function get_data($model)
+    /**
+     * @throws AuthorizationException
+     */
+    public function get_data($model): JsonResponse
     {
+        $this->authorize('viewAny', $model);
         return $this->apiResponse($model::all());
     }
 
-    public function show_data($model, $id)
+    /**
+     * @throws AuthorizationException
+     */
+    public function show_data($model, $id, $with = []): JsonResponse
     {
+        $this->authorize('view', $model);
         $object = $model::find($id);
         if (!$object) {
             return $this->apiResponse(null, 404, 'There is no item with id ' . $id);
         }
-        return $this->apiResponse($object);
+        if ($with) {
+            $with = explode(',', $with);
+            foreach ($with as $item) {
+                $validator = Validator::make(
+                    ['relation' => $item],
+                    ['relation' => 'in:' . implode(",", $object->getRelations())],
+                );
+                if ($validator->fails()) {
+                    return $this->apiResponse([], 400, 'There is no relation to the name ' . $item);
+                }
+            }
+        }
+        return $this->apiResponse($object->with($with)->where('id', $id)->get());
     }
 
-    public function store_data($request, $model)
+    /**
+     * @throws AuthorizationException
+     */
+    public function store_data($request, $model): JsonResponse
     {
+        $this->authorize('create', $model);
         return $this->apiResponse($model::create($request->all()), 201, 'Add successful');
     }
 
-    public function update_data($request, $id, $model)
+    /**
+     * @throws AuthorizationException
+     */
+    public function update_data($request, $id, $model): JsonResponse
     {
+        $this->authorize('update', $model);
         $object = $model::find($id);
         if (!$object) {
             return $this->apiResponse(null, 404, 'There is no item with id ' . $id);
         }
-        $object->update($request->all());
+        $columns = $request->keys();
+        foreach ($columns as $column) {
+            $object->$column = $request[$column];
+        }
         return $this->apiResponse($object, 201, 'Update successful');
     }
 
-    public function delete_data($id, $model)
+    /**
+     * @throws AuthorizationException
+     */
+    public function delete_data($id, $model): JsonResponse
     {
+        $this->authorize('delete', $model);
         $delete = $model::find($id);
         if (!$delete) {
             return $this->apiResponse(null, 404, 'There is no item with id ' . $id);

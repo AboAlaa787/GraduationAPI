@@ -18,33 +18,42 @@ class Center extends Model
         'end_work',
         'logo'
     ];
+    protected $relations = [
+        'users',
+        'services',
+        'clients',
+        'clients',
+        'orders',
+        'devices',
+        'completed_devices'
+    ];
 
-    public function users():HasMany
+    public function users(): HasMany
     {
         return $this->hasMany(User::class);
     }
 
-    public function services():HasMany
+    public function services(): HasMany
     {
         return $this->hasMany(Service::class);
     }
 
-    public function clients():HasMany
+    public function clients(): HasMany
     {
         return $this->hasMany(Client::class);
     }
 
-    public function orders():HasMany
+    public function orders(): HasMany
     {
         return $this->hasMany(User::class);
     }
 
-    public function devices():HasMany
+    public function devices(): HasMany
     {
         return $this->hasMany(Device::class);
     }
 
-    public function completed_devices():HasMany
+    public function completed_devices(): HasMany
     {
         return $this->hasMany(CompletedDevice::class);
     }

@@ -13,8 +13,8 @@ class PermissionPolicy
     public function viewAny(User $user): bool
     {
         $permissions = $user->permissions()->where('name', 'عرض الصلاحيات')->first();
-        return (bool)$permissions
-            || $user->rule_id === $user->rule()->where('name', 'مدير')->first()->id;
+        return (bool)$permissions;
+           // || $user->rule_id === $user->rule()->where('name', 'مدير')->first()->id;
     }
 
     /**
