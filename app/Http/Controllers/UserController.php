@@ -63,4 +63,12 @@ class UserController extends Controller
         $message['token'] = $message['user']->createToken('first')->plainTextToken;
         return $this->apiResponse($message);
     }
+
+    /**
+     * @throws AuthorizationException
+     */
+    public function destroy($id):JsonResponse
+    {
+        return $this->delete_data($id,User::class);
+    }
 }

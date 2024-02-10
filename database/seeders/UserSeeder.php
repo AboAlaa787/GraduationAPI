@@ -2,6 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Permission;
+use App\Models\Permission_user;
+use App\Models\Rule;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -14,14 +17,14 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
+        $user = User::create([
             'email' => 'admin@gmail.com',
             'name' => 'admin',
             'last_name' => 'admin',
             'password' => Hash::make('#123456789H'),
             'email_verified_at' => now(),
-            'remember_token' => Str::random(10)
-            ]);
+            'remember_token' => Str::random(10),
+        ]);
         User::factory()
             ->count(50)
             ->create();

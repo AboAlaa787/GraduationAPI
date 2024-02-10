@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Permission;
+use App\Models\Permission_user;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -70,7 +72,11 @@ class PermissionSeeder extends Seeder
 
         ];
         foreach ($permissions as $permission) {
-            Permission::create(['name' => $permission]);
+            $p= Permission::create(['name' => $permission]);
+              Permission_user::create([
+                'user_id' => 1,
+                'permission_id' => $p->id
+            ]);
         }
     }
 }
