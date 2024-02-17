@@ -8,6 +8,7 @@ use App\Models\Rule;
 use App\Traits\CRUDTrait;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class RuleController extends Controller
 {
@@ -16,9 +17,9 @@ class RuleController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        return $this->get_data(Rule::class);
+        return $this->get_data(Rule::class,$request);
     }
 
     /**

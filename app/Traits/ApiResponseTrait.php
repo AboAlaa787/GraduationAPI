@@ -10,7 +10,6 @@ trait ApiResponseTrait
     {
         $array['message']=$message;
         $array['body']=$body;
-        $array['status']=$status;
-        return response()->json($array);
+        return response()->json($array,$status);
     }
 }

@@ -20,7 +20,7 @@ class ClientPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Client $client): bool
+    public function view(User $user): bool
     {
         $permissions = $user->permissions()->where('name', 'عرض عميل')->first();
         return $permissions

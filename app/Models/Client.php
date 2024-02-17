@@ -33,6 +33,14 @@ class Client extends Model
         'orders'
     ];
 
+    protected $hidden = [
+        'password',
+    ];
+
+    protected $casts = [
+        'password' => 'hashed',
+    ];
+
     public function devices(): HasMany
     {
         return $this->hasMany(Device::class);

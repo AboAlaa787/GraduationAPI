@@ -8,6 +8,7 @@ use App\Models\CompletedDevice;
 use App\Traits\CRUDTrait;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class CompletedDeviceController extends Controller
 {
@@ -16,10 +17,9 @@ class CompletedDeviceController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $this->authorize('viewAny', CompletedDevice::class);
-        return $this->get_data(CompletedDevice::class);
+        return $this->get_data(CompletedDevice::class,$request);
     }
 
     /**

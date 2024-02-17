@@ -18,9 +18,9 @@ class PermissionClientController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        return $this->get_data(Permission_client::class);
+        return $this->get_data(Permission_client::class,$request);
     }
 
     /**

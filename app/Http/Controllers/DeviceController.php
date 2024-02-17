@@ -8,6 +8,7 @@ use App\Models\Device;
 use App\Traits\CRUDTrait;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class DeviceController extends Controller
 {
@@ -17,9 +18,9 @@ class DeviceController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        return $this->get_data(Device::class);
+        return $this->get_data(Device::class,$request);
     }
 
     /**

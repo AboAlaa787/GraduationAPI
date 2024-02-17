@@ -11,7 +11,9 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use \Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
@@ -30,9 +32,9 @@ class UserController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        return $this->get_data(User::class);
+        return $this->get_data(User::class,$request);
     }
 
     /**
@@ -58,7 +60,6 @@ class UserController extends Controller
     public function login(LoginRequest $request): JsonResponse
     {
         $request->authenticate();
-        //$request->session()->regenerate();
         $message['user'] = Auth::user();
         $message['token'] = $message['user']->createToken('first')->plainTextToken;
         return $this->apiResponse($message);

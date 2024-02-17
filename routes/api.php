@@ -28,19 +28,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('users/login', [UserController::class, 'login'])->name('login')->middleware('guest');
 
-Route::get('/not_authenticated', static function () {
-    return response()->json(['message' => 'Unauthenticated']);
-})->name('not_authenticated');
-
 Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('/user', static function (Request $request) {
         return $request->user();
     });
 
-    Route::get('users/{id}/{with}',[UserController::class,'show']);
+    Route::get('users/{id}/{with}', [UserController::class, 'show']);
 
-    Route::get('clients/{id}/{with}',[ClientController::class,'show']);
+    Route::get('clients/{id}/{with}', [ClientController::class, 'show']);
 
     Route::resource('/users', UserController::class);
 
@@ -66,4 +62,3 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::resource('/permission_client', PermissionClientController::class);
 });
-
