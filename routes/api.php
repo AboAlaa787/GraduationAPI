@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CenterController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CompletedDeviceController;
@@ -26,7 +27,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('users/login', [UserController::class, 'login'])->name('login')->middleware('guest');
+Route::resource('/login', AuthenticatedSessionController::class)->middleware('guest');
 
 Route::middleware(['auth:sanctum'])->group(function () {
 
@@ -58,7 +59,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::resource('/completed_devices', CompletedDeviceController::class);
 
-    Route::resource('/permission_user', PermissionUserController::class);
+    Route::resource('/permission_users', PermissionUserController::class);
 
-    Route::resource('/permission_client', PermissionClientController::class);
+    Route::resource('/permission_clients', PermissionClientController::class);
 });

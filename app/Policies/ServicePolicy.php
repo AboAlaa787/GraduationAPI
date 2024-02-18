@@ -2,16 +2,15 @@
 
 namespace App\Policies;
 
-use App\Models\Service;
-use App\Models\User;
 use App\Models\Client;
+use App\Models\Service;
 
 class ServicePolicy
 {
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user, Client $client): bool
+    public function viewAny($user, Client $client): bool
     {
         $permissions = $user->permissions()->where('name', 'عرض الخدمات')->first();
         return (bool)$permissions
@@ -22,7 +21,7 @@ class ServicePolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Client $client, Service $service): bool
+    public function view($user, Client $client, Service $service): bool
     {
         $permissions = $user->permissions()->where('name', 'عرض خدمة')->first();
         return (bool)$permissions
@@ -33,7 +32,7 @@ class ServicePolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create($user): bool
     {
         $permissions = $user->permissions()->where('name', 'اضافة خدمة')->first();
         return (bool)$permissions
@@ -43,7 +42,7 @@ class ServicePolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Service $service): bool
+    public function update($user, Service $service): bool
     {
         $permissions = $user->permissions()->where('name', 'تعديل خدمة')->first();
         return (bool)$permissions
@@ -53,7 +52,7 @@ class ServicePolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Service $service): bool
+    public function delete($user, Service $service): bool
     {
         $permissions = $user->permissions()->where('name', 'حذف خدمة')->first();
         return (bool)$permissions
@@ -63,7 +62,7 @@ class ServicePolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Service $service): bool
+    public function restore($user, Service $service): bool
     {
         $permissions = $user->permissions()->where('name', 'استرجاع خدمة')->first();
         return (bool)$permissions
@@ -73,7 +72,7 @@ class ServicePolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Service $service): bool
+    public function forceDelete($user, Service $service): bool
     {
         $permissions = $user->permissions()->where('name', 'حذف خدمة نهائيا')->first();
         return (bool)$permissions

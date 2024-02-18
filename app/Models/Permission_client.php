@@ -13,6 +13,8 @@ class Permission_client extends Model
         'client_id',
         'permission_id',
     ];
+
+
     /**
      * Get the client associated with the model.
      */

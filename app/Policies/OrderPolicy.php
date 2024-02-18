@@ -4,14 +4,13 @@ namespace App\Policies;
 
 use App\Models\Client;
 use App\Models\Order;
-use App\Models\User;
 
 class OrderPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user): bool
+    public function viewAny($user): bool
     {
         $permissions = $user->permissions()->where('name', 'عرض الطلبات')->first();
         return (bool)$permissions
@@ -21,7 +20,7 @@ class OrderPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(Client $client, User $user, Order $order): bool
+    public function view(Client $client, $user, Order $order): bool
     {
         $permissions = $user->permissions()->where('name', 'عرض الطلب')->first();
         return (bool)$permissions
@@ -33,7 +32,7 @@ class OrderPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user, Client $client): bool
+    public function create($user, Client $client): bool
     {
         $permissions = $user->permissions()->where('name', 'اضافة طلب')->first();
         $permissions_client = $client->permissions()->where('name', 'اضافة طلب')->first();
@@ -44,7 +43,7 @@ class OrderPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Client $client, Order $order): bool
+    public function update($user, Client $client, Order $order): bool
     {
         $permissions = $user->permissions()->where('name', 'تعديل طلب')->first();
         return (bool)$permissions
@@ -54,7 +53,7 @@ class OrderPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Client $client, Order $order): bool
+    public function delete($user, Client $client, Order $order): bool
     {
         $permissions = $user->permissions()->where('name', 'حذف طلب')->first();
         return (bool)$permissions
@@ -64,7 +63,7 @@ class OrderPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Client $client, Order $order): bool
+    public function restore($user, Client $client, Order $order): bool
     {
         $permissions = $user->permissions()->where('name', 'استرجاع طلب')->first();
         return (bool)$permissions
@@ -74,7 +73,7 @@ class OrderPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Client $client, Order $order): bool
+    public function forceDelete($user, Client $client, Order $order): bool
     {
         $permissions = $user->permissions()->where('name', 'حذف طلب نهائيا')->first();
         return (bool)$permissions

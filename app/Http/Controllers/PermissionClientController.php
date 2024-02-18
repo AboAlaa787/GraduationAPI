@@ -29,8 +29,8 @@ class PermissionClientController extends Controller
     public function store(Request $request): JsonResponse
     {
         $validation =   Validator::make($request->all(), [
-            'permission_id' => 'required|exists:permissions,id|unique:permission_client,permission_id,NULL,id,client_id,' . $request->input('client_id'),
-            'client_id' => 'required|exists:clients,id|unique:permission_users,client_id,NULL,id,permission_id,' . $request->input('permission_id')
+            'permission_id' => 'required|exists:permissions,id|unique:permission_clients,permission_id,NULL,id,client_id,' . $request->input('client_id'),
+            'client_id' => 'required|exists:clients,id|unique:permission_clients,client_id,NULL,id,permission_id,' . $request->input('permission_id')
         ]);
         if ($validation->fails()){
             return $this->apiResponse($validation->messages(),404,'Failed');

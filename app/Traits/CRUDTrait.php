@@ -78,7 +78,7 @@ trait CRUDTrait
     {
         try {
             $this->authorize('create', $model);
-        } catch (Exception $e) {
+        } catch (Exception) {
             return $this->apiResponse(null, 403, 'Unauthorized');
         }
         return $this->apiResponse($model::create($request->all()), 201, 'Add successful');

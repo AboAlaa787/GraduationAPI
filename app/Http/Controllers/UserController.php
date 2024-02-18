@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Users\CreateUserRequest;
 use App\Http\Requests\Users\UpdateUserRequest;
+use App\Models\Client;
 use App\Models\User;
 use App\Traits\CRUDTrait;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -34,7 +35,9 @@ class UserController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        return $this->get_data(User::class,$request);
+        if (\auth()->user()){
+            return $this->get_data(User::class,$request);
+        }
     }
 
     /**
