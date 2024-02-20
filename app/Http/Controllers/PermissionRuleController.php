@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PermissionRule;
+use App\Models\Permission_rule;
 use App\Traits\ApiResponseTrait;
 use App\Traits\CRUDTrait;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -20,7 +20,7 @@ class PermissionRuleController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        return $this->get_data(PermissionRule::class,$request);
+        return $this->get_data(Permission_rule::class,$request);
     }
 
     /**
@@ -35,7 +35,7 @@ class PermissionRuleController extends Controller
         if ($validation->fails()){
             return $this->apiResponse($validation->messages(),404,'Failed');
         }
-        return  $this->store_data($request, PermissionRule::class);
+        return  $this->store_data($request, Permission_rule::class);
     }
 
     /**
@@ -43,6 +43,6 @@ class PermissionRuleController extends Controller
      */
     public function destroy($id): JsonResponse
     {
-        return $this->delete_data($id,PermissionRule::class);
+        return $this->delete_data($id,Permission_rule::class);
     }
 }

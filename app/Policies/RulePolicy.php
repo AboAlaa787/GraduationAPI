@@ -3,66 +3,47 @@
 namespace App\Policies;
 
 use App\Models\Rule;
+use App\Traits\PermissionCheckTrait;
 
 class RulePolicy
 {
+    use PermissionCheckTrait;
+
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny($user): bool
     {
-        $permissions = $user->permissions()->where('name', 'عرض الادوار')->first();
-        return (bool)$permissions
-            || $user->rule_id === $user->rule()->where('name', 'مدير')->first()->id;
+        return $this->hasPermission($user, 'عرض الادوار');
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
     public function view($user, Rule $rule): bool
     {
-        $permissions = $user->permissions()->where('name', 'عرض دور')->first();
-        return (bool)$permissions
-            || $user->rule_id === $user->rule()->where('name', 'مدير')->first()->id;
+        return $this->hasPermission($user, 'عرض دور');
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
     public function create($user): bool
     {
-        return false;
+        return $this->hasPermission($user, 'اضافة دور');
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update($user, Rule $rule): bool
+    public function update($user): bool
     {
-        return false;
+        return $this->hasPermission($user, 'تعديل دور');
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete($user, Rule $rule): bool
+    public function delete($user): bool
     {
-        return false;
+        return $this->hasPermission($user, 'حذف دور');
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     */
     public function restore($user, Rule $rule): bool
     {
-        return false;
+        return false; // Placeholder for any specific condition if needed
     }
 
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
     public function forceDelete($user, Rule $rule): bool
     {
-        return false;
+        return false; // Placeholder for any specific condition if needed
     }
 }

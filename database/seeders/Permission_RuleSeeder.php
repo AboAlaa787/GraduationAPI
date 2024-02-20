@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Permission;
-use App\Models\PermissionRule;
+use App\Models\Permission_rule;
 use App\Models\Rule;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -18,7 +18,7 @@ class Permission_RuleSeeder extends Seeder
         $rule=Rule::where('name','مدير')->first();
         $permissions=Permission::get();
         foreach ($permissions as $permission) {
-            PermissionRule::create([
+            Permission_rule::create([
                 'rule_id'=>$rule->id,
                 'permission_id'=>$permission->id
             ]);

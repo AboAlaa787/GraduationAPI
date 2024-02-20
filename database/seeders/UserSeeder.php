@@ -17,10 +17,12 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        $rule=Rule::where('name','مدير')->first();
         $user = User::create([
             'email' => 'admin@gmail.com',
             'name' => 'admin',
             'last_name' => 'admin',
+            'rule_id'=>$rule->id,
             'password' => Hash::make('#123456789H'),
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),

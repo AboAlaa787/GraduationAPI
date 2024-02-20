@@ -51,7 +51,8 @@ class CreateUserRequest extends FormRequest
             ],
             'rule_id' => [
                 'required',
-                'numeric'
+                'numeric',
+                'exists:rules,id'
             ],
             'phone' => [
                 'max:10',

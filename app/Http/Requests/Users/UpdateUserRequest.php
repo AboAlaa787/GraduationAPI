@@ -45,6 +45,11 @@ class UpdateUserRequest extends FormRequest
                 'confirmed',
                 Rules\Password::defaults()
             ],
+            'rule_id' => [
+                'required',
+                'numeric',
+                'exists:rules,id'
+            ],
             'phone' => [
                 'max:10',
                 'min:10'

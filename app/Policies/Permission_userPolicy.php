@@ -3,51 +3,35 @@
 namespace App\Policies;
 
 use App\Models\Permission_user;
+use App\Traits\PermissionCheckTrait;
 
 class Permission_userPolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
+    use PermissionCheckTrait;
+
     public function viewAny($user): bool
     {
-        $permissions = $user->permissions()->where('name', 'الاستعلام عن صلاحيات المستخدمين')->first();
-        return (bool)$permissions;
+        return $this->hasPermission($user, 'الاستعلام عن صلاحيات المستخدمين');
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
     public function view($user, Permission_user $permission): bool
     {
-        $permissions = $user->permissions()->where('name', 'الاستعلام عن صلاحيات مستخدم')->first();
-        return (bool)$permissions;
+        return $this->hasPermission($user, 'الاستعلام عن صلاحيات مستخدم');
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
     public function create($user): bool
     {
-        $permissions = $user->permissions()->where('name', 'تعيين صلاحيات للمستخدمين')->first();
-        return (bool)$permissions;
+        return $this->hasPermission($user, 'تعيين صلاحيات للمستخدمين');
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
     public function update($user, Permission_user $permission): bool
     {
-        return true;
+        return $this->hasPermission($user, 'تحديث صلاحيات المستخدم');
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
     public function delete($user, Permission_user $permission): bool
     {
-        $permissions = $user->permissions()->where('name', 'ازالة صلاحيات من المستخدمين')->first();
-        return (bool)$permissions;
+        return $this->hasPermission($user, 'ازالة صلاحيات من المستخدمين');
     }
 
     /**

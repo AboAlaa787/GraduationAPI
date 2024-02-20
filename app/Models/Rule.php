@@ -31,6 +31,6 @@ class Rule extends Model
 
     public function permissions(): BelongsToMany
     {
-        return $this->belongsToMany(Permission::class, 'permissions_rules');
+        return $this->belongsToMany(Permission::class, 'permission_rules');
     }
 }

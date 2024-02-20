@@ -4,19 +4,19 @@ namespace App\Policies;
 
 use App\Models\Client;
 use App\Models\CompletedDevice;
+use App\Traits\PermissionCheckTrait;
 
 
 class CompletedDevicePolicy
 {
+    use PermissionCheckTrait;
+
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny($user): bool
     {
-        $permissions = $user->permissions()->where('name', 'عرض الاجهزة التي تم تسليمها')->first();
-        return (bool)$permissions
-            || $user->rule_id === $user->rule()->where('name', 'مدير')->first()->id
-            || $user->rule_id === $user->rule()->where('name', 'موظف')->first()->id;
+        return $this->hasPermission($user, 'عرض الاجهزة التي تم تسليمها');
     }
 
     /**
@@ -24,11 +24,8 @@ class CompletedDevicePolicy
      */
     public function view($user, Client $client, CompletedDevice $completedDevice): bool
     {
-        $permissions = $user->permissions()->where('name', 'عرض الجهاز التي تم تسليمها')->first();
-        return (bool)$permissions
-            || $client->id === $completedDevice->client_id
-            || $user->rule_id === $user->rule()->where('name', 'موظف')->first()->id
-            || $user->rule_id === $user->rule()->where('name', 'مدير')->first()->id;
+        return $this->hasPermission($user, 'عرض الجهاز التي تم تسليمها')
+            || $client->id === $completedDevice->client_id;
     }
 
     /**

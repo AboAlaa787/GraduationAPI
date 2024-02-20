@@ -3,17 +3,18 @@
 namespace App\Policies;
 
 use App\Models\Permission;
+use App\Traits\PermissionCheckTrait;
 
 class PermissionPolicy
 {
+    use PermissionCheckTrait;
+
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny($user): bool
     {
-        $permissions = $user->permissions()->where('name', 'عرض الصلاحيات')->first();
-        return (bool)$permissions;
-        // || $user->rule_id === $user->rule()->where('name', 'مدير')->first()->id;
+        return $this->hasPermission($user, 'عرض الصلاحيات');
     }
 
     /**
@@ -21,9 +22,7 @@ class PermissionPolicy
      */
     public function view($user, Permission $permission): bool
     {
-        $permissions = $user->permissions()->where('name', 'عرض صلاحية')->first();
-        return (bool)$permissions
-            || $user->rule_id === $user->rule()->where('name', 'مدير')->first()->id;
+        return $this->hasPermission($user, 'عرض صلاحية');
     }
 
     /**
@@ -31,9 +30,7 @@ class PermissionPolicy
      */
     public function create($user): bool
     {
-        $permissions = $user->permissions()->where('name', 'اضافة صلاحية')->first();
-        return (bool)$permissions
-            || $user->rule_id === $user->rule()->where('name', 'مدير')->first()->id;
+        return $this->hasPermission($user, 'اضافة صلاحية');
     }
 
     /**
@@ -41,9 +38,7 @@ class PermissionPolicy
      */
     public function update($user, Permission $permission): bool
     {
-        $permissions = $user->permissions()->where('name', 'تعديل صلاحية')->first();
-        return (bool)$permissions
-            || $user->rule_id === $user->rule()->where('name', 'مدير')->first()->id;
+        return $this->hasPermission($user, 'تعديل صلاحية');
     }
 
     /**
@@ -51,9 +46,7 @@ class PermissionPolicy
      */
     public function delete($user, Permission $permission): bool
     {
-        $permissions = $user->permissions()->where('name', 'حذف صلاحية')->first();
-        return (bool)$permissions
-            || $user->rule_id === $user->rule()->where('name', 'مدير')->first()->id;
+        return $this->hasPermission($user, 'حذف صلاحية');
     }
 
     /**

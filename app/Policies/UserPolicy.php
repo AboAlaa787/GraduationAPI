@@ -2,50 +2,35 @@
 
 namespace App\Policies;
 
+use App\Traits\PermissionCheckTrait;
+
 class UserPolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
+    use PermissionCheckTrait;
+
     public function viewAny($user): bool
     {
-        $permissions = $user->permissions()->where('name', 'استعلام عن مستخدمين')->first();
-        return (bool)$permissions;
+        return $this->hasPermission($user, 'استعلام عن مستخدمين');
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
+
     public function view($user): bool
     {
-        $permissions = $user->permissions()->where('name', 'استعلام عن مستخدم')->first();
-        return (bool)$permissions;
+        return $this->hasPermission($user, 'استعلام عن مستخدم');
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
     public function create($user): bool
     {
-        $permissions = $user->permissions()->where('name', 'اضافة مستخدم')->first();
-        return (bool)$permissions;
+        return $this->hasPermission($user, 'اضافة مستخدم');
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
     public function update($user): bool
     {
-        $permissions = $user->permissions()->where('name', 'تعديل بيانات مستخدم')->first();
-        return (bool)$permissions;
+        return $this->hasPermission($user, 'تعديل بيانات مستخدم');
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
     public function delete($user): bool
     {
-        $permissions = $user->permissions()->where('name', 'حذف مستخدم')->first();
-        return (bool)$permissions;
+        return $this->hasPermission($user, 'حذف مستخدم');
     }
 }

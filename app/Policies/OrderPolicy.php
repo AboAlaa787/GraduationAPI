@@ -4,17 +4,18 @@ namespace App\Policies;
 
 use App\Models\Client;
 use App\Models\Order;
+use App\Traits\PermissionCheckTrait;
 
 class OrderPolicy
 {
+    use PermissionCheckTrait;
+
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny($user): bool
     {
-        $permissions = $user->permissions()->where('name', 'عرض الطلبات')->first();
-        return (bool)$permissions
-            || $user->rule()->first()->name === 'مدير';
+        return $this->hasPermission($user, 'عرض الطلبات');
     }
 
     /**
@@ -22,11 +23,7 @@ class OrderPolicy
      */
     public function view(Client $client, $user, Order $order): bool
     {
-        $permissions = $user->permissions()->where('name', 'عرض الطلب')->first();
-        return (bool)$permissions
-            || $client->id === $order->client_id
-            || $user->id === $order->user_id
-            || $user->rule_id === $user->rule()->where('name', 'مدير')->first()->id;
+        return $this->hasPermission($user, 'عرض الطلب') || $client->id === $order->client_id || $user->id === $order->user_id;
     }
 
     /**
@@ -34,10 +31,7 @@ class OrderPolicy
      */
     public function create($user, Client $client): bool
     {
-        $permissions = $user->permissions()->where('name', 'اضافة طلب')->first();
-        $permissions_client = $client->permissions()->where('name', 'اضافة طلب')->first();
-        return (bool)$permissions
-            || (bool)$permissions_client;
+        return $this->hasPermission($user, 'اضافة طلب');
     }
 
     /**
@@ -45,9 +39,7 @@ class OrderPolicy
      */
     public function update($user, Client $client, Order $order): bool
     {
-        $permissions = $user->permissions()->where('name', 'تعديل طلب')->first();
-        return (bool)$permissions
-            || $client->id === $order->client_id;
+        return $this->hasPermission($user, 'تعديل طلب') || $client->id === $order->client_id;
     }
 
     /**
@@ -55,9 +47,7 @@ class OrderPolicy
      */
     public function delete($user, Client $client, Order $order): bool
     {
-        $permissions = $user->permissions()->where('name', 'حذف طلب')->first();
-        return (bool)$permissions
-            || $client->id === $order->client_id;
+        return $this->hasPermission($user, 'حذف طلب') || $client->id === $order->client_id;
     }
 
     /**

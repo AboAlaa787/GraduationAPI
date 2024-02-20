@@ -8,6 +8,7 @@ use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PermissionClientController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\PermissionRuleController;
 use App\Http\Controllers\PermissionUserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RuleController;
@@ -62,4 +63,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::resource('/permission_users', PermissionUserController::class);
 
     Route::resource('/permission_clients', PermissionClientController::class);
+
+    Route::resource('/permission_rules', PermissionRuleController::class);
 });

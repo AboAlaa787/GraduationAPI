@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignId('client_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->integer('client_priority');
-            $table->integer('manager_priority');
+            $table->integer('manager_priority')->nullable();
             $table->unique(['manager_priority','user_id']);
             $table->unique(['client_priority','client_id']);
             $table->text('info')->nullable();

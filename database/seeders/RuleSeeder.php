@@ -14,7 +14,9 @@ class RuleSeeder extends Seeder
     public function run(): void
     {
         $rules=[
-          'مدير'
+          'مدير',
+            'فني',
+            'عميل'
         ];
         foreach ($rules as $rule) {
             Rule::create(['name' => $rule]);
