@@ -53,7 +53,7 @@ class DevicePolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore($user, Device $device): bool
+    public function restore($user): bool
     {
         return true;
     }

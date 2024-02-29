@@ -14,7 +14,7 @@ class Permission_userPolicy
         return $this->hasPermission($user, 'الاستعلام عن صلاحيات المستخدمين');
     }
 
-    public function view($user, Permission_user $permission): bool
+    public function view($user): bool
     {
         return $this->hasPermission($user, 'الاستعلام عن صلاحيات مستخدم');
     }
@@ -24,12 +24,12 @@ class Permission_userPolicy
         return $this->hasPermission($user, 'تعيين صلاحيات للمستخدمين');
     }
 
-    public function update($user, Permission_user $permission): bool
+    public function update($user): bool
     {
         return $this->hasPermission($user, 'تحديث صلاحيات المستخدم');
     }
 
-    public function delete($user, Permission_user $permission): bool
+    public function delete($user): bool
     {
         return $this->hasPermission($user, 'ازالة صلاحيات من المستخدمين');
     }

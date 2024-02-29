@@ -12,32 +12,32 @@ class Permission_rulePolicy
     use PermissionCheckTrait;
 
 
-    public function viewAny(User $user): bool
+    public function viewAny( $user): bool
     {
         return $this->hasPermission($user, 'الاستعلام عن صلاحيات الادوار');
     }
 
-    public function view(User $user, Permission_rule $permissionRule): bool
+    public function view( $user): bool
     {
         return $this->hasPermission($user, 'الاستعلام عن صلاحيات الدور');
     }
 
-    public function create(User $user): bool
+    public function create( $user): bool
     {
         return $this->hasPermission($user, 'تعيين صلاحيات للادوار');
     }
 
-    public function update(User $user, Permission_rule $permissionRule): bool
+    public function update( $user): bool
     {
         return $this->hasPermission($user, 'تحديث صلاحيات الدور');
     }
 
-    public function delete(User $user, Permission_rule $permissionRule): bool
+    public function delete( $user): bool
     {
         return $this->hasPermission($user, 'ازالة صلاحيات من الادوار');
     }
 
-    public function restore(User $user, Permission_rule $permissionRule): bool
+    public function restore( $user): bool
     {
         return false;
     }

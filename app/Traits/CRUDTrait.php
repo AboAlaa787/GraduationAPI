@@ -54,21 +54,40 @@ trait CRUDTrait
         } catch (Exception $e) {
             return $this->apiResponse(null, 403, 'Unauthorized');
         }
+
         $object = $model::find($id);
+
         if (!$object) {
-            return $this->apiResponse(null, 404, 'There is no item with id ' . $id);
+            return $this->apiResponse(null, 404, "No item found with id: $id");
         }
-        if ($with) {
+
+        if (!empty($with)) {
             $with = explode(',', $with);
-            $relations = $object->getRelations();
-            foreach ($with as $item) {
-                if (!in_array($item, $relations, true)) {
-                    return $this->apiResponse([], 400, 'There is no relation with the name ' . $item);
-                }
+            $response = $this->validateRelations($object, $with);
+
+            if ($response) {
+                return $response;
             }
+
+        } else {
+            $with = [];
         }
+
         $data = $object->with($with)->where('id', $id)->get();
         return $this->apiResponse($data);
+    }
+
+    private function validateRelations($object, $with): ?JsonResponse
+    {
+        $relations = $object->getRelations();
+
+        $invalidRelations = array_diff($with, $relations);
+
+        if (!empty($invalidRelations)) {
+            $invalidRelationsStr = implode(', ', $invalidRelations);
+            return $this->apiResponse([], 400, "Invalid relations: $invalidRelationsStr");
+        }
+        return null;
     }
 
     /**

@@ -25,9 +25,9 @@ class OrderController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function show($id): JsonResponse
+    public function show($id, Request $request): JsonResponse
     {
-        return $this->show_data(Order::class, $id);
+        return $this->show_data(Order::class, $id, $request->with);
     }
 
     /**

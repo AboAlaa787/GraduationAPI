@@ -41,6 +41,14 @@ class PermissionRuleController extends Controller
     /**
      * @throws AuthorizationException
      */
+    public function show($id, Request $request): JsonResponse
+    {
+        return $this->show_data(Permission_rule::class, $id, $request->with);
+    }
+
+    /**
+     * @throws AuthorizationException
+     */
     public function destroy($id): JsonResponse
     {
         return $this->delete_data($id,Permission_rule::class);

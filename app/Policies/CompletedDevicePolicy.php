@@ -22,16 +22,15 @@ class CompletedDevicePolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view($user, Client $client, CompletedDevice $completedDevice): bool
+    public function view($user): bool
     {
-        return $this->hasPermission($user, 'عرض الجهاز التي تم تسليمها')
-            || $client->id === $completedDevice->client_id;
+        return $this->hasPermission($user, 'عرض الجهاز التي تم تسليمها');
     }
 
     /**
      * Determine whether the user can create models.
      */
-    public function create($user, Client $client): bool
+    public function create($user): bool
     {
         return false;
     }
@@ -39,7 +38,7 @@ class CompletedDevicePolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update($user, Client $client, CompletedDevice $completedDevice): bool
+    public function update($user): bool
     {
         return false;
     }
@@ -47,7 +46,7 @@ class CompletedDevicePolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete($user, CompletedDevice $completedDevice): bool
+    public function delete($user): bool
     {
         return false;
     }
@@ -55,7 +54,7 @@ class CompletedDevicePolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore($user, CompletedDevice $completedDevice): bool
+    public function restore($user): bool
     {
         return false;
     }
@@ -63,7 +62,7 @@ class CompletedDevicePolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete($user, CompletedDevice $completedDevice): bool
+    public function forceDelete($user): bool
     {
         return false;
     }

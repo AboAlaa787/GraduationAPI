@@ -15,6 +15,11 @@ class Service_order extends Model
         'order_id',
     ];
 
+    protected $relations=[
+        'order',
+        'service'
+    ];
+
     /**
      * Get the service associated with the model.
      */

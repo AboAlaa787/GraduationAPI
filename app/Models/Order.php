@@ -13,17 +13,17 @@ class Order extends Model
 
     protected $fillable = [
         'description',
-        'center_id',
         'status',
         'date',
         'client_id',
         'user_id',
     ];
-
-    public function center(): BelongsTo
-    {
-        return $this->belongsTo(Center::class);
-    }
+    protected $relations = [
+        'client',
+        'user',
+        'services',
+        'products',
+    ];
 
     public function services(): BelongsToMany
     {

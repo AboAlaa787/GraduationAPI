@@ -25,9 +25,9 @@ class UserController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function show($id, $with = []): JsonResponse
+    public function show($id, Request $request): JsonResponse
     {
-        return $this->show_data(User::class, $id, $with);
+        return $this->show_data(User::class, $id, $request->with);
     }
 
     /**
@@ -35,9 +35,7 @@ class UserController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        if (\auth()->user()){
             return $this->get_data(User::class,$request);
-        }
     }
 
     /**

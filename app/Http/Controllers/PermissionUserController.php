@@ -22,7 +22,13 @@ class PermissionUserController extends Controller
     {
         return $this->get_data(Permission_user::class,$request);
     }
-
+    /**
+     * @throws AuthorizationException
+     */
+    public function show($id, Request $request): JsonResponse
+    {
+        return $this->show_data(Permission_user::class, $id, $request->with);
+    }
     /**
      * @throws AuthorizationException
      */

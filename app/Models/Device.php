@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 
 class Device extends Model
 {
     use HasFactory;
-    protected $fillable=[
+
+    protected $fillable = [
         'model',
         'imei',
         'code',
@@ -25,20 +25,20 @@ class Device extends Model
         'fix_steps',
         'status',
         'client_approval',
-        'center_id',
         'date_receipt'
     ];
+    protected $relations = [
+        'client',
+        'user',
+    ];
 
-    public function client():BelongsTo
+    public function client(): BelongsTo
     {
         return $this->belongsTo(Client::class);
     }
-    public function user():BelongsTo
+
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
-    }
-    public function center():BelongsTo
-    {
-        return $this->belongsTo(Center::class);
     }
 }

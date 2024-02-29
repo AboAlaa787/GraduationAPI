@@ -20,7 +20,7 @@ class PermissionPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view($user, Permission $permission): bool
+    public function view($user): bool
     {
         return $this->hasPermission($user, 'عرض صلاحية');
     }
@@ -36,7 +36,7 @@ class PermissionPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update($user, Permission $permission): bool
+    public function update($user): bool
     {
         return $this->hasPermission($user, 'تعديل صلاحية');
     }
@@ -44,7 +44,7 @@ class PermissionPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete($user, Permission $permission): bool
+    public function delete($user): bool
     {
         return $this->hasPermission($user, 'حذف صلاحية');
     }

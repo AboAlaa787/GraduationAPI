@@ -15,17 +15,12 @@ class Service extends Model
     protected $fillable = [
         'name',
         'price',
-        'center_id',
         'time_required',
     ];
+    protected $relations=[
+        'orders',
+    ];
 
-    /**
-     * Get the center associated with the model.
-     */
-    public function center(): BelongsTo
-    {
-        return $this->belongsTo(Center::class);
-    }
     /**
      * Get the orders associated with the model.
      */

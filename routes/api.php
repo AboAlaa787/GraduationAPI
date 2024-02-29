@@ -36,10 +36,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
         return $request->user();
     });
 
-    Route::get('users/{id}/{with}', [UserController::class, 'show']);
-
-    Route::get('clients/{id}/{with}', [ClientController::class, 'show']);
-
     Route::resource('/users', UserController::class);
 
     Route::resource('/clients', ClientController::class);

@@ -15,6 +15,11 @@ class Product_order extends Model
         'order_id',
     ];
 
+
+    protected $relations=[
+        'product',
+        'order',
+    ];
     /**
      * Get the product associated with the model.
      */

@@ -14,6 +14,10 @@ class Permission_rule extends Model
         'rule_id',
     ];
 
+    protected $relations=[
+        'permission',
+        'rule',
+    ];
 
     /**
      * Get the permission associated with the model.

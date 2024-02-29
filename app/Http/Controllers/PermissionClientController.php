@@ -26,6 +26,14 @@ class PermissionClientController extends Controller
     /**
      * @throws AuthorizationException
      */
+    public function show($id, Request $request): JsonResponse
+    {
+        return $this->show_data(Permission_client::class, $id, $request->with);
+    }
+
+    /**
+     * @throws AuthorizationException
+     */
     public function store(Request $request): JsonResponse
     {
         $validation =   Validator::make($request->all(), [

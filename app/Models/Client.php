@@ -19,7 +19,6 @@ class Client extends Authenticatable
     protected $fillable = [
         'name',
         'last_name',
-        'center_id',
         'rule_id',
         'center_name',
         'phone',
@@ -33,7 +32,8 @@ class Client extends Authenticatable
         'completed_devices',
         'devices',
         'permissions',
-        'orders'
+        'orders',
+        'rule'
     ];
 
     protected $hidden = [
@@ -67,10 +67,5 @@ class Client extends Authenticatable
     public function rule(): BelongsTo
     {
         return $this->belongsTo(Rule::class);
-    }
-
-    public function center(): BelongsTo
-    {
-        return $this->belongsTo(Center::class);
     }
 }

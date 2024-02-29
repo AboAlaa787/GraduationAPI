@@ -25,9 +25,9 @@ class ServiceController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function show($id): JsonResponse
+    public function show($id, Request $request): JsonResponse
     {
-        return $this->show_data(Service::class, $id);
+        return $this->show_data(Service::class, $id, $request->with);
     }
 
     /**

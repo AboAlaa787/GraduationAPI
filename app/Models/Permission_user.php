@@ -14,6 +14,10 @@ class Permission_user extends Model
         'permission_id',
         'user_id',
     ];
+    protected $relations=[
+        'permission',
+        'user',
+    ];
 
     /**
      * Get the permission associated with the model.

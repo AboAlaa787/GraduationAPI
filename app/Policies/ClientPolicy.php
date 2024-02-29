@@ -23,17 +23,17 @@ class ClientPolicy
         return $this->hasPermission($user, 'اضافة عميل');
     }
 
-    public function update($user, Client $client): bool
+    public function update($user): bool
     {
         return $this->hasPermission($user, 'تعديل عميل');
     }
 
-    public function delete($user, Client $client): bool
+    public function delete($user): bool
     {
         return $this->hasPermission($user, 'حذف عميل');
     }
 
-    public function restore($user, Client $client): bool
+    public function restore($user): bool
     {
         return $this->hasPermission($user, 'استرجاع عميل');
     }
@@ -41,7 +41,7 @@ class ClientPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete($user, Client $client): bool
+    public function forceDelete($user): bool
     {
         $permissions = $user->permissions()->where('name', ' حذف عميل نهائيا')->first();
         return $permissions

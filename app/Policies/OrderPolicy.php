@@ -21,15 +21,15 @@ class OrderPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(Client $client, $user, Order $order): bool
+    public function view($user): bool
     {
-        return $this->hasPermission($user, 'عرض الطلب') || $client->id === $order->client_id || $user->id === $order->user_id;
+        return $this->hasPermission($user, 'عرض الطلب');
     }
 
     /**
      * Determine whether the user can create models.
      */
-    public function create($user, Client $client): bool
+    public function create($user): bool
     {
         return $this->hasPermission($user, 'اضافة طلب');
     }
@@ -37,17 +37,17 @@ class OrderPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update($user, Client $client, Order $order): bool
+    public function update($user): bool
     {
-        return $this->hasPermission($user, 'تعديل طلب') || $client->id === $order->client_id;
+        return $this->hasPermission($user, 'تعديل طلب');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete($user, Client $client, Order $order): bool
+    public function delete($user): bool
     {
-        return $this->hasPermission($user, 'حذف طلب') || $client->id === $order->client_id;
+        return $this->hasPermission($user, 'حذف طلب');
     }
 
     /**

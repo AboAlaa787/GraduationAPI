@@ -56,7 +56,8 @@ class User extends Authenticatable
         'completed_devices',
         'devices',
         'permissions',
-        'orders'
+        'orders',
+        'rule',
     ];
 
     public function devices(): HasMany
@@ -82,9 +83,5 @@ class User extends Authenticatable
     public function rule(): BelongsTo
     {
         return $this->belongsTo(Rule::class);
-    }
-    public function center():BelongsTo
-    {
-        return $this->belongsTo(Center::class);
     }
 }

@@ -14,18 +14,15 @@ class Product extends Model
 
     protected $fillable = [
         'name',
-        'center_id',
         'price',
         'quantity',
     ];
 
-    /**
-     * Get the center associated with the model.
-     */
-    public function center(): BelongsTo
-    {
-        return $this->belongsTo(Center::class);
-    }
+    protected $relations=[
+        'orders',
+    ];
+
+
     /**
      * Get the orders associated with the model.
      */

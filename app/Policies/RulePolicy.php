@@ -17,7 +17,7 @@ class RulePolicy
         return $this->hasPermission($user, 'عرض الادوار');
     }
 
-    public function view($user, Rule $rule): bool
+    public function view($user): bool
     {
         return $this->hasPermission($user, 'عرض دور');
     }

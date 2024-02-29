@@ -23,9 +23,9 @@ class PermissionController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function show($id): JsonResponse
+    public function show($id,Request $request): JsonResponse
     {
-        return $this->show_data(Permission::class, $id);
+        return $this->show_data(Permission::class, $id,$request->with);
     }
 
     /**

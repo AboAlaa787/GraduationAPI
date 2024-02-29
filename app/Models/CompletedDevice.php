@@ -22,10 +22,13 @@ class CompletedDevice extends Model
         'cost',
         'status',
         'center_name',
-        'center_id',
         'fix_steps',
         'date_receipt',
         'date_delivery',
+    ];
+    protected $relations = [
+        'client',
+        'user',
     ];
 
     public function client(): BelongsTo
@@ -36,10 +39,5 @@ class CompletedDevice extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function center(): BelongsTo
-    {
-        return $this->belongsTo(Center::class);
     }
 }

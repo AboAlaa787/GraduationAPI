@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Devices\CreateDeviceRequest;
 use App\Http\Requests\Devices\UpdateDeviceRequest;
 use App\Models\Client;
+use App\Models\CompletedDevice;
 use App\Models\Device;
 use App\Traits\CRUDTrait;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -27,9 +28,9 @@ class DeviceController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function show($id): JsonResponse
+    public function show($id, Request $request): JsonResponse
     {
-        return $this->show_data(Device::class, $id);
+        return $this->show_data(Device::class, $id, $request->with);
     }
 
     /**
@@ -59,6 +60,14 @@ class DeviceController extends Controller
      */
     public function destroy($id): JsonResponse
     {
-        return $this->delete_data($id, Device::class);
+        $device=Device::find($id);
+        $response = $this->delete_data($id, Device::class);
+        if ($response->isSuccessful()) {
+            $client = Client::find($device->client_id);
+            $client->devices_count--;
+            $client->save();
+            CompletedDevice::create($device);
+        }
+        return $response;
     }
 }

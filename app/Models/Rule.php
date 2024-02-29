@@ -13,6 +13,13 @@ class Rule extends Model
     protected $fillable=[
         'name',
     ];
+
+    protected $relations=[
+        'clients',
+        'users',
+        'permissions'
+    ];
+
     /**
      * Get the users associated with the model.
      */

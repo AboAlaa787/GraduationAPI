@@ -25,9 +25,9 @@ class ClientController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function show($id, $with = []): JsonResponse
+    public function show($id, Request $request): JsonResponse
     {
-        return $this->show_data(Client::class, $id, $with);
+        return $this->show_data(Client::class, $id, $request->with);
     }
 
     /**

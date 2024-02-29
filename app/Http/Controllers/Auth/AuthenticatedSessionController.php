@@ -24,6 +24,7 @@ class AuthenticatedSessionController extends Controller
     {
         $request->authenticate();
         $user = auth('clients')->user();
+
         if (!$user) {
             $user = auth()->user();
         }
