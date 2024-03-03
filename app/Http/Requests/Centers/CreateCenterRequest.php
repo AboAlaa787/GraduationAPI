@@ -26,7 +26,7 @@ class CreateCenterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|unique:centers,name',
+            'name' => 'required|unique:centers,name|alpha',
             'status' => ['required', Rule::in(CenterStatus::values())],
             'address' => 'required',
             'start_work' => 'nullable|date_format:H:i',

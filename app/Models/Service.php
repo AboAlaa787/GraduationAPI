@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use FFI;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,6 +20,7 @@ class Service extends Model
     ];
     protected $relations=[
         'orders',
+        'devices',
     ];
 
     /**
@@ -26,6 +28,11 @@ class Service extends Model
      */
     public function orders(): BelongsToMany
     {
-        return $this->belongsToMany(Order::class, 'service_orders');
+        return $this->belongsToMany(Order::class, 'devices_orders');
+    }
+
+    public function devices(): BelongsToMany
+    {
+        return $this->belongsToMany(Device::class, 'devices_orders');
     }
 }

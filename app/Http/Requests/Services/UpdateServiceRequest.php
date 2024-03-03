@@ -24,7 +24,7 @@ class UpdateServiceRequest extends FormRequest
         return [
             'name' => 'string|unique:services',
             'price' => 'numeric',
-            'time_required' => 'date_format:H:i:s'
+            'time_required' => 'date_format:H:i:s|filled'
         ];
     }
 }

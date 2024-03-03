@@ -4,19 +4,23 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('customers', function (Blueprint $table) {
             $table->id();
-            $table->text('description')->nullable();
+            $table->string('name');
+            $table->string('last_name');
+            $table->string('national_id',11);
             $table->foreignId('client_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
-            $table->date('date')->default(now());
-            $table->boolean('done')->default(false);
+            $table->unique(['client_id','national_id']);
+            $table->string('phone',10);
+            $table->string('email');
+            $table->integer('devices_count')->default(0);
             $table->timestamps();
         });
     }
@@ -26,6 +30,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('customers');
     }
 };

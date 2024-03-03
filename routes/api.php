@@ -1,21 +1,24 @@
 <?php
 
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\CenterController;
-use App\Http\Controllers\ClientController;
-use App\Http\Controllers\CompletedDeviceController;
-use App\Http\Controllers\DeviceController;
-use App\Http\Controllers\OrderController;
-use App\Http\Controllers\PermissionClientController;
-use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\PermissionRuleController;
-use App\Http\Controllers\PermissionUserController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\RuleController;
-use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RuleController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\CenterController;
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\DeviceController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\ProductOrderController;
+use App\Http\Controllers\DevicesOrdersController;
+use App\Http\Controllers\PermissionRuleController;
+use App\Http\Controllers\PermissionUserController;
+use App\Http\Controllers\CompletedDeviceController;
+use App\Http\Controllers\PermissionClientController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +57,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::resource('/devices', DeviceController::class);
 
+    Route::resource('/customers', CustomerController::class);
+
     Route::resource('/completed_devices', CompletedDeviceController::class);
 
     Route::resource('/permission_users', PermissionUserController::class);
@@ -61,4 +66,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::resource('/permission_clients', PermissionClientController::class);
 
     Route::resource('/permission_rules', PermissionRuleController::class);
+
+    Route::resource('/devices_orders', DevicesOrdersController::class);
+
+    Route::resource('/product_orders', ProductOrderController::class);
 });

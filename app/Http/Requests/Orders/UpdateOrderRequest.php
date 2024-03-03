@@ -22,7 +22,7 @@ class UpdateOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'description' => 'string',
+            'description' => 'string|filled',
             'client_id' => 'exists:clients,id',
             'user_id' => 'nullable|exists:users,id',
         ];

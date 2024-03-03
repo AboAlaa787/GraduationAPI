@@ -24,12 +24,12 @@ class CreateCompletedDeviceRequest extends FormRequest
     {
         return [
             'model' => 'required|string',
-            'imei' => 'nullable|string',
+            'imei' => 'nullable|string|max:15|min:15',
             'code' => 'required|unique:devices,code',
             'client_id' => 'nullable|exists:clients,id',
-            'client_name' => 'required|string',
+            'client_name' => 'required|string|alpha',
             'user_id' => 'nullable|exists:users,id',
-            'user_name' => 'required|string',
+            'user_name' => 'required|string|alpha',
             'info' => 'nullable|string',
             'problem' => 'required|string',
             'cost' => 'nullable|numeric',
@@ -38,6 +38,8 @@ class CreateCompletedDeviceRequest extends FormRequest
             'date_receipt' => 'required|date',
             'date_delivery' => 'required|date',
             'date_warranty' => 'required|date',
+            'deliver_to_client'=>'boolean',
+            'deliver_to_customer'=>'boolean',
         ];
     }
 }

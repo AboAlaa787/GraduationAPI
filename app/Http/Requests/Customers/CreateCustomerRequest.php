@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Clients;
+namespace App\Http\Requests\Customers;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateClientRequest extends FormRequest
+class CreateCustomerRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,16 +22,13 @@ class CreateClientRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'center_name' => 'required|string|alpha',
-            'phone' => 'nullable|string',
-            'devices_count' => 'nullable|integer',
-            'email' => 'required|string|unique:clients',
             'name' => 'required|string|alpha',
             'last_name' => 'required|string|alpha',
-            'rule_id' => 'nullable|exists:rules,id',
-            'email_verified_at' => 'nullable|date',
-            'password' => 'required|string',
-            'address' => 'required|string',
+            'national_id' => 'required|string|size:11|unique:customers,national_id,NULL,id,client_id,' . $this->input('client_id'),
+            'client_id' => 'required|exists:clients,id',
+            'phone' => 'required|string|size:10',
+            'email' => 'required|email',
+            'devices_count' => 'integer|min:0',
         ];
     }
 }

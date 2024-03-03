@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Users\CreateUserRequest;
 use App\Http\Requests\Users\UpdateUserRequest;
-use App\Models\Client;
 use App\Models\User;
 use App\Traits\CRUDTrait;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -14,12 +13,10 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use \Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
-
     use CRUDTrait;
 
     /**
@@ -35,7 +32,7 @@ class UserController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-            return $this->get_data(User::class,$request);
+        return $this->get_data(User::class, $request);
     }
 
     /**
@@ -46,8 +43,12 @@ class UserController extends Controller
         return $this->update_data($request, $id, User::class);
     }
 
+    /**
+     * @throws AuthorizationException
+     */
     public function store(CreateUserRequest $request): JsonResponse
     {
+        $this->authorize('create', User::class);
         $request['password'] = Hash::make($request['password']);
         $message['user'] = User::create($request->all());
         $message['token'] = $message['user']->createToken('any')->plainTextToken;
@@ -69,8 +70,8 @@ class UserController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function destroy($id):JsonResponse
+    public function destroy($id): JsonResponse
     {
-        return $this->delete_data($id,User::class);
+        return $this->delete_data($id, User::class);
     }
 }

@@ -19,8 +19,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->foreignId('rule_id')->nullable()->constrained()->nullOnDelete();
-            #$table->foreignId('center_id')->constrained()->cascadeOnDelete();
-            $table->string('phone')->nullable();
+            $table->string('phone',10)->nullable();
             $table->string('address')->nullable();
             $table->rememberToken();
             $table->timestamps();

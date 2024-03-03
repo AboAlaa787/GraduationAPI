@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class CompletedDevice extends Model
 {
@@ -29,6 +30,8 @@ class CompletedDevice extends Model
     protected $relations = [
         'client',
         'user',
+        'customer',
+        'orders',
     ];
 
     public function client(): BelongsTo
@@ -39,5 +42,15 @@ class CompletedDevice extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function customer(): BelongsTo
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
+    public function orders(): BelongsToMany
+    {
+        return $this->belongsToMany(Order::class,'devices_orders');
     }
 }

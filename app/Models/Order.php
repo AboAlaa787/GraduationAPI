@@ -21,13 +21,13 @@ class Order extends Model
     protected $relations = [
         'client',
         'user',
-        'services',
+        'devices',
         'products',
     ];
 
-    public function services(): BelongsToMany
+    public function devices(): BelongsToMany
     {
-        return $this->belongsToMany(Service::class, 'service_orders');
+        return $this->belongsToMany(Device::class, 'devices_orders');
     }
 
     public function products(): BelongsToMany

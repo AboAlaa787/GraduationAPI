@@ -23,21 +23,21 @@ class UpdateCompletedDeviceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'model' => 'string',
+            'model' => 'string|filled',
             'imei' => 'nullable|string',
-            'code' => 'unique:devices,code',
+            'code' => 'unique:devices,code|filled',
             'client_id' => 'nullable|exists:clients,id',
-            'client_name' => 'string',
+            'client_name' => 'string|filled|alpha',
             'user_id' => 'nullable|exists:users,id',
-            'user_name' => 'string',
+            'user_name' => 'string|filled|alpha',
             'info' => 'nullable|string',
-            'problem' => 'string',
+            'problem' => 'string|filled',
             'cost' => 'nullable|numeric',
             'status' => 'in:' . implode(',', DeviceStatus::values()),
             'fix_steps' => 'nullable|string',
-            'date_receipt' => 'date',
-            'date_delivery' => 'date',
-            'date_warranty' => 'date',
+            'date_receipt' => 'date|filled',
+            'date_delivery' => 'date|filled',
+            'date_warranty' => 'date|filled',
         ];
     }
 }

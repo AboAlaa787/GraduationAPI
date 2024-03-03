@@ -33,7 +33,8 @@ class Client extends Authenticatable
         'devices',
         'permissions',
         'orders',
-        'rule'
+        'rule',
+        'customers',
     ];
 
     protected $hidden = [
@@ -67,5 +68,13 @@ class Client extends Authenticatable
     public function rule(): BelongsTo
     {
         return $this->belongsTo(Rule::class);
+    }
+
+     /**
+     * Get the customers for the client.
+     */
+    public function customers(): HasMany
+    {
+        return $this->hasMany(Customer::class);
     }
 }

@@ -47,7 +47,7 @@ trait CRUDTrait
     /**
      * @throws AuthorizationException
      */
-    public function show_data($model, $id, $with = []): JsonResponse
+    public function show_data($model, $id, $with ): JsonResponse
     {
         try {
             $this->authorize('view', $model);

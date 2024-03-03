@@ -19,7 +19,7 @@ class ClientController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        return $this->get_data(Client::class,$request);
+        return $this->get_data(Client::class, $request);
     }
 
     /**
@@ -43,7 +43,7 @@ class ClientController extends Controller
      */
     public function update(UpdateClientRequest $request, $id): JsonResponse
     {
-       return $this->update_data($request,$id,Client::class);
+        return $this->update_data($request, $id, Client::class);
     }
 
     /**

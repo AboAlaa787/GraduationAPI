@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('code')->unique();
             $table->foreignId('client_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('customer_id')->constrained()->nullOnDelete();
             $table->integer('client_priority');
             $table->integer('manager_priority')->nullable();
             $table->unique(['manager_priority','user_id']);
@@ -28,10 +29,11 @@ return new class extends Migration
             $table->double('cost')->nullable();
             $table->text('fix_steps')->nullable();
             $table->enum('status',DeviceStatus::values())->default(DeviceStatus::NotStarted);
-            $table->boolean('client_approval');
-            #$table->foreignId('center_id')->constrained()->cascadeOnDelete();
+            $table->boolean('client_approval')->nullable();
             $table->date('date_receipt')->default(now());
-            $table->integer('warranty_days')->default(7);
+            $table->boolean('deliver_to_client')->default(false);
+            $table->boolean('deliver_to_customer')->default(false);
+            $table->integer('required_period')->default(7);
             $table->timestamps();
         });
     }

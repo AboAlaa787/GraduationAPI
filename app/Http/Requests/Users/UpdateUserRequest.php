@@ -29,29 +29,34 @@ class UpdateUserRequest extends FormRequest
                 'max:50',
                 'string',
                 'email',
+                'filled',
                 'unique:users'
             ],
             'name' => [
                 'max:20',
                 'min:2',
                 'alpha',
+                'filled',
             ],
             'last_name' => [
                 'max:20',
                 'min:2',
+                'filled',
                 'alpha',
             ],
             'password' => [
                 'confirmed',
-                Rules\Password::defaults()
+                Rules\Password::defaults(),
+                'filled',
             ],
             'rule_id' => [
-                'required',
                 'numeric',
+                'filled',
                 'exists:rules,id'
             ],
             'phone' => [
                 'max:10',
+                'filled',
                 'min:10'
             ]
         ];

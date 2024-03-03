@@ -23,21 +23,21 @@ class UpdateDeviceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'model' => 'string',
+            'model' => 'string|filled',
             'imei' => 'nullable|string',
-            'code' => 'unique:devices,code',
-            'client_id' => 'exists:clients,id',
+            'code' => 'unique:devices,code|filled',
+            'client_id' => 'exists:clients,id|filled',
             'user_id' => 'nullable|exists:users,id',
-            'client_priority' => 'integer',
+            'client_priority' => 'integer|filled',
             'manager_priority' => 'integer|unique:devices,manager_priority,NULL,id,user_id,' . $this->get('user_id'),
             'info' => 'nullable|string',
             'problem' => 'nullable|string',
             'cost' => 'nullable|numeric',
             'fix_steps' => 'nullable|string',
             'status' => 'in:' . implode(',', DeviceStatus::values()),
-            'client_approval' => 'boolean',
-            'date_receipt' => 'date',
-            'warranty_days' => 'integer',
+            'client_approval' => 'boolean|filled',
+            'date_receipt' => 'date|filled',
+            'warranty_days' => 'integer|filled',
         ];
     }
 }

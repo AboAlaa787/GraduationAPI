@@ -22,7 +22,7 @@ class UpdateRuleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'string|unique:rules'
+            'name' => 'string|unique:rules|filled|alpha'
         ];
     }
 }

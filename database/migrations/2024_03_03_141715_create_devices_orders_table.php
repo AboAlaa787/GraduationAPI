@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_orders', function (Blueprint $table) {
+        Schema::create('devices_orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('device_id')->constrained()->cascadeOnDelete();
             $table->foreignId('order_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('service_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->text('info')->nullable();
+            $table->enum('order_type',['تسليم','استلام']);
             $table->boolean('deliver_to_client')->default(false);
             $table->time('deliver_time')->nullable();
             $table->timestamps();
@@ -26,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_orders');
+        Schema::dropIfExists('devices_orders');
     }
 };

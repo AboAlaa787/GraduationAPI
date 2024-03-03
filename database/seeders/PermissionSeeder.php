@@ -82,6 +82,11 @@ class PermissionSeeder extends Seeder
             'تعيين صلاحيات للادوار',
             'تحديث صلاحيات الادوار',
             'ازالة صلاحيات من الادوار',
+            'عرض الزبائن',
+            'عرض زبون',
+            'اضافة زبون',
+            'تعديل زبون',
+            'حذف زبون',
         ];
         foreach ($permissions as $permission) {
             Permission::create([
