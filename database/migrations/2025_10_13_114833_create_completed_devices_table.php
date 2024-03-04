@@ -21,10 +21,11 @@ return new class extends Migration
             $table->string('client_name');
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->string('user_name');
-            $table->foreignId('customer_id')->constrained()->nullOnDelete();
+            $table->foreignId('customer_id')->nullable()->constrained()->nullOnDelete();
             $table->text('info')->nullable();
             $table->string('problem');
-            $table->double('cost')->nullable();
+            $table->double('cost_to_client')->nullable();
+            $table->double('cost_to_customer')->nullable();
             $table->enum('status',DeviceStatus::values());
             $table->text('fix_steps')->nullable();
             $table->boolean('deliver_to_client')->default(true);
@@ -32,6 +33,7 @@ return new class extends Migration
             $table->date('date_receipt');
             $table->date('date_delivery')->default(now());
             $table->date('date_warranty')->default(now()->addDays(7));
+            $table->boolean('repaired_in_center')->default(false);
             $table->timestamps();
         });
     }

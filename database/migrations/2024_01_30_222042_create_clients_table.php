@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('name');
             $table->string('last_name');
-            $table->string('national_id',11);
+            $table->string('national_id',11)->unique();
             $table->foreignId('rule_id')->nullable()->constrained()->nullOnDelete();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

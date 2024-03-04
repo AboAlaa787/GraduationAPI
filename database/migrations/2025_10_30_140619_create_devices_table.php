@@ -19,21 +19,24 @@ return new class extends Migration
             $table->string('code')->unique();
             $table->foreignId('client_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
-            $table->foreignId('customer_id')->constrained()->nullOnDelete();
+            $table->foreignId('customer_id')->nullable()->constrained()->nullOnDelete();
             $table->integer('client_priority');
             $table->integer('manager_priority')->nullable();
             $table->unique(['manager_priority','user_id']);
             $table->unique(['client_priority','client_id']);
             $table->text('info')->nullable();
             $table->string('problem')->nullable();
-            $table->double('cost')->nullable();
+            $table->double('cost_to_client')->nullable();
+            $table->double('cost_to_customer')->nullable();
             $table->text('fix_steps')->nullable();
             $table->enum('status',DeviceStatus::values())->default(DeviceStatus::NotStarted);
             $table->boolean('client_approval')->nullable();
             $table->date('date_receipt')->default(now());
+            $table->date('Expected_date_of_delivery')->nullable();
             $table->boolean('deliver_to_client')->default(false);
             $table->boolean('deliver_to_customer')->default(false);
             $table->integer('required_period')->default(7);
+            $table->boolean('repaired_in_center')->default(false);
             $table->timestamps();
         });
     }
