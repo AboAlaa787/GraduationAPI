@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RuleController;
@@ -40,9 +41,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
         return $request->user();
     });
 
-    Route::post('/logout', [AuthenticatedSessionController::class,'destroy']);
+    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy']);
 
     Route::resource('/users', UserController::class);
+
+    Route::post('refresh_token', [AuthenticatedSessionController::class, 'refresh_token']);
 
     Route::resource('/clients', ClientController::class);
 

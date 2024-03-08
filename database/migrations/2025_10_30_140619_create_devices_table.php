@@ -35,7 +35,6 @@ return new class extends Migration
             $table->date('Expected_date_of_delivery')->nullable();
             $table->boolean('deliver_to_client')->default(false);
             $table->boolean('deliver_to_customer')->default(false);
-            $table->integer('required_period')->default(7);
             $table->boolean('repaired_in_center')->default(false);
             $table->timestamps();
         });
