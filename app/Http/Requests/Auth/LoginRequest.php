@@ -34,7 +34,7 @@ class LoginRequest extends FormRequest
                 'max:50',
                 'min:5',
             ],
-            'password' => ['required', 'string',Rules\Password::defaults()],
+            'password' => ['required', 'string'],
         ];
     }
 

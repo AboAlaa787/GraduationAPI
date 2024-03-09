@@ -77,3 +77,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::resource('/product_orders', ProductOrderController::class);
 });
+
+require __DIR__ . '/auth.php';

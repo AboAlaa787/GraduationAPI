@@ -50,10 +50,10 @@ class UserController extends Controller
     {
         $this->authorize('create', User::class);
         $request['password'] = Hash::make($request['password']);
-        $message['user'] = User::create($request->all());
-        $message['token'] = $message['user']->createToken('any')->plainTextToken;
-        event(new Registered($message['user']));
-        return $this->apiResponse($message);
+        $response['user'] = User::create($request->all());
+        $response['token'] = $response['user']->createToken('register')->plainTextToken;
+        event(new Registered($response['user']));
+        return $this->apiResponse($response);
     }
 
     /**
@@ -62,9 +62,9 @@ class UserController extends Controller
     public function login(LoginRequest $request): JsonResponse
     {
         $request->authenticate();
-        $message['user'] = Auth::user();
-        $message['token'] = $message['user']->createToken('first')->plainTextToken;
-        return $this->apiResponse($message);
+        $response['user'] = Auth::user();
+        $response['token'] = $response['user']->createToken('login')->plainTextToken;
+        return $this->apiResponse($response);
     }
 
     /**
