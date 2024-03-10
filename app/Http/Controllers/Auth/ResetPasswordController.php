@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use App\Mail\ResetPasswordMail;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Validation\Rules;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -32,13 +31,18 @@ class ResetPasswordController extends Controller
             return $this->apiResponse(null, 404, 'Invalid email');
         }
 
-        $token = Password::broker()->createToken($user);
+        try {
+            $token = Password::broker()->createToken($user);
 
-        $resetLink = url($request->front_url);
+            $resetLink = url($request->front_url . '/' . $token . '?email=' . $user->email);
 
-        Mail::to($user)->send(new ResetPasswordMail($resetLink));
+            Mail::to($user)->send(new
+                ResetPasswordMail($resetLink));
 
-        return $this->apiResponse('Reset link sent to your email');
+            return $this->apiResponse('Reset link sent to your email');
+        } catch (\Exception $e) {
+            return $this->apiResponse($e->getMessage(), 500, 'Failed to send email');
+        }
     }
 
     public function __construct()
@@ -46,11 +50,6 @@ class ResetPasswordController extends Controller
         $this->middleware('guest');
     }
 
-    function showResetForm($token, Request $request)
-    {
-        $email = $request->email;
-        return response()->view('new_password', ['email' => $email, 'token' => $token]);
-    }
 
     protected function rules()
     {
@@ -64,12 +63,7 @@ class ResetPasswordController extends Controller
 
     protected function credentials(Request $request)
     {
-        return $request->only(
-            'email',
-            'password',
-            'password_confirmation',
-            'token'
-        );
+        return $request->only(['email', 'password', 'password_confirmation', 'token']);
     }
 
     protected function resetPasswordConfirm(Request $request)
@@ -77,14 +71,14 @@ class ResetPasswordController extends Controller
         $validation =   Validator::make($this->credentials($request), $this->rules());
 
         if ($validation->fails()) {
-            return $this->apiResponse($validation->messages(), 404, 'Failed');
+            return $this->apiResponse($validation->errors(), 400, 'Validation failed');
         }
 
         $new_password = Password::reset(
             $this->credentials($request),
             function ($user, $password) {
                 $user->forceFill([
-                    'password' => bcrypt($password),
+                    'password' => Hash::make($password),
                     'remember_token' => Str::random(60),
                 ])->save();
             }
@@ -94,21 +88,14 @@ class ResetPasswordController extends Controller
 
             $user = User::where('email', $request->email)->first();
 
-            $response['user'] = $user;
-
-            $response['token'] = $response['user']->createToken('reset_password')->plainTextToken;
+            $response = [
+                'user' => $user,
+                'token' => $user->createToken('reset_password')->plainTextToken,
+            ];
 
             return $this->apiResponse($response, 200, 'Password reset successfully');
         } else {
             return $this->apiResponse(['error' => 'Unable to reset password'], 422, 'Failed');
         }
-    }
-
-
-    protected function sendResetFailedResponse(Request $request, $response)
-    {
-        return redirect()->back()
-            ->withInput($request->only('email'))
-            ->withErrors(['email' => trans($response)]);
     }
 }

@@ -34,7 +34,6 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::resource('/login', AuthenticatedSessionController::class)->middleware('guest');
 
-
 Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('/user', static function (Request $request) {
