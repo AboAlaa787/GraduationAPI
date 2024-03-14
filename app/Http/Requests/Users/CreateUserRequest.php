@@ -2,8 +2,9 @@
 
 namespace App\Http\Requests\Users;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules;
+use App\Rules\UniqueEmailAcrossTables;
+use Illuminate\Foundation\Http\FormRequest;
 
 class CreateUserRequest extends FormRequest
 {
@@ -23,15 +24,7 @@ class CreateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => [
-                'required',
-                'unique:users',
-                'max:50',
-                'string',
-                'email',
-                'lowercase',
-                'min:5',
-            ],
+            'email' => ['required', 'email', 'string', new UniqueEmailAcrossTables],
             'name' => [
                 'required',
                 'max:20',

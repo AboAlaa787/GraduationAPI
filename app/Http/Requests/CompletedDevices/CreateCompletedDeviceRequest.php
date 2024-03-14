@@ -32,7 +32,8 @@ class CreateCompletedDeviceRequest extends FormRequest
             'user_name' => 'required|string|alpha',
             'info' => 'nullable|string',
             'problem' => 'required|string',
-            'cost' => 'nullable|numeric',
+            'cost_to_client' => 'nullable|numeric',
+            'cost_to_customer' => 'nullable|numeric',
             'status' => 'required|in:' . implode(',', DeviceStatus::values()),
             'fix_steps' => 'nullable|string',
             'date_receipt' => 'required|date',
@@ -40,6 +41,8 @@ class CreateCompletedDeviceRequest extends FormRequest
             'date_warranty' => 'required|date',
             'deliver_to_client'=>'boolean',
             'deliver_to_customer'=>'boolean',
+            'customer_id' => 'nullable|exists:customers,id',
+            'repaired_in_center' => 'boolean',
         ];
     }
 }

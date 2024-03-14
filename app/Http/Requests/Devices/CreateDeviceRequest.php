@@ -25,12 +25,15 @@ class CreateDeviceRequest extends FormRequest
     {
         return [
             'model' => 'required|string',
-            'code' => 'required|unique:devices',
+            'code' => 'required|string|unique:devices,code',
             'client_id' => 'required|exists:clients,id',
+            'user_id' => 'nullable|exists:users,id',
+            'customer_id' => 'nullable|exists:customers,id',
             'client_priority' => 'required|integer',
             'info' => 'nullable|string',
             'problem' => 'nullable|string',
-            'cost' => 'nullable|numeric',
+            'cost_to_client' => 'nullable|numeric',
+            'cost_to_customer' => 'nullable|numeric',
             'fix_steps' => 'nullable|string',
             'status' => 'required|in:' . implode(',', DeviceStatus::values()),
             'client_approval' => 'nullable|boolean',
@@ -38,6 +41,10 @@ class CreateDeviceRequest extends FormRequest
             'deliver_to_client' => 'nullable|boolean',
             'deliver_to_customer' => 'nullable|boolean',
             'required_period' => 'nullable|integer',
+            'imei' => 'nullable|string',
+            'manager_priority' => 'nullable|integer',
+            'Expected_date_of_delivery' => 'nullable|date',
+            'repaired_in_center' => 'boolean',
         ];
     }
 }

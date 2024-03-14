@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Clients;
 
+use App\Rules\UniqueEmailAcrossTables;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateClientRequest extends FormRequest
@@ -23,15 +24,16 @@ class CreateClientRequest extends FormRequest
     {
         return [
             'center_name' => 'required|string|alpha',
-            'phone' => 'nullable|string',
+            'phone' => 'nullable|string|max:10',
             'devices_count' => 'nullable|integer',
-            'email' => 'required|string|unique:clients',
+            'email' => ['required','email','string',new UniqueEmailAcrossTables],
             'name' => 'required|string|alpha',
             'last_name' => 'required|string|alpha',
             'rule_id' => 'nullable|exists:rules,id',
             'email_verified_at' => 'nullable|date',
-            'password' => 'required|string',
+            'password' => 'required|string|min:8',
             'address' => 'required|string',
+            'national_id' => 'required|string|size:11|unique:clients,national_id',
         ];
     }
 }

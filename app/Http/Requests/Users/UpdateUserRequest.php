@@ -2,10 +2,11 @@
 
 namespace App\Http\Requests\Users;
 
-use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\Rules;
+use Illuminate\Http\JsonResponse;
+use App\Rules\UniqueEmailAcrossTables;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\ValidationRule;
 
 class UpdateUserRequest extends FormRequest
 {
@@ -25,13 +26,7 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => [
-                'max:50',
-                'string',
-                'email',
-                'filled',
-                'unique:users'
-            ],
+            'email' => ['filled','email','string',new UniqueEmailAcrossTables],
             'name' => [
                 'max:20',
                 'min:2',

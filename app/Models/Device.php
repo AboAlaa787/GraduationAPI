@@ -22,11 +22,17 @@ class Device extends Model
         'manager_priority',
         'info',
         'problem',
-        'cost',
+        'cost_to_client',
+        'cost_to_customer',
         'fix_steps',
         'status',
         'client_approval',
-        'date_receipt'
+        'date_receipt',
+        'customer_id',
+        'Expected_date_of_delivery',
+        'deliver_to_client',
+        'deliver_to_customer',
+        'repaired_in_center',
     ];
     protected $relations = [
         'client',

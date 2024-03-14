@@ -10,10 +10,16 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
+use App\Http\Controllers\Auth\EmailVerificationController;
+
 
 Route::post('password/reset/request',[ResetPasswordController::class,'requestPasswordReset'])->name('password.email');
 
 Route::post('password/reset/confirm', [ResetPasswordController::class,'resetPasswordConfirm'])->name('password.reset');
+
+Route::get('email/verify/request',[EmailVerificationController::class,'sendEmailVerificationNotification']);
+
+Route::post('email/verify/confirm',[EmailVerificationController::class,'emailVerify']);
 
 
 // Route::get('/verify-email/{id}/{hash}', VerifyEmailController::class)
