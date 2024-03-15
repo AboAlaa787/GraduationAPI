@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Clients\CreateClientRequest;
-use App\Http\Requests\Clients\UpdateClientRequest;
 use App\Models\Client;
 use App\Traits\CRUDTrait;
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
+use App\Http\Requests\Clients\CreateClientRequest;
+use App\Http\Requests\Clients\UpdateClientRequest;
+use Illuminate\Auth\Access\AuthorizationException;
+use App\Notifications\Auth\EmailVerificationNotification;
 
 class ClientController extends Controller
 {
@@ -36,6 +39,13 @@ class ClientController extends Controller
     public function store(CreateClientRequest $request): JsonResponse
     {
         return $this->store_data($request, Client::class);
+        $this->authorize('create', Client::class);
+        $request['password'] = Hash::make($request['password']);
+        $response['client'] = Client::create($request->all());
+        $response['token'] = $response['client']->createToken('register')->plainTextToken;
+        event(new Registered($response['client']));
+        $response['client']->notify(new EmailVerificationNotification());
+        return $this->apiResponse($response, 200, 'Successful and verification message has been sent');
     }
 
     /**

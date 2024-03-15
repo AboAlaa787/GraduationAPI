@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Traits\CRUDTrait;
+use \Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Users\CreateUserRequest;
 use App\Http\Requests\Users\UpdateUserRequest;
-use App\Models\User;
-use App\Traits\CRUDTrait;
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
-use \Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Auth\Access\AuthorizationException;
+use App\Notifications\Auth\EmailVerificationNotification;
 
 class UserController extends Controller
 {
@@ -53,7 +54,8 @@ class UserController extends Controller
         $response['user'] = User::create($request->all());
         $response['token'] = $response['user']->createToken('register')->plainTextToken;
         event(new Registered($response['user']));
-        return $this->apiResponse($response);
+        $response['user']->notify(new EmailVerificationNotification());
+        return $this->apiResponse($response, 200, 'Successful and verification message has been sent');
     }
 
     /**

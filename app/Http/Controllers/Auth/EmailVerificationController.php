@@ -30,7 +30,7 @@ class EmailVerificationController extends Controller
 
         $request->user()->notify(new EmailVerificationNotification());
 
-        return $this->apiResponse('Send email verification success');
+        return $this->apiResponse('Verification message was sent successfully');
     }
 
     function emailVerify(EmailVerifyRequest $request): JsonResponse
