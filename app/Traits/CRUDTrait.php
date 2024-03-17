@@ -23,31 +23,61 @@ trait CRUDTrait
             return $this->apiResponse(null, 403, 'Unauthorized');
         }
         $table = (new $model())->getTable();
-        $keys = $request->all();
+        $keys = $request->except(['orderBy', 'dir']);
+        $orderBy = $request->get('orderBy');
+        $orderDirection = $request->get('dir', 'asc');
         if (empty($keys)) {
+            return $this->handleOrdering($model, $table, $orderBy, $orderDirection);
+        }
+        return $this->filterAndOrder($model, $table, $keys, $orderBy, $orderDirection);
+    }
+
+    private function handleOrdering($model, $table, $orderBy, $orderDirection)
+    {
+        if (empty($orderBy)) {
             return $this->apiResponse($model::all());
         }
-        $items = $model::query();
+
+        if (!$this->validateColumn($table, $orderBy)) {
+            return $this->apiResponse(['error' => 'Invalid column: ' . $orderBy], 422, 'Failed');
+        }
+
+        if (!in_array($orderDirection, ['asc', 'desc'])) {
+            return $this->apiResponse($model::orderBy($orderBy, 'asc')->get());
+        }
+        
+        return $this->apiResponse($model::orderBy($orderBy, $orderDirection)->get());
+    }
+
+    private function filterAndOrder($model, $table, $keys, $orderBy, $orderDirection)
+    {
+        $query = $model::query();
         $missingColumns = [];
-        foreach ($request->all() as $key => $value) {
-            if (Schema::hasColumn($table, $key)) {
-                $items = $items->where($key, 'LIKE', '%' . $value . '%');
+
+        foreach ($keys as $key => $value) {
+            if ($this->validateColumn($table, $key)) {
+                $query->where($key, 'LIKE', '%' . $value . '%');
             } else {
                 $missingColumns[] = $key;
             }
         }
+
         if (!empty($missingColumns)) {
-            $missingColumnsString = implode(', ', $missingColumns);
-            return $this->apiResponse(null, 422, 'The ' . $table . ' table does not contain column(s):' . $missingColumnsString);
+            return $this->apiResponse(null, 422, 'Missing columns: ' . implode(', ', $missingColumns));
         }
-        $items = $items->get();
-        return $this->apiResponse($items);
+
+        return $this->handleOrdering($query, $table, $orderBy, $orderDirection);
+    }
+
+    private function validateColumn($table, $column)
+    {
+        return Schema::hasColumn($table, $column);
     }
 
     /**
      * @throws AuthorizationException
      */
-    public function show_data($model, $id, $with ): JsonResponse
+    public function show_data($model, $id, $with): JsonResponse
     {
         try {
             $this->authorize('view', $model);
@@ -68,7 +98,6 @@ trait CRUDTrait
             if ($response) {
                 return $response;
             }
-
         } else {
             $with = [];
         }
