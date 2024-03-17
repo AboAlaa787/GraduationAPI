@@ -35,7 +35,7 @@ trait CRUDTrait
     private function handleOrdering($model, $table, $orderBy, $orderDirection)
     {
         if (empty($orderBy)) {
-            return $this->apiResponse($model::all());
+            return $this->apiResponse($model->get());
         }
 
         if (!$this->validateColumn($table, $orderBy)) {
@@ -43,10 +43,10 @@ trait CRUDTrait
         }
 
         if (!in_array($orderDirection, ['asc', 'desc'])) {
-            return $this->apiResponse($model::orderBy($orderBy, 'asc')->get());
+            return $this->apiResponse($model->orderBy($orderBy, 'asc')->get());
         }
-        
-        return $this->apiResponse($model::orderBy($orderBy, $orderDirection)->get());
+
+        return $this->apiResponse($model->orderBy($orderBy, $orderDirection)->get());
     }
 
     private function filterAndOrder($model, $table, $keys, $orderBy, $orderDirection)
@@ -91,32 +91,49 @@ trait CRUDTrait
             return $this->apiResponse(null, 404, "No item found with id: $id");
         }
 
-        if (!empty($with)) {
-            $with = explode(',', $with);
-            $response = $this->validateRelations($object, $with);
 
-            if ($response) {
-                return $response;
-            }
-        } else {
-            $with = [];
+        $relations = $this->parseRelations($with);
+
+        if ($relations === false) {
+            return $this->apiResponse(null, 422, "Invalid relations format");
         }
 
-        $data = $object->with($with)->where('id', $id)->get();
+        $response = $this->validateRelations($object, $relations);
+
+        if ($response) {
+            return $response;
+        }
+
+        $data = $object->load($relations);
         return $this->apiResponse($data);
     }
 
-    private function validateRelations($object, $with): ?JsonResponse
+    private function parseRelations($with)
     {
-        $relations = $object->getRelations();
-
-        $invalidRelations = array_diff($with, $relations);
-
-        if (!empty($invalidRelations)) {
-            $invalidRelationsStr = implode(', ', $invalidRelations);
-            return $this->apiResponse([], 400, "Invalid relations: $invalidRelationsStr");
+        if (empty($with)) {
+            return [];
         }
-        return null;
+
+        $relations = explode(',', $with);
+
+        return $relations;
+    }
+
+    private function validateRelations($object, $relations): ?JsonResponse
+    {
+        try {
+            $modelRelations = $object->getRelations();
+
+            $invalidRelations = array_diff($relations, $modelRelations);
+
+            if (!empty($invalidRelations)) {
+                $invalidRelationsStr = implode(', ', $invalidRelations);
+                return $this->apiResponse([], 400, "Invalid relations: $invalidRelationsStr");
+            }
+            return null;
+        } catch (Exception $ex) {
+            return $this->apiResponse(['error' => $ex->getMessage()], 422, 'Failed');
+        }
     }
 
     /**
