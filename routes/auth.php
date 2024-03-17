@@ -13,7 +13,7 @@ use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\EmailVerificationController;
 
 
-Route::post('password/reset/request',[ResetPasswordController::class,'requestPasswordReset'])->name('password.email');
+Route::post('password/reset/request',[ResetPasswordController::class,'resetPasswordRequest'])->name('password.email');
 
 Route::post('password/reset/confirm', [ResetPasswordController::class,'resetPasswordConfirm'])->name('password.reset');
 

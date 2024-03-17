@@ -31,7 +31,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 |
 */
 
-Route::resource('/login', AuthenticatedSessionController::class)->middleware('guest');
+Route::post('/login', [AuthenticatedSessionController::class,'store'])->middleware('guest');
 
 Route::middleware(['auth:sanctum'])->group(function () {
 

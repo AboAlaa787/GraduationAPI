@@ -21,7 +21,7 @@ class ClientFactory extends Factory
         return [
             'center_name'=>'test',
             'email'=>fake()->email(),
-            'national_id'=>'12345678910',
+            'national_id'=>fake()->unique()->numerify('###########'),
             'name'=>fake()->name(),
             'last_name'=>fake()->name(),
             'password'=>Hash::make("#123456789H"),

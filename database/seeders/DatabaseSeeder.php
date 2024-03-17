@@ -18,7 +18,11 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             ClientSeeder::class,
             PermissionSeeder::class,
-            Permission_RuleSeeder::class
+            Permission_RuleSeeder::class,
+            DeviceSeeder::class,
+            ServiceSeeder::class,
+            CustomerSeeder::class,
+            CompletedDeviceSeeder::class,
         ]);
     }
 }

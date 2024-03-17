@@ -38,7 +38,6 @@ class ClientController extends Controller
      */
     public function store(CreateClientRequest $request): JsonResponse
     {
-        return $this->store_data($request, Client::class);
         $this->authorize('create', Client::class);
         $request['password'] = Hash::make($request['password']);
         $response['client'] = Client::create($request->all());

@@ -2,19 +2,17 @@
 
 namespace Database\Seeders;
 
-use App\Models\Client;
+use App\Models\CompletedDevice;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class ClientSeeder extends Seeder
+class CompletedDeviceSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Client::factory()
-            ->count(50)
-            ->create();
+        CompletedDevice::factory()->count(50)->create();
     }
 }

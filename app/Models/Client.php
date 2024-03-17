@@ -27,6 +27,7 @@ class Client extends Authenticatable
         'password',
         'address',
         'national_id',
+        'remember_token'
     ];
 
     protected $relations = [
@@ -40,6 +41,7 @@ class Client extends Authenticatable
 
     protected $hidden = [
         'password',
+        'remember_token',
     ];
 
     protected $casts = [

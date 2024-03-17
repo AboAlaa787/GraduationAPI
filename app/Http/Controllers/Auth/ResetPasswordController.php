@@ -3,22 +3,26 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
+use App\Models\Client;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Mail\ResetPasswordMail;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Validation\Rules;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
 
+use function PHPUnit\Framework\isNull;
+
 class ResetPasswordController extends Controller
 {
     use ApiResponseTrait;
 
-    public function requestPasswordReset(Request $request)
+    public function resetPasswordRequest(Request $request)
     {
         $request->validate([
             'email' => 'required|email',
@@ -28,7 +32,10 @@ class ResetPasswordController extends Controller
         $user = User::where('email', $request->email)->first();
 
         if (!$user) {
-            return $this->apiResponse(null, 404, 'Invalid email');
+            $user = Client::where('email', $request->email)->first();
+            if (!$user) {
+                return $this->apiResponse(null, 404, 'Invalid email');
+            }
         }
 
         try {
@@ -68,34 +75,33 @@ class ResetPasswordController extends Controller
 
     protected function resetPasswordConfirm(Request $request)
     {
-        $validation =   Validator::make($this->credentials($request), $this->rules());
+        $validation =   validator::make($this->credentials($request), $this->rules());
 
         if ($validation->fails()) {
-            return $this->apiResponse($validation->errors(), 400, 'Validation failed');
+            return $this->apiresponse($validation->errors(), 400, 'validation failed');
         }
-
-        $new_password = Password::reset(
-            $this->credentials($request),
-            function ($user, $password) {
-                $user->forceFill([
-                    'password' => Hash::make($password),
-                    'remember_token' => Str::random(60),
-                ])->save();
-            }
-        );
-
-        if ($new_password == Password::PASSWORD_RESET) {
-
-            $user = User::where('email', $request->email)->first();
-
+        $token = $request->input('token');
+        $email = $request->input('email');
+        $password = $request->input('password');
+        $storedToken = DB::table('password_reset_tokens')
+            ->where('email', $email)->get();
+        if (!isNull($storedToken) && Hash::check($token, $storedToken->value('token'))) {
+            $user = User::where('email', $email)->first();
+            $client = Client::where('email', $email)->first();
+            $auth = $user ?: $client;
+            $auth->forcefill([
+                'password' => hash::make($password),
+                'remember_token' => str::random(60),
+            ])->save();
             $response = [
-                'user' => $user,
-                'token' => $user->createToken('reset_password')->plainTextToken,
+                'user' => $auth,
+                'token' => $auth->createToken('reset_password')->plainTextToken,
             ];
-
-            return $this->apiResponse($response, 200, 'Password reset successfully');
+            DB::table('password_reset_tokens')
+                ->where('email', $email)->delete();
+            return $this->apiresponse($response, 200, 'password reset successfully');
         } else {
-            return $this->apiResponse(['error' => 'Unable to reset password'], 422, 'Failed');
+            return $this->apiresponse(['error' => 'unable to reset password'], 422, 'failed');
         }
     }
 }
