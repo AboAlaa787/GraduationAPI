@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\AddDevice;
+use App\Events\ClientApproval;
+use App\Events\DeleteDevice;
+use App\Events\NotificationEvents\DeviceNotifications;
 use App\Http\Requests\Devices\CreateDeviceRequest;
 use App\Http\Requests\Devices\UpdateDeviceRequest;
 use App\Models\Client;
@@ -9,6 +13,7 @@ use App\Models\CompletedDevice;
 use App\Models\Device;
 use App\Traits\CRUDTrait;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Console\Scheduling\Event;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -40,9 +45,7 @@ class DeviceController extends Controller
     {
         $response = $this->store_data($request, Device::class);
         if ($response->isSuccessful()) {
-            $client = Client::find($request->client_id);
-            $client->devices_count++;
-            $client->save();
+            Event::dispatch(new AddDevice($request->client_id));
         }
         return $response;
     }
@@ -52,7 +55,13 @@ class DeviceController extends Controller
      */
     public function update(UpdateDeviceRequest $request, $id): JsonResponse
     {
-        return $this->update_data($request, $id, Device::class);
+        $response = $this->update_data($request, $id, Device::class);
+        if ($response->isSuccessful()) {
+            Event::dispatch(new ClientApproval($id));
+            Event::dispatch(new DeleteDevice($id));
+            Event::dispatch(new DeviceNotifications($id));
+        }
+        return $response;
     }
 
     /**
@@ -60,13 +69,10 @@ class DeviceController extends Controller
      */
     public function destroy($id): JsonResponse
     {
-        $device=Device::find($id);
+        $device = Device::find($id);
         $response = $this->delete_data($id, Device::class);
         if ($response->isSuccessful()) {
-            $client = Client::find($device->client_id);
-            $client->devices_count--;
-            $client->save();
-            CompletedDevice::create($device);
+            Event::dispatch(new DeleteDevice($id));
         }
         return $response;
     }

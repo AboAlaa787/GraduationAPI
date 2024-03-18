@@ -2,6 +2,14 @@
 
 namespace App\Providers;
 
+use App\Events\AddDevice;
+use App\Events\ClientApproval;
+use App\Events\DeleteDevice;
+use App\Events\NotificationEvents\DeviceNotifications;
+use App\Listeners\AddCompletedDevice;
+use App\Listeners\IncreaseCountDevice;
+use App\Listeners\ModificationsAfterClientApproval;
+use App\Listeners\NotificationsListeners\SendDeviceNotifications;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -17,6 +25,18 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+        AddDevice::class => [
+            IncreaseCountDevice::class,
+        ],
+        DeleteDevice::class => [
+            AddCompletedDevice::class,
+        ],
+        DeviceNotifications::class => [
+            SendDeviceNotifications::class,
+        ],
+        ClientApproval::class => [
+            ModificationsAfterClientApproval::class,
         ],
     ];
 
