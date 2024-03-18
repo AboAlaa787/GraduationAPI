@@ -26,6 +26,7 @@ trait CRUDTrait
         $keys = $request->except(['orderBy', 'dir']);
         $orderBy = $request->get('orderBy');
         $orderDirection = $request->get('dir', 'asc');
+        $model=$model::query();
         if (empty($keys)) {
             return $this->handleOrdering($model, $table, $orderBy, $orderDirection);
         }
@@ -51,12 +52,11 @@ trait CRUDTrait
 
     private function filterAndOrder($model, $table, $keys, $orderBy, $orderDirection)
     {
-        $query = $model::query();
         $missingColumns = [];
 
         foreach ($keys as $key => $value) {
             if ($this->validateColumn($table, $key)) {
-                $query->where($key, 'LIKE', '%' . $value . '%');
+                $model->where($key, 'LIKE', '%' . $value . '%');
             } else {
                 $missingColumns[] = $key;
             }
@@ -66,7 +66,7 @@ trait CRUDTrait
             return $this->apiResponse(null, 422, 'Missing columns: ' . implode(', ', $missingColumns));
         }
 
-        return $this->handleOrdering($query, $table, $orderBy, $orderDirection);
+        return $this->handleOrdering($model, $table, $orderBy, $orderDirection);
     }
 
     private function validateColumn($table, $column)
@@ -77,7 +77,7 @@ trait CRUDTrait
     /**
      * @throws AuthorizationException
      */
-    public function show_data($model, $id, $with): JsonResponse
+    public function show_data($model, $id, $with=''): JsonResponse
     {
         try {
             $this->authorize('view', $model);
