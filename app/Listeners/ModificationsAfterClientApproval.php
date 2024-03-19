@@ -23,7 +23,7 @@ class ModificationsAfterClientApproval
     public function handle(ClientApproval $event): void
     {
         $device = Device::find($event->id);
-        if ($device) {
+        if ($device && ($device->status === 'NotAgree') && ($device->client_approval !== null)) {
             $status = $device->client_approval ? 'NotStarted' : 'Ready';
             $device->update(['status' => $status]);
         }
