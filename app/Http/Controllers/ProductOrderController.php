@@ -20,7 +20,7 @@ class ProductOrderController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        return $this->get_data(Permission_rule::class,$request);
+        return $this->get_data(Permission_rule::class,$request, $request->with);
     }
     /**
      * @throws AuthorizationException

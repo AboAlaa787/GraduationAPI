@@ -15,28 +15,37 @@ trait CRUDTrait
     /**
      * @throws AuthorizationException
      */
-    public function get_data($model, Request $request): JsonResponse
+    public function get_data($model, Request $request, $with = ''): JsonResponse
     {
         try {
             $this->authorize('viewAny', $model);
         } catch (Exception $e) {
             return $this->apiResponse(null, 403, 'Unauthorized');
         }
+
+        $relations = $this->parseRelations($with);
+
+        if ($relations === false) {
+            return $this->apiResponse(null, 422, "Invalid relations format");
+        }
+
+        $response = $this->validateRelations((new $model()), $relations);
+
+        if ($response) return $response;
+
         $table = (new $model())->getTable();
-        $keys = $request->except(['orderBy', 'dir']);
+        $keys = $request->except(['orderBy', 'dir', 'with']);
         $orderBy = $request->get('orderBy');
         $orderDirection = $request->get('dir', 'asc');
-        $model=$model::query();
-        if (empty($keys)) {
-            return $this->handleOrdering($model, $table, $orderBy, $orderDirection);
-        }
-        return $this->filterAndOrder($model, $table, $keys, $orderBy, $orderDirection);
+        $model = $model::query();
+
+        return $this->filterAndOrder($model, $table, $keys, $orderBy, $orderDirection, $relations);
     }
 
-    private function handleOrdering($model, $table, $orderBy, $orderDirection)
+    private function handleOrdering($model, $table, $orderBy, $orderDirection, $relations)
     {
         if (empty($orderBy)) {
-            return $this->apiResponse($model->get());
+            return $this->apiResponse($model->with($relations)->get());
         }
 
         if (!$this->validateColumn($table, $orderBy)) {
@@ -44,13 +53,13 @@ trait CRUDTrait
         }
 
         if (!in_array($orderDirection, ['asc', 'desc'])) {
-            return $this->apiResponse($model->orderBy($orderBy, 'asc')->get());
+            return $this->apiResponse($model->orderBy($orderBy, 'asc')->with($relations)->get());
         }
 
-        return $this->apiResponse($model->orderBy($orderBy, $orderDirection)->get());
+        return $this->apiResponse($model->orderBy($orderBy, $orderDirection)->with($relations)->get());
     }
 
-    private function filterAndOrder($model, $table, $keys, $orderBy, $orderDirection)
+    private function filterAndOrder($model, $table, $keys, $orderBy, $orderDirection, $relations)
     {
         $missingColumns = [];
 
@@ -66,7 +75,7 @@ trait CRUDTrait
             return $this->apiResponse(null, 422, 'Missing columns: ' . implode(', ', $missingColumns));
         }
 
-        return $this->handleOrdering($model, $table, $orderBy, $orderDirection);
+        return $this->handleOrdering($model, $table, $orderBy, $orderDirection, $relations);
     }
 
     private function validateColumn($table, $column)
@@ -77,7 +86,7 @@ trait CRUDTrait
     /**
      * @throws AuthorizationException
      */
-    public function show_data($model, $id, $with=''): JsonResponse
+    public function show_data($model, $id, $with = ''): JsonResponse
     {
         try {
             $this->authorize('view', $model);

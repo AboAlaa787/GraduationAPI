@@ -22,7 +22,7 @@ class DeviceController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        return $this->get_data(Device::class, $request);
+        return $this->get_data(Device::class, $request, $request->with);
     }
 
     /**

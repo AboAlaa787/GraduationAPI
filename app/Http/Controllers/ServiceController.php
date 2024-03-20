@@ -19,7 +19,7 @@ class ServiceController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        return $this->get_data(Service::class,$request);
+        return $this->get_data(Service::class,$request, $request->with);
     }
 
     /**

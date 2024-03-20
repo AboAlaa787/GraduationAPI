@@ -20,7 +20,7 @@ class PermissionUserController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        return $this->get_data(Permission_user::class,$request);
+        return $this->get_data(Permission_user::class,$request, $request->with);
     }
     /**
      * @throws AuthorizationException

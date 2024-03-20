@@ -18,7 +18,7 @@ class CustomerController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        return $this->get_data(Customer::class, $request);
+        return $this->get_data(Customer::class, $request, $request->with);
     }
 
     /**
