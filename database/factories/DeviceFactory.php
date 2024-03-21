@@ -19,10 +19,25 @@ class DeviceFactory extends Factory
     {
         return [
             'model' => fake()->word,
-            'code' => fake()->unique()->numberBetween(10000, 99999),
-            'client_id' => fake()->numberBetween(1,50),
-            'client_priority' => fake()->unique()->numberBetween(1, 100),
+            'imei' => fake()->optional()->numerify('###############'),
+            'code' => fake()->unique()->regexify('[A-Z0-9]{10}'),
+            'client_id' => fake()->numberBetween(1, 50),
+            'user_id' => fake()->numberBetween(1, 50),
+            'customer_id' => fake()->numberBetween(1, 50),
+            'client_priority' => fake()->numberBetween(1, 20),
+            'manager_priority' => fake()->optional()->numberBetween(1, 20),
+            'info' => fake()->text,
+            'problem' => fake()->sentence,
+            'cost_to_client' => fake()->optional()->randomFloat(2, 10, 1000),
+            'cost_to_customer' => fake()->optional()->randomFloat(2, 10, 1000),
+            'fix_steps' => fake()->optional()->text,
             'status' => fake()->randomElement(DeviceStatus::values()),
+            'client_approval' => fake()->boolean,
+            'date_receipt' => fake()->dateTimeThisMonth(),
+            'Expected_date_of_delivery' => fake()->optional()->dateTimeThisMonth(),
+            'deliver_to_client' => fake()->boolean,
+            'deliver_to_customer' => fake()->boolean,
+            'repaired_in_center' => fake()->boolean,
         ];
     }
 }

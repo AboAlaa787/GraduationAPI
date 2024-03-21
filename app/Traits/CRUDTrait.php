@@ -35,17 +35,32 @@ trait CRUDTrait
 
         $table = (new $model())->getTable();
         $keys = $request->except(['orderBy', 'dir', 'with']);
+        $customKeys = [];
+        foreach ($keys as $key => $value) {
+            if (strpos($key, '*') !== false) {
+                $newKey = str_replace('*', '.', $key);
+                $customKeys[$newKey] = $value;
+                unset($keys[$key]);
+            }
+        }
         $orderBy = $request->get('orderBy');
         $orderDirection = $request->get('dir', 'asc');
         $model = $model::query();
 
-        return $this->filterAndOrder($model, $table, $keys, $orderBy, $orderDirection, $relations);
+        return $this->filterAndOrder($model, $table, $keys, $orderBy, $orderDirection, $relations, $customKeys);
     }
 
-    private function handleOrdering($model, $table, $orderBy, $orderDirection, $relations)
+    private function handleOrdering($model, $table, $orderBy, $orderDirection, $relations,$customKeys)
     {
         if (empty($orderBy)) {
-            return $this->apiResponse($model->with($relations)->get());
+            if(empty($customKeys))
+              return $this->apiResponse($model->with($relations)->get());
+
+              $model =  $model->with($relations)->get();
+              foreach ($customKeys as $customKey => $value) {
+                  $model = $model->where($customKey, $value);
+              }
+              return $this->apiResponse($model);
         }
 
         if (!$this->validateColumn($table, $orderBy)) {
@@ -53,13 +68,26 @@ trait CRUDTrait
         }
 
         if (!in_array($orderDirection, ['asc', 'desc'])) {
+            if(empty($customKeys))
             return $this->apiResponse($model->orderBy($orderBy, 'asc')->with($relations)->get());
-        }
 
+            $model =  $model->orderBy($orderBy, 'asc')->with($relations)->get();
+            foreach ($customKeys as $customKey => $value) {
+                $model = $model->where($customKey, $value);
+            }
+            return $this->apiResponse($model);
+        }
+        if(empty($customKeys))
         return $this->apiResponse($model->orderBy($orderBy, $orderDirection)->with($relations)->get());
+
+        $model =  $model->orderBy($orderBy, $orderDirection)->with($relations)->get();
+        foreach ($customKeys as $customKey => $value) {
+            $model = $model->where($customKey, $value);
+        }
+        return $this->apiResponse($model);
     }
 
-    private function filterAndOrder($model, $table, $keys, $orderBy, $orderDirection, $relations)
+    private function filterAndOrder($model, $table, $keys, $orderBy, $orderDirection, $relations, $customKeys)
     {
         $missingColumns = [];
 
@@ -75,7 +103,7 @@ trait CRUDTrait
             return $this->apiResponse(null, 422, 'Missing columns: ' . implode(', ', $missingColumns));
         }
 
-        return $this->handleOrdering($model, $table, $orderBy, $orderDirection, $relations);
+        return $this->handleOrdering($model, $table, $orderBy, $orderDirection, $relations,$customKeys);
     }
 
     private function validateColumn($table, $column)
