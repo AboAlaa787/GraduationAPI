@@ -45,22 +45,30 @@ trait CRUDTrait
         }
         $orderBy = $request->get('orderBy');
         $orderDirection = $request->get('dir', 'asc');
-        $model = $model::query();
+        $modelQuery = $model::query();
 
-        return $this->filterAndOrder($model, $table, $keys, $orderBy, $orderDirection, $relations, $customKeys);
+        return $this->filterAndOrder($modelQuery, $table, $keys, $orderBy, $orderDirection, $relations, $customKeys);
     }
 
-    private function handleOrdering($model, $table, $orderBy, $orderDirection, $relations,$customKeys)
+    private function handleOrdering($modelQuery, $table, $orderBy, $orderDirection, $relations, $customKeys)
     {
         if (empty($orderBy)) {
-            if(empty($customKeys))
-              return $this->apiResponse($model->with($relations)->get());
-
-              $model =  $model->with($relations)->get();
-              foreach ($customKeys as $customKey => $value) {
-                  $model = $model->where($customKey, $value);
-              }
-              return $this->apiResponse($model);
+            foreach ($customKeys as $customKey => $value) {
+                $parts = explode('.', $customKey);
+                if (count($parts) === 2) {
+                    [$relation, $column] = $parts;
+                    if (!$this->validateColumn($relation, $column)) {
+                        return $this->apiResponse(['error' => 'Invalid column: ' . $column], 422, 'Failed');
+                    }
+                    $modelQuery->whereHas($relation, function ($query) use ($column, $value) {
+                        $query->where($column, $value);
+                    });
+                } else {
+                    return $this->apiResponse(null, 422, "Invalid custom key format");
+                }
+            }
+            $modelQuery = $modelQuery->with($relations);
+            return $this->apiResponse($modelQuery->get());
         }
 
         if (!$this->validateColumn($table, $orderBy)) {
@@ -68,32 +76,35 @@ trait CRUDTrait
         }
 
         if (!in_array($orderDirection, ['asc', 'desc'])) {
-            if(empty($customKeys))
-            return $this->apiResponse($model->orderBy($orderBy, 'asc')->with($relations)->get());
-
-            $model =  $model->orderBy($orderBy, 'asc')->with($relations)->get();
-            foreach ($customKeys as $customKey => $value) {
-                $model = $model->where($customKey, $value);
-            }
-            return $this->apiResponse($model);
+            $orderDirection = 'asc'; // Default to 'asc' if invalid direction is provided
         }
-        if(empty($customKeys))
-        return $this->apiResponse($model->orderBy($orderBy, $orderDirection)->with($relations)->get());
 
-        $model =  $model->orderBy($orderBy, $orderDirection)->with($relations)->get();
         foreach ($customKeys as $customKey => $value) {
-            $model = $model->where($customKey, $value);
+            $parts = explode('.', $customKey);
+            if (count($parts) === 2) {
+                [$relation, $column] = $parts;
+                if (!$this->validateColumn($relation, $column)) {
+                    return $this->apiResponse(['error' => 'Invalid column: ' . $column], 422, 'Failed');
+                }
+                $modelQuery->whereHas($relation, function ($query) use ($column, $value) {
+                    $query->where($column, $value);
+                });
+            } else {
+                return $this->apiResponse(null, 422, "Invalid custom key format");
+            }
         }
-        return $this->apiResponse($model);
+        $modelQuery = $modelQuery->orderBy($orderBy, $orderDirection)->with($relations);
+
+        return $this->apiResponse($modelQuery->get());
     }
 
-    private function filterAndOrder($model, $table, $keys, $orderBy, $orderDirection, $relations, $customKeys)
+    private function filterAndOrder($modelQuery, $table, $keys, $orderBy, $orderDirection, $relations, $customKeys)
     {
         $missingColumns = [];
 
         foreach ($keys as $key => $value) {
             if ($this->validateColumn($table, $key)) {
-                $model->where($key, 'LIKE', '%' . $value . '%');
+                $modelQuery->where($key, 'LIKE', '%' . $value . '%');
             } else {
                 $missingColumns[] = $key;
             }
@@ -103,11 +114,14 @@ trait CRUDTrait
             return $this->apiResponse(null, 422, 'Missing columns: ' . implode(', ', $missingColumns));
         }
 
-        return $this->handleOrdering($model, $table, $orderBy, $orderDirection, $relations,$customKeys);
+        return $this->handleOrdering($modelQuery, $table, $orderBy, $orderDirection, $relations, $customKeys);
     }
 
     private function validateColumn($table, $column)
     {
+        if (!Schema::hasTable($table)) {
+            $table = $table . 's';
+        }
         return Schema::hasColumn($table, $column);
     }
 
