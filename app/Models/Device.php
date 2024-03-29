@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use DB;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -41,6 +43,34 @@ class Device extends Model
         'orders',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($device) {
+            do {
+                $code = Str::random(6);
+            } while (self::where('code', $code)->exists());
+
+            $client_priority = self::where('client_id', $device->client_id)->max('client_priority');
+            $client_priority++;
+
+            $device->code = $code;
+            $device->client_priority = $client_priority;
+        });
+
+        static::deleted(function ($device) {
+                $clientId = $device->client_id;
+
+                $devicesToUpdate = self::where('client_id', $clientId)
+                                        ->where('client_priority', '>', $device->client_priority)
+                                        ->get();
+
+                foreach ($devicesToUpdate as $deviceToUpdate) {
+                    $deviceToUpdate->update(['client_priority' => $deviceToUpdate->client_priority - 1]);
+                }
+        });
+    }
+
     public function client(): BelongsTo
     {
         return $this->belongsTo(Client::class);
@@ -58,6 +88,6 @@ class Device extends Model
 
     public function orders(): BelongsToMany
     {
-        return $this->belongsToMany(Order::class,'devices_orders');
+        return $this->belongsToMany(Order::class, 'devices_orders');
     }
 }
