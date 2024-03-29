@@ -45,7 +45,8 @@ class DeviceController extends Controller
     {
         $response = $this->store_data($request, Device::class);
         if ($response->isSuccessful()) {
-            Event::dispatch(new AddDevice($request->client_id));
+            // Event::dispatch(new AddDevice($request->client_id));
+            event(new AddDevice($request->client_id));
         }
         return $response;
     }
@@ -57,9 +58,12 @@ class DeviceController extends Controller
     {
         $response = $this->update_data($request, $id, Device::class);
         if ($response->isSuccessful()) {
-            Event::dispatch(new ClientApproval($id));
-            Event::dispatch(new DeleteDevice($id));
-            Event::dispatch(new DeviceNotifications($id));
+            // Event::dispa(new ClientApproval($id));
+            // Event::dispatch(new DeleteDevice($id));
+            // Event::dispatch(new DeviceNotifications($id));
+            event(new ClientApproval($id));
+            event(new DeleteDevice($id));
+            event(new DeviceNotifications($id));
         }
         return $response;
     }
@@ -72,7 +76,9 @@ class DeviceController extends Controller
         $device = Device::find($id);
         $response = $this->delete_data($id, Device::class);
         if ($response->isSuccessful()) {
-            Event::dispatch(new DeleteDevice($id));
+            // Event::dispatch(new DeleteDevice($id));
+            event(new DeleteDevice($id));
+
         }
         return $response;
     }

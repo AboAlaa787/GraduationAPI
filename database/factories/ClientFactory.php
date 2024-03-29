@@ -25,6 +25,7 @@ class ClientFactory extends Factory
             'last_name' => fake()->name(),
             'password' => Hash::make("#123456789H"),
             'address' => fake()->address(),
+            'phone'=>fake()->numerify('##########')
         ];
     }
 }

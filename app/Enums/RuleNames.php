@@ -8,4 +8,5 @@ enum RuleNames:string {
     case Admin='مدير';
     case Technician='فني';
     case Client='عميل';
+    case Delivery='عامل توصيل';
 }

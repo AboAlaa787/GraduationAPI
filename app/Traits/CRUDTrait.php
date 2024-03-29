@@ -216,7 +216,9 @@ trait CRUDTrait
         }
         $columns = $request->keys();
         foreach ($columns as $column) {
-            $object->$column = $request[$column];
+            if($this->validateColumn((new $model())->tableName, $column)){
+                $object->$column = $request[$column];
+            }
         }
         $object->save();
         return $this->apiResponse($object, 201, 'Update successful');

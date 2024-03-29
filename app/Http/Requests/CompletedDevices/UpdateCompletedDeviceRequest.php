@@ -24,20 +24,25 @@ class UpdateCompletedDeviceRequest extends FormRequest
     {
         return [
             'model' => 'string|filled',
-            'imei' => 'nullable|string',
+            'imei' => 'nullable|string|max:15|min:15',
             'code' => 'unique:devices,code|filled',
-            'client_id' => 'nullable|exists:clients,id',
+            'client_id' => 'filled|exists:clients,id',
             'client_name' => 'string|filled|alpha',
-            'user_id' => 'nullable|exists:users,id',
+            'user_id' => 'filled|exists:users,id',
             'user_name' => 'string|filled|alpha',
             'info' => 'nullable|string',
             'problem' => 'string|filled',
-            'cost' => 'nullable|numeric',
-            'status' => 'in:' . implode(',', DeviceStatus::values()),
+            'cost_to_client' => 'filled|numeric',
+            'cost_to_customer' => 'nullable|numeric',
+            'status' => 'filled|in:' . implode(',', DeviceStatus::values()),
             'fix_steps' => 'nullable|string',
             'date_receipt' => 'date|filled',
             'date_delivery' => 'date|filled',
             'date_warranty' => 'date|filled',
+            'deliver_to_client'=>'boolean',
+            'deliver_to_customer'=>'boolean',
+            'customer_id' => 'nullable|exists:customers,id',
+            'repaired_in_center' => 'filled|boolean',
         ];
     }
 }

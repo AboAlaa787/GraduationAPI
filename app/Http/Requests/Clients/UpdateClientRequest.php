@@ -26,7 +26,7 @@ class UpdateClientRequest extends FormRequest
             'center_name' => 'string|alpha|filled',
             'phone' => 'nullable|string|filled',
             'devices_count' => 'nullable|integer|filled',
-            'email' => ['required','string','filled',new UniqueEmailAcrossTables],
+            'email' => ['string','filled',new UniqueEmailAcrossTables],
             'name' => 'string|filled|alpha',
             'last_name' => 'string|filled|alpha',
             'rule_id' => 'nullable|exists:rules,id|filled',

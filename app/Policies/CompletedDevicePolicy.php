@@ -32,7 +32,7 @@ class CompletedDevicePolicy
      */
     public function create($user): bool
     {
-        return false;
+        return $this->hasPermission($user, 'تسليم جهاز');
     }
 
     /**
@@ -40,7 +40,7 @@ class CompletedDevicePolicy
      */
     public function update($user): bool
     {
-        return false;
+        return $this->hasPermission($user, 'تعديل بيانات جهاز تم تسليمه');
     }
 
     /**
@@ -48,7 +48,7 @@ class CompletedDevicePolicy
      */
     public function delete($user): bool
     {
-        return false;
+        return $this->hasPermission($user, 'حذف بيانات جهاز تم تسليمه');
     }
 
     /**
