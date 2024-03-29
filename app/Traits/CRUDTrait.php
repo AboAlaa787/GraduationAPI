@@ -3,10 +3,11 @@
 namespace App\Traits;
 
 use Exception;
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Auth\Access\AuthorizationException;
 
 trait CRUDTrait
 {
@@ -57,12 +58,24 @@ trait CRUDTrait
                 $parts = explode('.', $customKey);
                 if (count($parts) === 2) {
                     [$relation, $column] = $parts;
-                    if (!$this->validateColumn($relation, $column)) {
-                        return $this->apiResponse(['error' => 'Invalid column: ' . $column], 422, 'Failed');
+
+                    $operator = Str::substr($column, -1);
+                    if ($operator == '!') {
+                        $column = Str::substr($column, 0, -1);
+                        if ($this->validateColumn($relation, $column)) {
+                            $modelQuery->whereHas($relation, function ($query) use ($column, $value) {
+                                $query->where($column, '!=', $value);
+                            });
+                        }
+                    } else {
+
+                        if (!$this->validateColumn($relation, $column)) {
+                            return $this->apiResponse(['error' => 'Invalid column: ' . $column], 422, 'Failed');
+                        }
+                        $modelQuery->whereHas($relation, function ($query) use ($column, $value) {
+                            $query->where($column, $value);
+                        });
                     }
-                    $modelQuery->whereHas($relation, function ($query) use ($column, $value) {
-                        $query->where($column, $value);
-                    });
                 } else {
                     return $this->apiResponse(null, 422, "Invalid custom key format");
                 }
@@ -83,12 +96,23 @@ trait CRUDTrait
             $parts = explode('.', $customKey);
             if (count($parts) === 2) {
                 [$relation, $column] = $parts;
-                if (!$this->validateColumn($relation, $column)) {
-                    return $this->apiResponse(['error' => 'Invalid column: ' . $column], 422, 'Failed');
+
+                $operator = Str::substr($column, -1);
+                if ($operator == '!') {
+                    $column = Str::substr($column, 0, -1);
+                    if ($this->validateColumn($relation, $column)) {
+                        $modelQuery->whereHas($relation, function ($query) use ($column, $value) {
+                            $query->where($column, '!=', $value);
+                        });
+                    }
+                } else {
+                    if (!$this->validateColumn($relation, $column)) {
+                        return $this->apiResponse(['error' => 'Invalid column: ' . $column], 422, 'Failed');
+                    }
+                    $modelQuery->whereHas($relation, function ($query) use ($column, $value) {
+                        $query->where($column, $value);
+                    });
                 }
-                $modelQuery->whereHas($relation, function ($query) use ($column, $value) {
-                    $query->where($column, $value);
-                });
             } else {
                 return $this->apiResponse(null, 422, "Invalid custom key format");
             }
@@ -103,10 +127,20 @@ trait CRUDTrait
         $missingColumns = [];
 
         foreach ($keys as $key => $value) {
-            if ($this->validateColumn($table, $key)) {
-                $modelQuery->where($key, 'LIKE', '%' . $value . '%');
+            $operator = Str::substr($key, -1);
+            if ($operator == '!') {
+                $key = Str::substr($key, 0, -1);
+                if ($this->validateColumn($table, $key)) {
+                    $modelQuery->where($key,  '!=',  $value);
+                } else {
+                    $missingColumns[] = $key;
+                }
             } else {
-                $missingColumns[] = $key;
+                if ($this->validateColumn($table, $key)) {
+                    $modelQuery->where($key, 'LIKE', '%' . $value . '%');
+                } else {
+                    $missingColumns[] = $key;
+                }
             }
         }
 
@@ -216,7 +250,7 @@ trait CRUDTrait
         }
         $columns = $request->keys();
         foreach ($columns as $column) {
-            if($this->validateColumn((new $model())->tableName, $column)){
+            if ($column !== 'password' && $this->validateColumn((new $model())->getTable(), $column)) {
                 $object->$column = $request[$column];
             }
         }

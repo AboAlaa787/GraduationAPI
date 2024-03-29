@@ -20,11 +20,9 @@ class DeviceFactory extends Factory
         return [
             'model' => fake()->word,
             'imei' => fake()->numerify('###############'),
-            'code' => fake()->unique()->regexify('[A-Z0-9]{10}'),
             'client_id' => fake()->numberBetween(1, 50),
             'user_id' => fake()->numberBetween(1, 50),
             'customer_id' => fake()->numberBetween(1, 50),
-            'client_priority' => fake()->numberBetween(1, 20),
             'manager_priority' => fake()->optional()->numberBetween(1, 20),
             'info' => fake()->text,
             'problem' => fake()->sentence,
