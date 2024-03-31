@@ -47,27 +47,33 @@ class Device extends Model
     {
         parent::boot();
         static::creating(function ($device) {
+            //Automatic code generation
             do {
                 $code = Str::random(6);
             } while (self::where('code', $code)->exists());
-
+            $device->code = $code;
+            //Automatic determination of client priority
             $client_priority = self::where('client_id', $device->client_id)->max('client_priority');
             $client_priority++;
-
-            $device->code = $code;
             $device->client_priority = $client_priority;
+            //Automatic selection of maintenance technician
+            $usersWithDevicesCount = User::withCount('devices')->get();
+            $minDevicesCount = $usersWithDevicesCount->min('devices_count');
+            $userWithMinDevicesCount = $usersWithDevicesCount
+                ->where('devices_count', $minDevicesCount)->shuffle()->first();
+            $device->user_id = $userWithMinDevicesCount->id;
         });
 
         static::deleted(function ($device) {
-                $clientId = $device->client_id;
+            $clientId = $device->client_id;
 
-                $devicesToUpdate = self::where('client_id', $clientId)
-                                        ->where('client_priority', '>', $device->client_priority)
-                                        ->get();
+            $devicesToUpdate = self::where('client_id', $clientId)
+                ->where('client_priority', '>', $device->client_priority)
+                ->get();
 
-                foreach ($devicesToUpdate as $deviceToUpdate) {
-                    $deviceToUpdate->update(['client_priority' => $deviceToUpdate->client_priority - 1]);
-                }
+            foreach ($devicesToUpdate as $deviceToUpdate) {
+                $deviceToUpdate->update(['client_priority' => $deviceToUpdate->client_priority - 1]);
+            }
         });
     }
 
