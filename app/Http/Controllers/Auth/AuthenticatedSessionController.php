@@ -32,6 +32,7 @@ class AuthenticatedSessionController extends Controller
         if (!$user) {
             $user = auth()->user();
         }
+        $user->rule;
         $token = $user->createToken('login')->plainTextToken;
 
         $message['auth'] = $user;
@@ -58,6 +59,6 @@ class AuthenticatedSessionController extends Controller
         $oldTokenId = $request->user()->currentAccessToken()->id;
         $token = $request->user()->createToken('refresh-token');
         $user->tokens()->where('id', $oldTokenId)->delete();
-        return $this->apiResponse(['token'=>$token->plainTextToken]);
+        return $this->apiResponse(['token' => $token->plainTextToken]);
     }
 }

@@ -35,7 +35,8 @@ class RuleController extends Controller
      */
     public function store(CreateRuleRequest $request): JsonResponse
     {
-        return $this->store_data($request, Rule::class);
+       // return $this->store_data($request, Rule::class);
+       return $this->apiResponse([],403,'Adding a rule is not allowed');
     }
 
     /**
@@ -43,7 +44,8 @@ class RuleController extends Controller
      */
     public function update(UpdateRuleRequest $request, $id): JsonResponse
     {
-        return $this->update_data($request, $id, Rule::class);
+        // return $this->update_data($request, $id, Rule::class);
+       return $this->apiResponse([],403,'Updating a rule is not allowed');
     }
 
     /**

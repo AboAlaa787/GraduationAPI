@@ -41,8 +41,6 @@ class CreateDeviceRequest extends FormRequest
             'deliver_to_customer' => 'nullable|boolean',
             'required_period' => 'nullable|integer',
             'imei' => 'nullable|string',
-            'manager_priority' => 'nullable|unique:devices,manager_priority,NULL,id,user_id,' . $this->input('user_id'),
-            'client_priority' => 'integer|unique:devices,client_priority,NULL,id,client_id,' . $this->input('client_id'),
             'Expected_date_of_delivery' => 'nullable|date',
             'repaired_in_center' => 'required|boolean',
         ];

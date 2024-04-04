@@ -17,15 +17,15 @@ class PermissionController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        return $this->get_data(Permission::class,$request, $request->with);
+        return $this->get_data(Permission::class, $request, $request->with);
     }
 
     /**
      * @throws AuthorizationException
      */
-    public function show($id,Request $request): JsonResponse
+    public function show($id, Request $request): JsonResponse
     {
-        return $this->show_data(Permission::class, $id,$request->with);
+        return $this->show_data(Permission::class, $id, $request->with);
     }
 
     /**
@@ -33,7 +33,8 @@ class PermissionController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        return $this->store_data($request, Permission::class);
+        // return $this->store_data($request, Permission::class);
+        return $this->apiResponse([], 403, 'Adding a permission is not allowed');
     }
 
     /**
@@ -41,7 +42,8 @@ class PermissionController extends Controller
      */
     public function update(Request $request, $id): JsonResponse
     {
-        return $this->update_data($request, $id, Permission::class);
+        // return $this->update_data($request, $id, Permission::class);
+        return $this->apiResponse([], 403, 'Updating a permission is not allowed');
     }
 
     /**
@@ -49,6 +51,8 @@ class PermissionController extends Controller
      */
     public function destroy($id): JsonResponse
     {
-        return $this->delete_data($id, Permission::class);
+        // return $this->delete_data($id, Permission::class);
+        return $this->apiResponse([], 403, 'Deleting a permission is not allowed');
+
     }
 }
