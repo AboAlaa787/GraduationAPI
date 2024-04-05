@@ -6,14 +6,14 @@ use App\Events\AddDevice;
 use App\Events\ClientApproval;
 use App\Events\DeleteDevice;
 use App\Events\NotificationEvents\DeviceNotifications;
+use App\Http\Requests\Devices\CreateDeviceAndCustomerRequest;
 use App\Http\Requests\Devices\CreateDeviceRequest;
 use App\Http\Requests\Devices\UpdateDeviceRequest;
-use App\Models\Client;
-use App\Models\CompletedDevice;
+use App\Models\Customer;
 use App\Models\Device;
 use App\Traits\CRUDTrait;
+use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Console\Scheduling\Event;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -45,7 +45,6 @@ class DeviceController extends Controller
     {
         $response = $this->store_data($request, Device::class);
         if ($response->isSuccessful()) {
-            // Event::dispatch(new AddDevice($request->client_id));
             event(new AddDevice($request->client_id));
         }
         return $response;
@@ -58,9 +57,6 @@ class DeviceController extends Controller
     {
         $response = $this->update_data($request, $id, Device::class);
         if ($response->isSuccessful()) {
-            // Event::dispa(new ClientApproval($id));
-            // Event::dispatch(new DeleteDevice($id));
-            // Event::dispatch(new DeviceNotifications($id));
             event(new ClientApproval($id));
             event(new DeleteDevice($id));
             event(new DeviceNotifications($id));
@@ -76,10 +72,25 @@ class DeviceController extends Controller
         $device = Device::find($id);
         $response = $this->delete_data($id, Device::class);
         if ($response->isSuccessful()) {
-            // Event::dispatch(new DeleteDevice($id));
             event(new DeleteDevice($id));
-
         }
         return $response;
+    }
+
+    function storeDeviceAndCustomer(CreateDeviceAndCustomerRequest $request): JsonResponse
+    {
+        try {
+            $this->authorize('create', Device::class);
+            $this->authorize('create', Customer::class);
+        } catch (Exception) {
+            return $this->apiResponse(null, 403, 'Unauthorized');
+        }
+        $customer = Customer::firstOrCreate(['national_id' => $request->national_id], $request->all());
+        $request['customer_id']=$customer->id;
+        $device = Device::create($request->all());
+        return $this->apiResponse([
+            'device' => $device,
+            'customer' => $customer
+        ]);
     }
 }

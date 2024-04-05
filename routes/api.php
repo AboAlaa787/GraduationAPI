@@ -12,6 +12,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProductOrderController;
 use App\Http\Controllers\DevicesOrdersController;
 use App\Http\Controllers\PermissionRuleController;
@@ -19,6 +20,8 @@ use App\Http\Controllers\PermissionUserController;
 use App\Http\Controllers\CompletedDeviceController;
 use App\Http\Controllers\PermissionClientController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Notifications\TestNotification;
+use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,7 +34,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 |
 */
 
-Route::post('/login', [AuthenticatedSessionController::class,'store'])->middleware('guest');
+Route::post('/login', [AuthenticatedSessionController::class, 'store'])->middleware('guest');
 
 Route::middleware(['auth:sanctum'])->group(function () {
 
@@ -74,6 +77,22 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::resource('/devices_orders', DevicesOrdersController::class);
 
     Route::resource('/product_orders', ProductOrderController::class);
+
+    Route::prefix('notifications')->group(function () {
+        Route::get('/', [NotificationController::class, 'allNotifications']);
+
+        Route::get('/read', [NotificationController::class, 'readNotifications']);
+
+        Route::get('/unread', [NotificationController::class, 'unreadNotifications']);
+
+        Route::post('/mark_all_as_read', [NotificationController::class, 'markAllAsRead']);
+
+        Route::post('/mark_as_read/{id}', [NotificationController::class, 'markAsRead']);
+
+        Route::delete('/delete/{id}', [NotificationController::class, 'deleteNotification']);
+    });
+
+    Route::post('/devices/with_customer',[DeviceController::class,'storeDeviceAndCustomer']);
 });
 
 require __DIR__ . '/auth.php';

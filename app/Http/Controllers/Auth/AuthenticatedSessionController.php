@@ -33,10 +33,12 @@ class AuthenticatedSessionController extends Controller
             $user = auth()->user();
         }
         $user->rule;
-        $token = $user->createToken('login')->plainTextToken;
+        $expiration=config('sanctum.expiration');
+        $expires_at=now()->addMinutes($expiration);
+        $token = $request->user()->createToken('login',['*'],$expires_at);
 
         $message['auth'] = $user;
-        $message['token'] = $token;
+        $message['token'] = $token->plainTextToken;
         return $this->apiResponse($message);
     }
 
@@ -57,7 +59,9 @@ class AuthenticatedSessionController extends Controller
     {
         $user = $request->user();
         $oldTokenId = $request->user()->currentAccessToken()->id;
-        $token = $request->user()->createToken('refresh-token');
+        $expiration=config('sanctum.expiration');
+        $expires_at=now()->addMinutes($expiration);
+        $token = $request->user()->createToken('refresh-token',['*'],$expires_at);
         $user->tokens()->where('id', $oldTokenId)->delete();
         return $this->apiResponse(['token' => $token->plainTextToken]);
     }
