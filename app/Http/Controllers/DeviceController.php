@@ -14,6 +14,7 @@ use App\Models\Device;
 use App\Traits\CRUDTrait;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -21,41 +22,28 @@ class DeviceController extends Controller
 {
     use CRUDTrait;
 
-
-    /**
-     * @throws AuthorizationException
-     */
     public function index(Request $request): JsonResponse
     {
-        return $this->get_data(Device::class, $request, $request->with);
+        return $this->index_data(new Device(), $request, str($request->with));
     }
 
-    /**
-     * @throws AuthorizationException
-     */
     public function show($id, Request $request): JsonResponse
     {
-        return $this->show_data(Device::class, $id, $request->with);
+        return $this->show_data(new Device(), $id, str($request->with));
     }
 
-    /**
-     * @throws AuthorizationException
-     */
     public function store(CreateDeviceRequest $request): JsonResponse
     {
-        $response = $this->store_data($request, Device::class);
+        $response = $this->store_data($request, new Device());
         if ($response->isSuccessful()) {
             event(new AddDevice($request->client_id));
         }
         return $response;
     }
 
-    /**
-     * @throws AuthorizationException
-     */
     public function update(UpdateDeviceRequest $request, $id): JsonResponse
     {
-        $response = $this->update_data($request, $id, Device::class);
+        $response = $this->update_data($request, $id, new Device());
         if ($response->isSuccessful()) {
             event(new ClientApproval($id));
             event(new DeleteDevice($id));
@@ -64,33 +52,37 @@ class DeviceController extends Controller
         return $response;
     }
 
-    /**
-     * @throws AuthorizationException
-     */
     public function destroy($id): JsonResponse
     {
-        $device = Device::find($id);
-        $response = $this->delete_data($id, Device::class);
+        $response = $this->destroy_data($id, new Device());
         if ($response->isSuccessful()) {
             event(new DeleteDevice($id));
         }
         return $response;
     }
 
-    function storeDeviceAndCustomer(CreateDeviceAndCustomerRequest $request): JsonResponse
+    /**
+     * @param CreateDeviceAndCustomerRequest $request
+     * @return JsonResponse
+     * @throws AuthorizationException
+     */
+    public function storeDeviceAndCustomer(CreateDeviceAndCustomerRequest $request): JsonResponse
     {
         try {
             $this->authorize('create', Device::class);
             $this->authorize('create', Customer::class);
-        } catch (Exception) {
-            return $this->apiResponse(null, 403, 'Unauthorized');
+            $customer = Customer::firstOrCreate(['national_id' => $request->national_id], $request->all());
+            $request['customer_id']=$customer->id;
+            $device = Device::create($request->all());
+            return $this->apiResponse([
+                'device' => $device,
+                'customer' => $customer
+            ]);
+        } catch (AuthorizationException $e) {
+            return $this->apiResponse(null, 403, 'Error: ' . $e->getMessage());
         }
-        $customer = Customer::firstOrCreate(['national_id' => $request->national_id], $request->all());
-        $request['customer_id']=$customer->id;
-        $device = Device::create($request->all());
-        return $this->apiResponse([
-            'device' => $device,
-            'customer' => $customer
-        ]);
+        catch (Exception $e){
+            return $this->apiResponse(null, 500, 'Error: ' . $e->getMessage());
+        }
     }
 }

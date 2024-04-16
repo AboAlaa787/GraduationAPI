@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Permission;
 use App\Traits\CRUDTrait;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -12,46 +11,31 @@ class PermissionController extends Controller
 {
     use CRUDTrait;
 
-    /**
-     * @throws AuthorizationException
-     */
     public function index(Request $request): JsonResponse
     {
-        return $this->get_data(Permission::class, $request, $request->with);
+        return $this->index_data(new Permission(), $request, str($request->with));
     }
 
-    /**
-     * @throws AuthorizationException
-     */
     public function show($id, Request $request): JsonResponse
     {
-        return $this->show_data(Permission::class, $id, $request->with);
+        return $this->show_data(new Permission(), $id, str($request->with));
     }
 
-    /**
-     * @throws AuthorizationException
-     */
     public function store(Request $request): JsonResponse
     {
-        // return $this->store_data($request, Permission::class);
+        // return $this->store_data($request, new Permission());
         return $this->apiResponse([], 403, 'Adding a permission is not allowed');
     }
 
-    /**
-     * @throws AuthorizationException
-     */
     public function update(Request $request, $id): JsonResponse
     {
-        // return $this->update_data($request, $id, Permission::class);
+        // return $this->update_data($request, $id, new Permission());
         return $this->apiResponse([], 403, 'Updating a permission is not allowed');
     }
 
-    /**
-     * @throws AuthorizationException
-     */
     public function destroy($id): JsonResponse
     {
-        // return $this->delete_data($id, Permission::class);
+        // return $this->delete_data($id, new Permission());
         return $this->apiResponse([], 403, 'Deleting a permission is not allowed');
 
     }

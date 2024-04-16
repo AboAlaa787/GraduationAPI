@@ -24,7 +24,7 @@ class DeleteExpiredTokens extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         DB::table('personal_access_tokens')->where('expires_at','<',now())->delete();
         $this->info('Expired tokens deleted successfully.');

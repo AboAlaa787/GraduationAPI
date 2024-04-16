@@ -44,7 +44,6 @@ class CreateDeviceAndCustomerRequest extends FormRequest
             'name' => 'required|string|alpha',
             'last_name' => 'required|string|alpha',
             'national_id' => 'required|string|size:11,',
-            'client_id' => 'required|exists:clients,id',
             'phone' => 'required|string|size:10',
             'email' => 'required|email',
             'devices_count' => 'integer|min:0',

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreignId('rule_id')->nullable()->constrained()->nullOnDelete();
             $table->string('phone',10)->nullable();
             $table->string('address')->nullable();
+            $table->boolean('at_work')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

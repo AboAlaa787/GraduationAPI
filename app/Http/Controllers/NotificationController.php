@@ -2,48 +2,79 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Traits\ApiResponseTrait;
+use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
-use function PHPUnit\Framework\isNull;
 
 class NotificationController extends Controller
 {
     use ApiResponseTrait;
-    function allNotifications(Request $request): JsonResponse
+
+    /**
+     * Get all notifications for authenticated user
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function allNotifications(Request $request): JsonResponse
     {
         return $this->apiResponse($request->user()->notifications);
     }
 
-    function readNotifications(Request $request): JsonResponse
+    /**
+     * Get read notifications for authenticated user
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function readNotifications(Request $request): JsonResponse
     {
         return $this->apiResponse($request->user()->readNotifications);
     }
 
-    function unreadNotifications(Request $request): JsonResponse
+    /**
+     * Get unread notifications for authenticated user
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function unreadNotifications(Request $request): JsonResponse
     {
         return $this->apiResponse($request->user()->unreadNotifications);
     }
 
-    function markAllAsRead(Request $request): JsonResponse
+    /**
+     * Mark all unread notifications as read
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function markAllAsRead(Request $request): JsonResponse
     {
         $user = $request->user();
         $unreadNotifications = $user->unreadNotifications;
         try {
-            DB::transaction(function () use ($unreadNotifications) {
+            DB::transaction(static function () use ($unreadNotifications) {
                 foreach ($unreadNotifications as $unreadNotification) {
                     $unreadNotification->markAsRead();
                 }
             });
-            return $this->apiResponse([], 200, 'Successful');
-        } catch (\PDOException $ex) {
+            return $this->apiResponse();
+        } catch (Exception $ex) {
             return $this->apiResponse([], 422, $ex->getMessage());
         }
     }
 
-    function markAsRead(Request $request, $notificationId): JsonResponse
+    /**
+     * Mark specific notification as read by id
+     *
+     * @param Request $request
+     * @param $notificationId
+     * @return JsonResponse
+     */
+    public function markAsRead(Request $request, $notificationId): JsonResponse
     {
         $user = $request->user();
         $unreadNotification = $user->notifications->where('id', $notificationId);
@@ -54,10 +85,17 @@ class NotificationController extends Controller
             return $this->apiResponse(null, 409, "The message has already been read");
         }
         $unreadNotification->markAsRead();
-        return $this->apiResponse([], 200, 'Successful');
+        return $this->apiResponse();
     }
 
-    function deleteNotification(Request $request, $notificationId): JsonResponse
+    /**
+     * Delete specific notification by id
+     *
+     * @param Request $request
+     * @param $notificationId
+     * @return JsonResponse
+     */
+    public function deleteNotification(Request $request, $notificationId): JsonResponse
     {
         $user = $request->user();
         $notification = $user->notifications->where('id', $notificationId)->first();
@@ -66,6 +104,6 @@ class NotificationController extends Controller
         }
 
         $notification->delete();
-        return $this->apiResponse([], 200, 'Successful');
+        return $this->apiResponse();
     }
 }

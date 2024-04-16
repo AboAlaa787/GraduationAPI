@@ -45,7 +45,7 @@ class AuthenticatedSessionController extends Controller
     /**
      * Destroy an authenticated session.
      */
-    public function destroy(Request $request)
+    public function destroy(Request $request): JsonResponse
     {
 
         $user = auth()->user();
@@ -55,7 +55,7 @@ class AuthenticatedSessionController extends Controller
         return $this->apiResponse();
     }
 
-    function refresh_token(Request $request): JsonResponse
+    public function refresh_token(Request $request): JsonResponse
     {
         $user = $request->user();
         $oldTokenId = $request->user()->currentAccessToken()->id;

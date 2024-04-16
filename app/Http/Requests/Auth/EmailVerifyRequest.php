@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Auth;
 
-use App\Rules\IsEmailExist;
 use Illuminate\Foundation\Http\FormRequest;
 
 class EmailVerifyRequest extends FormRequest

@@ -30,7 +30,7 @@ class SendDeviceNotifications
     public function handle(DeviceNotifications $event): void
     {
         $device = Device::find($event->id)->first();
-        if ($device) {;
+        if ($device) {
             $client = $device->client;
             $user = $device->user;
             if (!$user || !$client) {

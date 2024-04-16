@@ -6,7 +6,6 @@ use App\Http\Requests\CompletedDevices\CreateCompletedDeviceRequest;
 use App\Http\Requests\CompletedDevices\UpdateCompletedDeviceRequest;
 use App\Models\CompletedDevice;
 use App\Traits\CRUDTrait;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -14,43 +13,28 @@ class CompletedDeviceController extends Controller
 {
     use CRUDTrait;
 
-    /**
-     * @throws AuthorizationException
-     */
     public function index(Request $request): JsonResponse
     {
-        return $this->get_data(CompletedDevice::class,$request, $request->with);
+        return $this->index_data(new CompletedDevice(), $request, str($request->with));
     }
 
-    /**
-     * @throws AuthorizationException
-     */
     public function show($id, Request $request): JsonResponse
     {
-        return $this->show_data(CompletedDevice::class, $id, $request->with);
+        return $this->show_data(new CompletedDevice(), $id, str($request->with));
     }
 
-    /**
-     * @throws AuthorizationException
-     */
     public function store(CreateCompletedDeviceRequest $request): JsonResponse
     {
-        return $this->store_data($request, CompletedDevice::class);
+        return $this->store_data($request, new CompletedDevice());
     }
 
-    /**
-     * @throws AuthorizationException
-     */
     public function update(UpdateCompletedDeviceRequest $request, $id): JsonResponse
     {
-        return $this->update_data($request, $id, CompletedDevice::class);
+        return $this->update_data($request, $id, new CompletedDevice());
     }
 
-    /**
-     * @throws AuthorizationException
-     */
     public function destroy($id): JsonResponse
     {
-        return $this->delete_data($id, CompletedDevice::class);
+        return $this->destroy_data($id, new CompletedDevice());
     }
 }
