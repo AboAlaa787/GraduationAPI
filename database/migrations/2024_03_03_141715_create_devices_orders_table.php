@@ -15,10 +15,12 @@ return new class extends Migration
             $table->id();
             $table->foreignId('device_id')->constrained()->cascadeOnDelete();
             $table->foreignId('order_id')->constrained()->cascadeOnDelete();
+            $table->unique(['device_id', 'order_id']);
             $table->foreignId('service_id')->nullable()->constrained()->cascadeOnDelete();
             $table->text('info')->nullable();
             $table->enum('order_type',['تسليم','استلام']);
             $table->boolean('deliver_to_client')->default(false);
+            $table->boolean('deliver_to_user')->default(false);
             $table->time('deliver_time')->nullable();
             $table->timestamps();
         });

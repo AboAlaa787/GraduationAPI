@@ -3,6 +3,7 @@
 namespace App\Models;
 
 //use DB;
+use App\Enums\RuleNames;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -33,10 +34,12 @@ class Device extends Model
             $device->client_priority = $client_priority;
 
             //Automatic selection of maintenance technician
-            $usersWithDevicesCount = User::withCount('devices')->get();
-            $minDevicesCount = $usersWithDevicesCount->min('devices_count');
-            $userWithMinDevicesCount = $usersWithDevicesCount->where('devices_count', $minDevicesCount)->shuffle()->first();
-            $device->user_id = $userWithMinDevicesCount->id;
+            $usersWithDevicesCount = User::withCount('devices')->where('at_work', true)->whereHas('rule', function($query) { $query->where('name', RuleNames::Technician); })->get();
+            if (!$usersWithDevicesCount) {
+                $minDevicesCount = $usersWithDevicesCount->min('devices_count');
+                $userWithMinDevicesCount = $usersWithDevicesCount->where('devices_count', $minDevicesCount)->shuffle()->first();
+                $device->user_id = $userWithMinDevicesCount->id;
+            }
         });
 
         static::deleted(static function ($device) {

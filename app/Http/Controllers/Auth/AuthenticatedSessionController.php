@@ -13,6 +13,9 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
 use Illuminate\Validation\ValidationException;
 
+/**
+ * @group Sessions management
+ */
 class AuthenticatedSessionController extends Controller
 {
     /**
@@ -22,7 +25,11 @@ class AuthenticatedSessionController extends Controller
     use ApiResponseTrait;
 
     /**
+     * Login
+     * @param LoginRequest $request
+     * @return JsonResponse
      * @throws ValidationException
+     * @unauthenticated
      */
     public function store(LoginRequest $request): JsonResponse
     {
@@ -43,7 +50,9 @@ class AuthenticatedSessionController extends Controller
     }
 
     /**
-     * Destroy an authenticated session.
+     * Logout
+     * @param Request $request
+     * @return JsonResponse
      */
     public function destroy(Request $request): JsonResponse
     {
@@ -55,6 +64,11 @@ class AuthenticatedSessionController extends Controller
         return $this->apiResponse();
     }
 
+    /**
+     * Refresh token
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function refresh_token(Request $request): JsonResponse
     {
         $user = $request->user();

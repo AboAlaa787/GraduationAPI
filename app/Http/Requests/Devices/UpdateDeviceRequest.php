@@ -25,9 +25,9 @@ class UpdateDeviceRequest extends FormRequest
         return [
             'model' => 'filled|string',
             'code' => 'filled|string|unique:devices,code',
-            'client_id' => 'filled|exists:clients,id',
-            'user_id' => 'filled|exists:users,id',
-            'customer_id' => 'filled|exists:customers,id',
+            'client_id' => 'integer|filled|exists:clients,id',
+            'user_id' => 'integer|filled|exists:users,id',
+            'customer_id' => 'integer|filled|exists:customers,id',
             'client_priority' => 'filled|integer',
             'info' => 'filled|string',
             'problem' => 'filled|string',

@@ -7,6 +7,7 @@ use App\Models\Permission_rule;
 use App\Models\Rule;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class Permission_RuleSeeder extends Seeder
 {

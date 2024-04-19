@@ -43,6 +43,7 @@ class CreateUserRequest extends FormRequest
                 Rules\Password::defaults()
             ],
             'rule_id' => [
+                'integer',
                 'required',
                 'numeric',
                 'exists:rules,id'

@@ -8,6 +8,9 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * @group Notifications management
+ */
 class NotificationController extends Controller
 {
     use ApiResponseTrait;
@@ -92,10 +95,10 @@ class NotificationController extends Controller
      * Delete specific notification by id
      *
      * @param Request $request
-     * @param $notificationId
+     * @param integer $notificationId
      * @return JsonResponse
      */
-    public function deleteNotification(Request $request, $notificationId): JsonResponse
+    public function deleteNotification(Request $request, int $notificationId): JsonResponse
     {
         $user = $request->user();
         $notification = $user->notifications->where('id', $notificationId)->first();

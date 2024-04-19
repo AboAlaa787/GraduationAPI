@@ -25,7 +25,7 @@ class CreateCustomerRequest extends FormRequest
             'name' => 'required|string|alpha',
             'last_name' => 'required|string|alpha',
             'national_id' => 'required|string|size:11|unique:customers,national_id,NULL,id,client_id,' . $this->input('client_id'),
-            'client_id' => 'required|exists:clients,id',
+            'client_id' => 'integer|required|exists:clients,id',
             'phone' => 'required|string|size:10',
             'email' => 'required|email',
             'devices_count' => 'integer|min:0',

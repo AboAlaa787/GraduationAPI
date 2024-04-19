@@ -17,26 +17,52 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
+/**
+ * @group Users management
+ */
 class UserController extends Controller
 {
     use CRUDTrait;
 
-    public function show($id, Request $request): JsonResponse
-    {
-        return $this->show_data(new User(), $id, str($request->with));
-    }
-
+    /**
+     * @param Request $request
+     * @queryParam with string To query related data. No-example
+     * @queryParam orderBy To sort data. No-example
+     * @queryParam dir To determine the direction of the sort, default is asc. Example:[asc,desc]
+     * @return JsonResponse
+     */
     public function index(Request $request): JsonResponse
     {
         return $this->index_data(new User(), $request, str($request->with));
     }
 
+
+    /**
+     * @param $id
+     * @param Request $request
+     * @urlParam  id  integer required The ID of the User.
+     * @queryParam with string To query related data. No-example
+     * @return JsonResponse
+     */
+    public function show($id, Request $request): JsonResponse
+    {
+        return $this->show_data(new User(), $id, str($request->with));
+    }
+
+    /**
+     * @param UpdateUserRequest $request
+     * @param $id
+     * @urlParam  id  integer required The ID of the User.
+     * @return JsonResponse
+     */
     public function update(UpdateUserRequest $request, $id): JsonResponse
     {
         return $this->update_data($request, $id, new User());
     }
 
     /**
+     * @param CreateUserRequest $request
+     * @return JsonResponse
      * @throws AuthorizationException
      */
     public function store(CreateUserRequest $request): JsonResponse
@@ -57,16 +83,10 @@ class UserController extends Controller
     }
 
     /**
-     * @throws ValidationException
+     * @param $id
+     * @urlParam  id  integer required The ID of the User.
+     * @return JsonResponse
      */
-    public function login(LoginRequest $request): JsonResponse
-    {
-        $request->authenticate();
-        $response['user'] = Auth::user();
-        $response['token'] = $response['user']->createToken('login')->plainTextToken;
-        return $this->apiResponse($response);
-    }
-
     public function destroy($id): JsonResponse
     {
         return $this->destroy_data($id, new User());

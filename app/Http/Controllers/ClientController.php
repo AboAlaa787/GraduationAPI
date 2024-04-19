@@ -13,16 +13,33 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * @group Clients management
+ */
 class ClientController extends Controller
 {
     use CRUDTrait;
 
+    /**
+     * @param Request $request
+     * @queryParam with string To query related data. No-example
+     * @queryParam orderBy To sort data. No-example
+     * @queryParam dir To determine the direction of the sort, default is asc. Example:[asc,desc]
+     * @return JsonResponse
+     */
     public function index(Request $request): JsonResponse
     {
         return $this->index_data(new Client(), $request, str($request->with));
     }
 
-    public function show($id, Request $request): JsonResponse
+    /**
+     * @param integer $id
+     * @urlParam  id  integer required The ID of the Client.
+     * @param Request $request
+     * @queryParam with string To query related data. No-example
+     * @return JsonResponse
+     */
+    public function show(int $id, Request $request): JsonResponse
     {
         return $this->show_data(new Client(), $id, str($request->with));
     }
@@ -45,12 +62,23 @@ class ClientController extends Controller
         }
     }
 
-    public function update(UpdateClientRequest $request, $id): JsonResponse
+    /**
+     * @param UpdateClientRequest $request
+     * @urlParam  id  integer required The ID of the Client.
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function update(UpdateClientRequest $request, int $id): JsonResponse
     {
         return $this->update_data($request, $id, new Client());
     }
 
-    public function destroy($id): JsonResponse
+    /**
+     * @urlParam  id  integer required The ID of the Client.
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function destroy(int $id): JsonResponse
     {
         return $this->destroy_data($id, new Client());
     }

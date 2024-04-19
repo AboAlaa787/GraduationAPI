@@ -56,6 +56,7 @@ class User extends Authenticatable
         'permissions',
         'orders',
         'rule',
+        'rule.permissions'
     ];
 
     public function devices(): HasMany

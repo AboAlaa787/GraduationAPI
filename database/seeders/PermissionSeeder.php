@@ -3,8 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Permission;
-use App\Models\Permission_user;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class PermissionSeeder extends Seeder
@@ -90,6 +88,15 @@ class PermissionSeeder extends Seeder
             'اضافة زبون',
             'تعديل زبون',
             'حذف زبون',
+            'استعلام عن طلبات الاجهزة',
+            'استعلام عن طلب جهاز',
+            'اضافة طلب لجهاز',
+            'تعديل بيانات طلب لجهاز',
+            'استعلام عن طلبات المنتجات',
+            'استعلام عن طلب منتج',
+            'اضافة طلب لمنتج',
+            'تعديل بيانات طلب لمنتج',
+            'حذف طلب منتج',
         ];
         foreach ($permissions as $permission) {
             Permission::create([

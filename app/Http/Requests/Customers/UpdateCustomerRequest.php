@@ -25,7 +25,7 @@ class UpdateCustomerRequest extends FormRequest
             'name' => 'string|filled|alpha',
             'last_name' => 'string|filled|alpha',
             'national_id' => 'string|size:11|unique:customers,national_id,NULL,id,client_id,' . $this->input('client_id'),
-            'client_id' => 'exists:clients,id',
+            'client_id' => 'integer|exists:clients,id',
             'phone' => 'string|size:10|filled',
             'email' => 'email|filled',
             'devices_count' => 'integer|min:0',

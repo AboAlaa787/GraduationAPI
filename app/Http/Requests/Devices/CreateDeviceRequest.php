@@ -25,10 +25,9 @@ class CreateDeviceRequest extends FormRequest
     {
         return [
             'model' => 'required|string',
-            'code' => 'string|unique:devices,code',
-            'client_id' => 'required|exists:clients,id',
-            'user_id' => 'nullable|exists:users,id',
-            'customer_id' => 'required|exists:customers,id',
+            'client_id' => 'integer|required|exists:clients,id',
+            'user_id' => 'integer|nullable|exists:users,id',
+            'customer_id' => 'integer|required|exists:customers,id',
             'info' => 'nullable|string',
             'problem' => 'nullable|string',
             'cost_to_client' => 'nullable|numeric',

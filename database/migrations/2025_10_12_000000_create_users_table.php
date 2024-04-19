@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('last_name');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->foreignId('rule_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('rule_id')->constrained()->cascadeOnDelete();
             $table->string('phone',10)->nullable();
             $table->string('address')->nullable();
             $table->boolean('at_work')->default(false);

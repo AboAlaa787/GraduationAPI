@@ -29,7 +29,7 @@ class UpdateClientRequest extends FormRequest
             'email' => ['string','filled',new UniqueEmailAcrossTables],
             'name' => 'string|filled|alpha',
             'last_name' => 'string|filled|alpha',
-            'rule_id' => 'nullable|exists:rules,id|filled',
+            'rule_id' => 'integer|nullable|exists:rules,id|filled',
             'email_verified_at' => 'nullable|date|filled',
             'password' => 'string|filled',
             'address' => 'string|filled',

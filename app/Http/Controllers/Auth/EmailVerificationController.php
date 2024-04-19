@@ -33,6 +33,12 @@ class EmailVerificationController extends Controller
         return $this->apiResponse('Verification message was sent successfully');
     }
 
+    /**
+     * Mark email as verified
+     *
+     * @param EmailVerifyRequest $request
+     * @return JsonResponse
+     */
     public function emailVerify(EmailVerifyRequest $request): JsonResponse
     {
         $user = $request->user();

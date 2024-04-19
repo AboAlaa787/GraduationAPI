@@ -254,7 +254,9 @@ trait CRUDTrait
         } catch (AuthorizationException $e) {
             return $this->apiResponse(null, 403, 'Error: ' . $e->getMessage());
         } catch (ModelNotFoundException  $e) {
-            return $this->apiResponse(null, 404, 'There is no item with id ' . $id);
+            $exceptionModel = explode('\\', $e->getModel());
+            $exceptionModel = end($exceptionModel);
+            return $this->apiResponse(null, 404, "Error: $exceptionModel with ID $id not found.");
         } catch (InvalidArgumentException|Exception $e) {
             return $this->apiResponse(null, 400, 'Error: ' . $e->getMessage());
         }
@@ -302,8 +304,10 @@ trait CRUDTrait
             return $this->apiResponse($object, 200, 'Update successful');
         } catch (AuthorizationException $e) {
             return $this->apiResponse(null, 403, 'Error: ' . $e->getMessage());
-        } catch (ModelNotFoundException) {
-            return $this->apiResponse(null, 404, 'There is no item with id ' . $id);
+        } catch (ModelNotFoundException $e) {
+            $exceptionModel = explode('\\', $e->getModel());
+            $exceptionModel = end($exceptionModel);
+            return $this->apiResponse(null, 404, "Error: $exceptionModel with ID $id not found.");
         } catch (InvalidArgumentException|Exception $e) {
             return $this->apiResponse(null, 400, 'Error: ' . $e->getMessage());
         }
@@ -325,8 +329,10 @@ trait CRUDTrait
             return $this->apiResponse('Delete successful');
         } catch (AuthorizationException $e) {
             return $this->apiResponse(null, 403, 'Error: ' . $e->getMessage());
-        } catch (ModelNotFoundException) {
-            return $this->apiResponse(null, 404, 'There is no item with id ' . $id);
+        } catch (ModelNotFoundException $e) {
+            $exceptionModel = explode('\\', $e->getModel());
+            $exceptionModel = end($exceptionModel);
+            return $this->apiResponse(null, 404, "Error: $exceptionModel with ID $id not found.");
         }
     }
 }
