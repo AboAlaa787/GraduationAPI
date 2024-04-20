@@ -33,6 +33,7 @@ class UserFactory extends Factory
             'phone' => fake()->numerify('##########'),
             'address' => fake()->address(),
             'rule_id' => fake()->randomElement([1, 2, 4]),
+            'at_work' => fake()->randomElement([true, false]),
         ];
     }
 

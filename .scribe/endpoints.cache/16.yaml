@@ -70,7 +70,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer b4dDe6c5v3EfP61ZkhgaaV8'
+      - 'Bearer h58d63ZPfavkVEDceabg416'
     controller: null
     method: null
     route: null
@@ -122,7 +122,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer a1fE5Vah34deZ6cDP6gbvk8'
+      - 'Bearer kgPVfvZ56db63DEh814ceaa'
     controller: null
     method: null
     route: null
@@ -149,13 +149,13 @@ endpoints:
         name: id
         description: 'The ID of the Product_order.'
         required: true
-        example: 18
+        example: 7
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 18
+      id: 7
     queryParameters:
       with:
         name: with
@@ -185,7 +185,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 4vc1g6afba8ZE3DdVPkhe56'
+      - 'Bearer dg6EZ5a4DafVh3Pcbkv1e68'
     controller: null
     method: null
     route: null
@@ -212,13 +212,13 @@ endpoints:
         name: id
         description: 'The ID of the Product_order.'
         required: true
-        example: 3
+        example: 2
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 3
+      id: 2
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -229,7 +229,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer khVf3v16Pbe8Ead4a56DcgZ'
+      - 'Bearer e16P8bZhkv4E35cVaaDdg6f'
     controller: null
     method: null
     route: null

@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\RuleNames;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CenterController;
 use App\Http\Controllers\ClientController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\ProductOrderController;
 use App\Http\Controllers\RuleController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserController;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,7 +34,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/login', [AuthenticatedSessionController::class, 'store'])->middleware('guest');
+Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
 
@@ -92,5 +94,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('/devices/with_customer',[DeviceController::class,'storeDeviceAndCustomer']);
 });
-
+Route::get('t',function (){
+   $tt=User::withCount(['devices','orders'])->get();
+   return response()->json($tt);
+});
 require __DIR__ . '/auth.php';

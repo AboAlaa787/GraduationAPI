@@ -70,7 +70,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 56ag3vZPa4ce1fk86dhbDEV'
+      - 'Bearer v6Da3kgfVPZ6bEh1ecad584'
     controller: null
     method: null
     route: null
@@ -97,13 +97,13 @@ endpoints:
         name: id
         description: 'The ID of the Service.'
         required: true
-        example: 20
+        example: 11
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 20
+      id: 11
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -111,7 +111,7 @@ endpoints:
         name: name
         description: ''
         required: true
-        example: consequatur
+        example: assumenda
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -120,7 +120,7 @@ endpoints:
         name: price
         description: ''
         required: true
-        example: 4005.326371032
+        example: 38843893.820494
         type: number
         enumValues: []
         exampleWasSpecified: false
@@ -129,22 +129,22 @@ endpoints:
         name: time_required
         description: 'Must be a valid date in the format <code>H:i:s</code>.'
         required: true
-        example: '02:41:35'
+        example: '19:01:26'
         type: string
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanBodyParameters:
-      name: consequatur
-      price: 4005.326371032
-      time_required: '02:41:35'
+      name: assumenda
+      price: 38843893.820494
+      time_required: '19:01:26'
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer E6b1vdcD8e5fkgP34Zaa6hV'
+      - 'Bearer Pb1aVe6fZ64dkED8c3hvg5a'
     controller: null
     method: null
     route: null
@@ -171,13 +171,13 @@ endpoints:
         name: id
         description: 'The ID of the Service.'
         required: true
-        example: 3
+        example: 1
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 3
+      id: 1
     queryParameters:
       with:
         name: with
@@ -207,7 +207,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer VgadE8v56aDhke46fcbZ31P'
+      - 'Bearer c136bgDda8fv465ZPEkeVah'
     controller: null
     method: null
     route: null
@@ -235,13 +235,13 @@ endpoints:
         name: id
         description: 'The ID of the Service.'
         required: true
-        example: 16
+        example: 11
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 16
+      id: 11
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -249,7 +249,7 @@ endpoints:
         name: name
         description: ''
         required: false
-        example: error
+        example: magni
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -258,7 +258,7 @@ endpoints:
         name: price
         description: ''
         required: false
-        example: 613381.88
+        example: 56779.254791023
         type: number
         enumValues: []
         exampleWasSpecified: false
@@ -267,22 +267,22 @@ endpoints:
         name: time_required
         description: 'Must be a valid date in the format <code>H:i:s</code>.'
         required: false
-        example: '02:41:35'
+        example: '19:01:26'
         type: string
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanBodyParameters:
-      name: error
-      price: 613381.88
-      time_required: '02:41:35'
+      name: magni
+      price: 56779.254791023
+      time_required: '19:01:26'
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer c8E5aaDk46efV6Zdbgh31Pv'
+      - 'Bearer 3f6cP51vbgdaZhVE6D84eka'
     controller: null
     method: null
     route: null
@@ -326,7 +326,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer v134DfEea8ZbcPadg6V56hk'
+      - 'Bearer Dk8cP6aebdE6vhVf1Z3a5g4'
     controller: null
     method: null
     route: null

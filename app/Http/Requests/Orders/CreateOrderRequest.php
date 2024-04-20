@@ -23,7 +23,7 @@ class CreateOrderRequest extends FormRequest
     {
         return [
             'description' => 'required|string',
-            'client_id' => 'required|exists:clients,id',
+            'client_id' => 'integer|required|exists:clients,id',
             'user_id' => 'integer|nullable|exists:users,id',
         ];
     }

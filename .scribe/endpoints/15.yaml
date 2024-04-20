@@ -68,7 +68,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer bZef86gDhac45P36avk1dVE'
+      - 'Bearer 4Zaacv6gb15hPekfV6D3dE8'
     controller: null
     method: null
     route: null
@@ -120,7 +120,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 3fa54bcvZg1EahDP66k8Vde'
+      - 'Bearer aa6Pe15chkbf3d4vZ6Eg8VD'
     controller: null
     method: null
     route: null
@@ -147,13 +147,13 @@ endpoints:
         name: id
         description: 'The ID of the Devices_Orders.'
         required: true
-        example: 20
+        example: 4
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 20
+      id: 4
     queryParameters:
       with:
         name: with
@@ -183,7 +183,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer ZghaP3d14E6DvVkfe6c8ab5'
+      - 'Bearer 4aba5vc8kf6eVhE3P61ZgdD'
     controller: null
     method: null
     route: null
@@ -210,13 +210,13 @@ endpoints:
         name: id
         description: 'The ID of the Devices_Orders.'
         required: true
-        example: 16
+        example: 6
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 16
+      id: 6
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -227,7 +227,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer kegacEa6v4Pd5f6DbZ1Vh38'
+      - 'Bearer ve164bf8ZDPk5hE6g3dcaaV'
     controller: null
     method: null
     route: null

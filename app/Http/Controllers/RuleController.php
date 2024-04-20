@@ -32,6 +32,7 @@ class RuleController extends Controller
      * @param Request $request
      * @urlParam  id  integer required The ID of the Rule.
      * @queryParam with string To query related data. No-example
+     * @queryParam withCount string To query the number of records for related data. No-example
      * @return JsonResponse
      */
     public function show($id, Request $request): JsonResponse

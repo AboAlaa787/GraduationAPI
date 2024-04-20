@@ -48,6 +48,15 @@ endpoints:
         enumValues: []
         exampleWasSpecified: true
         custom: []
+      withCount:
+        name: withCount
+        description: 'To query the number of records for related data.'
+        required: false
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
     cleanQueryParameters:
       dir: '[asc,desc]'
     bodyParameters: []
@@ -68,7 +77,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer dbVek46hP56a1Efa8cDv3Zg'
+      - 'Bearer VPdbc16v6e4aEhZk5gaf3D8'
     controller: null
     method: null
     route: null
@@ -99,7 +108,7 @@ endpoints:
         name: email
         description: 'Must be a valid email address.'
         required: true
-        example: alberto86@example.net
+        example: rfadel@example.org
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -108,7 +117,7 @@ endpoints:
         name: name
         description: 'Must contain only letters. Must not be greater than 20 characters. Must be at least 2 characters.'
         required: true
-        example: efamduocinrejulclrbhyceqpzua
+        example: chsbtnej
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -117,7 +126,7 @@ endpoints:
         name: last_name
         description: 'Must contain only letters. Must not be greater than 20 characters. Must be at least 2 characters.'
         required: true
-        example: tghihwponjvcmzfddtdvvhhmnmxorh
+        example: djisvcbpyfzzhboui
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -126,7 +135,7 @@ endpoints:
         name: password
         description: ''
         required: true
-        example: consectetur
+        example: accusantium
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -135,7 +144,7 @@ endpoints:
         name: rule_id
         description: ''
         required: true
-        example: 73582.746119
+        example: 486894328.20477
         type: number
         enumValues: []
         exampleWasSpecified: false
@@ -144,25 +153,25 @@ endpoints:
         name: phone
         description: 'Must not be greater than 10 characters. Must be at least 10 characters.'
         required: false
-        example: cdcivxwmuwreqboyrneswoaealfngnxcerwhzmdspjcgnobeodyqibqxjkpbuxnhriyst
+        example: wxkbugqkkxqftmoygggaoiowkoachvslpbdqtopchthnuwidirqoesxbha
         type: string
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanBodyParameters:
-      email: alberto86@example.net
-      name: efamduocinrejulclrbhyceqpzua
-      last_name: tghihwponjvcmzfddtdvvhhmnmxorh
-      password: consectetur
-      rule_id: 73582.746119
-      phone: cdcivxwmuwreqboyrneswoaealfngnxcerwhzmdspjcgnobeodyqibqxjkpbuxnhriyst
+      email: rfadel@example.org
+      name: chsbtnej
+      last_name: djisvcbpyfzzhboui
+      password: accusantium
+      rule_id: 486894328.20477
+      phone: wxkbugqkkxqftmoygggaoiowkoachvslpbdqtopchthnuwidirqoesxbha
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 8453fck6vgaV61DhdPeEaZb'
+      - 'Bearer fd83h56av6ePZVack4E1bDg'
     controller: null
     method: null
     route: null
@@ -189,13 +198,13 @@ endpoints:
         name: id
         description: 'The ID of the User.'
         required: true
-        example: 12
+        example: 6
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 12
+      id: 6
     queryParameters:
       with:
         name: with
@@ -225,7 +234,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer vcdP8Dkb5h3e6g14fE6VZaa'
+      - 'Bearer 618ZDVgeacbaPE3f4kvd56h'
     controller: null
     method: null
     route: null
@@ -253,13 +262,13 @@ endpoints:
         name: id
         description: 'The ID of the User.'
         required: true
-        example: 14
+        example: 11
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 14
+      id: 11
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -267,7 +276,7 @@ endpoints:
         name: email
         description: 'Must be a valid email address.'
         required: false
-        example: schiller.citlalli@example.net
+        example: lmante@example.org
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -276,7 +285,7 @@ endpoints:
         name: name
         description: 'Must contain only letters. Must not be greater than 20 characters. Must be at least 2 characters.'
         required: false
-        example: ukqlrsozuwjbtmqlcmleceylmbayfddpgrmnsotjtqfvjdyxxmoferdlmnpswiamvkwr
+        example: oojsogfotvqb
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -285,7 +294,7 @@ endpoints:
         name: last_name
         description: 'Must contain only letters. Must not be greater than 20 characters. Must be at least 2 characters.'
         required: false
-        example: ygqfmpnhqemwsjfqjueiiifukrczfmcvluihapdjbwxfhxpfpctcwcfzgiekikiwuwulgdgoaiuyaxsskfnbvkud
+        example: mvgmcychxxfbylkxnsstxrwalrntdjqtvmv
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -303,7 +312,7 @@ endpoints:
         name: rule_id
         description: ''
         required: false
-        example: 13
+        example: 12
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -312,24 +321,24 @@ endpoints:
         name: phone
         description: 'Must not be greater than 10 characters. Must be at least 10 characters.'
         required: false
-        example: lkeiwadscyvrcgnhctodmnkxnxnsxelkrqed
+        example: wpgsjrepsltnitxcejszraqksfxuxwhapdjmshvedpma
         type: string
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanBodyParameters:
-      email: schiller.citlalli@example.net
-      name: ukqlrsozuwjbtmqlcmleceylmbayfddpgrmnsotjtqfvjdyxxmoferdlmnpswiamvkwr
-      last_name: ygqfmpnhqemwsjfqjueiiifukrczfmcvluihapdjbwxfhxpfpctcwcfzgiekikiwuwulgdgoaiuyaxsskfnbvkud
-      rule_id: 13
-      phone: lkeiwadscyvrcgnhctodmnkxnxnsxelkrqed
+      email: lmante@example.org
+      name: oojsogfotvqb
+      last_name: mvgmcychxxfbylkxnsstxrwalrntdjqtvmv
+      rule_id: 12
+      phone: wpgsjrepsltnitxcejszraqksfxuxwhapdjmshvedpma
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer hc6ab5Z3V1vfg8deaD6PEk4'
+      - 'Bearer E84hk1e6d36vaabcfZV5PDg'
     controller: null
     method: null
     route: null
@@ -356,13 +365,13 @@ endpoints:
         name: id
         description: 'The ID of the User.'
         required: true
-        example: 14
+        example: 11
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 14
+      id: 11
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -373,7 +382,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer DgdP31a8cv45aZkfVE6beh6'
+      - 'Bearer cVvfD6b8ge31ZP6dEkh4a5a'
     controller: null
     method: null
     route: null

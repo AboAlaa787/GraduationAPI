@@ -70,7 +70,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer bVdf3hvkDca86PEag5e146Z'
+      - 'Bearer vagP8E43af5hek6b6DVdcZ1'
     controller: null
     method: null
     route: null
@@ -101,7 +101,7 @@ endpoints:
         name: model
         description: ''
         required: true
-        example: neque
+        example: enim
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -110,7 +110,7 @@ endpoints:
         name: client_id
         description: ''
         required: true
-        example: 13
+        example: 17
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -119,7 +119,7 @@ endpoints:
         name: user_id
         description: ''
         required: false
-        example: 2
+        example: 7
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -128,7 +128,7 @@ endpoints:
         name: customer_id
         description: ''
         required: true
-        example: 7
+        example: 3
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -137,7 +137,7 @@ endpoints:
         name: info
         description: ''
         required: false
-        example: dicta
+        example: dolor
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -146,7 +146,7 @@ endpoints:
         name: problem
         description: ''
         required: false
-        example: non
+        example: nemo
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -155,7 +155,7 @@ endpoints:
         name: cost_to_client
         description: ''
         required: false
-        example: 0.7623
+        example: 3430782.95
         type: number
         enumValues: []
         exampleWasSpecified: false
@@ -164,7 +164,7 @@ endpoints:
         name: cost_to_customer
         description: ''
         required: false
-        example: 56235430.056465
+        example: 101.0
         type: number
         enumValues: []
         exampleWasSpecified: false
@@ -173,7 +173,7 @@ endpoints:
         name: fix_steps
         description: ''
         required: false
-        example: et
+        example: enim
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -182,7 +182,7 @@ endpoints:
         name: status
         description: ''
         required: false
-        example: 'لم يوافق على العمل به'
+        example: 'قيد العمل'
         type: string
         enumValues:
           - جاهز
@@ -197,7 +197,7 @@ endpoints:
         name: client_approval
         description: ''
         required: false
-        example: false
+        example: true
         type: boolean
         enumValues: []
         exampleWasSpecified: false
@@ -206,7 +206,7 @@ endpoints:
         name: date_receipt
         description: 'Must be a valid date.'
         required: false
-        example: '2024-04-20T02:41:35'
+        example: '2024-04-20T19:01:26'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -215,7 +215,7 @@ endpoints:
         name: deliver_to_client
         description: ''
         required: false
-        example: true
+        example: false
         type: boolean
         enumValues: []
         exampleWasSpecified: false
@@ -224,7 +224,7 @@ endpoints:
         name: deliver_to_customer
         description: ''
         required: false
-        example: false
+        example: true
         type: boolean
         enumValues: []
         exampleWasSpecified: false
@@ -233,7 +233,7 @@ endpoints:
         name: required_period
         description: ''
         required: false
-        example: 15
+        example: 10
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -242,7 +242,7 @@ endpoints:
         name: imei
         description: ''
         required: false
-        example: iusto
+        example: sunt
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -251,7 +251,7 @@ endpoints:
         name: Expected_date_of_delivery
         description: 'Must be a valid date.'
         required: false
-        example: '2024-04-20T02:41:35'
+        example: '2024-04-20T19:01:26'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -260,37 +260,37 @@ endpoints:
         name: repaired_in_center
         description: ''
         required: true
-        example: true
+        example: false
         type: boolean
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanBodyParameters:
-      model: neque
-      client_id: 13
-      user_id: 2
-      customer_id: 7
-      info: dicta
-      problem: non
-      cost_to_client: 0.7623
-      cost_to_customer: 56235430.056465
-      fix_steps: et
-      status: 'لم يوافق على العمل به'
-      client_approval: false
-      date_receipt: '2024-04-20T02:41:35'
-      deliver_to_client: true
-      deliver_to_customer: false
-      required_period: 15
-      imei: iusto
-      Expected_date_of_delivery: '2024-04-20T02:41:35'
-      repaired_in_center: true
+      model: enim
+      client_id: 17
+      user_id: 7
+      customer_id: 3
+      info: dolor
+      problem: nemo
+      cost_to_client: 3430782.95
+      cost_to_customer: 101.0
+      fix_steps: enim
+      status: 'قيد العمل'
+      client_approval: true
+      date_receipt: '2024-04-20T19:01:26'
+      deliver_to_client: false
+      deliver_to_customer: true
+      required_period: 10
+      imei: sunt
+      Expected_date_of_delivery: '2024-04-20T19:01:26'
+      repaired_in_center: false
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer E4Pedh38g6aacbVD1Z6fv5k'
+      - 'Bearer dfD8P6evaZb6chE45V1g3ak'
     controller: null
     method: null
     route: null
@@ -317,13 +317,13 @@ endpoints:
         name: id
         description: 'The ID of the Device.'
         required: true
-        example: 19
+        example: 9
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 19
+      id: 9
     queryParameters:
       with:
         name: with
@@ -353,7 +353,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer Ea1456bev8hZdPcV6gaD3kf'
+      - 'Bearer e6kdahV4vaf6gb38c51DZEP'
     controller: null
     method: null
     route: null
@@ -381,13 +381,13 @@ endpoints:
         name: id
         description: 'The ID of the Device.'
         required: true
-        example: 7
+        example: 2
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 7
+      id: 2
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -395,7 +395,7 @@ endpoints:
         name: model
         description: ''
         required: false
-        example: doloremque
+        example: ratione
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -404,7 +404,7 @@ endpoints:
         name: code
         description: ''
         required: false
-        example: odio
+        example: quia
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -413,7 +413,7 @@ endpoints:
         name: client_id
         description: ''
         required: false
-        example: 1
+        example: 10
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -422,7 +422,7 @@ endpoints:
         name: user_id
         description: ''
         required: false
-        example: 19
+        example: 1
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -431,7 +431,7 @@ endpoints:
         name: customer_id
         description: ''
         required: false
-        example: 18
+        example: 8
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -440,7 +440,7 @@ endpoints:
         name: client_priority
         description: ''
         required: false
-        example: 5
+        example: 4
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -449,7 +449,7 @@ endpoints:
         name: info
         description: ''
         required: false
-        example: nulla
+        example: reiciendis
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -458,7 +458,7 @@ endpoints:
         name: problem
         description: ''
         required: false
-        example: eaque
+        example: porro
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -467,7 +467,7 @@ endpoints:
         name: cost_to_client
         description: ''
         required: false
-        example: 18766.711334299
+        example: 2797.335368232
         type: number
         enumValues: []
         exampleWasSpecified: false
@@ -476,7 +476,7 @@ endpoints:
         name: cost_to_customer
         description: ''
         required: false
-        example: 43506294.8266
+        example: 205189276.35198
         type: number
         enumValues: []
         exampleWasSpecified: false
@@ -485,7 +485,7 @@ endpoints:
         name: fix_steps
         description: ''
         required: false
-        example: recusandae
+        example: quo
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -494,7 +494,7 @@ endpoints:
         name: status
         description: ''
         required: false
-        example: 'لم يتم بدء العمل فيه'
+        example: 'لا يصلح'
         type: string
         enumValues:
           - جاهز
@@ -509,7 +509,7 @@ endpoints:
         name: client_approval
         description: ''
         required: false
-        example: false
+        example: true
         type: boolean
         enumValues: []
         exampleWasSpecified: false
@@ -518,7 +518,7 @@ endpoints:
         name: date_receipt
         description: 'Must be a valid date.'
         required: false
-        example: '2024-04-20T02:41:35'
+        example: '2024-04-20T19:01:26'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -536,7 +536,7 @@ endpoints:
         name: deliver_to_customer
         description: ''
         required: false
-        example: true
+        example: false
         type: boolean
         enumValues: []
         exampleWasSpecified: false
@@ -545,7 +545,7 @@ endpoints:
         name: required_period
         description: ''
         required: false
-        example: 6
+        example: 12
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -554,7 +554,7 @@ endpoints:
         name: imei
         description: ''
         required: false
-        example: animi
+        example: a
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -563,7 +563,7 @@ endpoints:
         name: manager_priority
         description: ''
         required: false
-        example: 3
+        example: 15
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -572,7 +572,7 @@ endpoints:
         name: Expected_date_of_delivery
         description: 'Must be a valid date.'
         required: false
-        example: '2024-04-20T02:41:35'
+        example: '2024-04-20T19:01:26'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -587,26 +587,26 @@ endpoints:
         exampleWasSpecified: false
         custom: []
     cleanBodyParameters:
-      model: doloremque
-      code: odio
-      client_id: 1
-      user_id: 19
-      customer_id: 18
-      client_priority: 5
-      info: nulla
-      problem: eaque
-      cost_to_client: 18766.711334299
-      cost_to_customer: 43506294.8266
-      fix_steps: recusandae
-      status: 'لم يتم بدء العمل فيه'
-      client_approval: false
-      date_receipt: '2024-04-20T02:41:35'
+      model: ratione
+      code: quia
+      client_id: 10
+      user_id: 1
+      customer_id: 8
+      client_priority: 4
+      info: reiciendis
+      problem: porro
+      cost_to_client: 2797.335368232
+      cost_to_customer: 205189276.35198
+      fix_steps: quo
+      status: 'لا يصلح'
+      client_approval: true
+      date_receipt: '2024-04-20T19:01:26'
       deliver_to_client: false
-      deliver_to_customer: true
-      required_period: 6
-      imei: animi
-      manager_priority: 3
-      Expected_date_of_delivery: '2024-04-20T02:41:35'
+      deliver_to_customer: false
+      required_period: 12
+      imei: a
+      manager_priority: 15
+      Expected_date_of_delivery: '2024-04-20T19:01:26'
       repaired_in_center: true
     fileParameters: []
     responses: []
@@ -614,7 +614,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer ZVg15c36d4EfbPkvD8ha6ae'
+      - 'Bearer cE8g6Zb5Vk4d6v1ehfPaDa3'
     controller: null
     method: null
     route: null
@@ -641,13 +641,13 @@ endpoints:
         name: id
         description: 'The ID of the Device.'
         required: true
-        example: 19
+        example: 18
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 19
+      id: 18
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -658,7 +658,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer D6aPvdgeZ6abckhEf13458V'
+      - 'Bearer k6dac3VvEZh61b8gfaDP45e'
     controller: null
     method: null
     route: null
@@ -689,7 +689,7 @@ endpoints:
         name: model
         description: ''
         required: true
-        example: ut
+        example: odio
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -698,7 +698,7 @@ endpoints:
         name: client_id
         description: ''
         required: true
-        example: 18
+        example: 15
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -707,7 +707,7 @@ endpoints:
         name: user_id
         description: ''
         required: false
-        example: 2
+        example: 10
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -716,7 +716,7 @@ endpoints:
         name: info
         description: ''
         required: false
-        example: unde
+        example: ratione
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -725,7 +725,7 @@ endpoints:
         name: problem
         description: ''
         required: false
-        example: sint
+        example: veniam
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -734,7 +734,7 @@ endpoints:
         name: cost_to_client
         description: ''
         required: false
-        example: 8593.61339
+        example: 60223.4484538
         type: number
         enumValues: []
         exampleWasSpecified: false
@@ -743,7 +743,7 @@ endpoints:
         name: cost_to_customer
         description: ''
         required: false
-        example: 0.5795
+        example: 87191.49
         type: number
         enumValues: []
         exampleWasSpecified: false
@@ -752,7 +752,7 @@ endpoints:
         name: fix_steps
         description: ''
         required: false
-        example: rerum
+        example: nam
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -785,7 +785,7 @@ endpoints:
         name: date_receipt
         description: 'Must be a valid date.'
         required: false
-        example: '2024-04-20T02:41:35'
+        example: '2024-04-20T19:01:27'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -794,7 +794,7 @@ endpoints:
         name: deliver_to_client
         description: ''
         required: false
-        example: false
+        example: true
         type: boolean
         enumValues: []
         exampleWasSpecified: false
@@ -812,7 +812,7 @@ endpoints:
         name: required_period
         description: ''
         required: false
-        example: 14
+        example: 12
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -821,7 +821,7 @@ endpoints:
         name: imei
         description: ''
         required: false
-        example: quasi
+        example: eius
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -830,7 +830,7 @@ endpoints:
         name: Expected_date_of_delivery
         description: 'Must be a valid date.'
         required: false
-        example: '2024-04-20T02:41:35'
+        example: '2024-04-20T19:01:27'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -839,7 +839,7 @@ endpoints:
         name: repaired_in_center
         description: ''
         required: true
-        example: true
+        example: false
         type: boolean
         enumValues: []
         exampleWasSpecified: false
@@ -848,7 +848,7 @@ endpoints:
         name: name
         description: 'Must contain only letters.'
         required: true
-        example: iukusy
+        example: evkbwf
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -857,7 +857,7 @@ endpoints:
         name: last_name
         description: 'Must contain only letters.'
         required: true
-        example: bqbnlp
+        example: noqomy
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -866,7 +866,7 @@ endpoints:
         name: national_id
         description: 'Must be 11 characters.'
         required: true
-        example: tjciaztaexc
+        example: qplrzuuwobz
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -875,7 +875,7 @@ endpoints:
         name: phone
         description: 'Must be 10 characters.'
         required: true
-        example: aqwkkdgefh
+        example: nvrpdrfkej
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -884,7 +884,7 @@ endpoints:
         name: email
         description: 'Must be a valid email address.'
         required: true
-        example: treutel.morgan@example.com
+        example: etorp@example.net
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -893,42 +893,42 @@ endpoints:
         name: devices_count
         description: 'Must be at least 0.'
         required: false
-        example: 40
+        example: 47
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanBodyParameters:
-      model: ut
-      client_id: 18
-      user_id: 2
-      info: unde
-      problem: sint
-      cost_to_client: 8593.61339
-      cost_to_customer: 0.5795
-      fix_steps: rerum
+      model: odio
+      client_id: 15
+      user_id: 10
+      info: ratione
+      problem: veniam
+      cost_to_client: 60223.4484538
+      cost_to_customer: 87191.49
+      fix_steps: nam
       status: 'لم يوافق على العمل به'
       client_approval: false
-      date_receipt: '2024-04-20T02:41:35'
-      deliver_to_client: false
+      date_receipt: '2024-04-20T19:01:27'
+      deliver_to_client: true
       deliver_to_customer: true
-      required_period: 14
-      imei: quasi
-      Expected_date_of_delivery: '2024-04-20T02:41:35'
-      repaired_in_center: true
-      name: iukusy
-      last_name: bqbnlp
-      national_id: tjciaztaexc
-      phone: aqwkkdgefh
-      email: treutel.morgan@example.com
-      devices_count: 40
+      required_period: 12
+      imei: eius
+      Expected_date_of_delivery: '2024-04-20T19:01:27'
+      repaired_in_center: false
+      name: evkbwf
+      last_name: noqomy
+      national_id: qplrzuuwobz
+      phone: nvrpdrfkej
+      email: etorp@example.net
+      devices_count: 47
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 3f6Zad86eg1h5P4abEvVkDc'
+      - 'Bearer cZD6evk5dhPa4Ef368Vga1b'
     controller: null
     method: null
     route: null

@@ -50,6 +50,15 @@ endpoints:
         enumValues: []
         exampleWasSpecified: true
         custom: []
+      withCount:
+        name: withCount
+        description: 'To query the number of records for related data.'
+        required: false
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
     cleanQueryParameters:
       dir: '[asc,desc]'
     bodyParameters: []
@@ -70,7 +79,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer g8k1P5dfaZeE6h6vbaV4cD3'
+      - 'Bearer b64eZDvg51a6VhEkafPc38d'
     controller: null
     method: null
     route: null
@@ -104,7 +113,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer hv6efa1V638daEPckb4DZ5g'
+      - 'Bearer aZh1d8kc34a6f6eDgP5EbVv'
     controller: null
     method: null
     route: null
@@ -131,13 +140,13 @@ endpoints:
         name: id
         description: 'The ID of the Permission.'
         required: true
-        example: 16
+        example: 10
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 16
+      id: 10
     queryParameters:
       with:
         name: with
@@ -167,7 +176,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer ec6fbvPDE3g6154hdaZakV8'
+      - 'Bearer ba5hDdPEk6c36fg8va4eZ1V'
     controller: null
     method: null
     route: null
@@ -195,13 +204,13 @@ endpoints:
         name: id
         description: 'The ID of the Permission.'
         required: true
-        example: 8
+        example: 10
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 8
+      id: 10
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -212,7 +221,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 4gd68163aVvZbcEefPha5Dk'
+      - 'Bearer b6P8Ee4dahvZ3kf1gVa56cD'
     controller: null
     method: null
     route: null
@@ -239,13 +248,13 @@ endpoints:
         name: id
         description: 'The ID of the Permission.'
         required: true
-        example: 3
+        example: 15
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 3
+      id: 15
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -256,7 +265,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer PvZ3Dckd64egbh1fE58aV6a'
+      - 'Bearer DEav8641ZbVchd3fakPg65e'
     controller: null
     method: null
     route: null

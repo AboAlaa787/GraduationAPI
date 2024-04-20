@@ -40,7 +40,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer EkV5a66P18vhc34edbDfZga'
+      - 'Bearer gDa5kd8bfcZV4E36v1hP6ae'
     controller: null
     method: null
     route: null
@@ -84,7 +84,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 1ka3e6hPfb4ga5cDVd6vZE8'
+      - 'Bearer 4D5g6a6hfV8kv1PZbae3Edc'
     controller: null
     method: null
     route: null
@@ -128,7 +128,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 6Ped4gch3DVfZ1ak5E6vb8a'
+      - 'Bearer fbk61Pe5aVc86EDvga3d4hZ'
     controller: null
     method: null
     route: null
@@ -162,7 +162,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 6a8eZD6kP35cVbhafgdEv14'
+      - 'Bearer aZDk4gEVah86P1vfcdb635e'
     controller: null
     method: null
     route: null
@@ -189,13 +189,13 @@ endpoints:
         name: id
         description: 'The ID of the mark as read.'
         required: true
-        example: error
+        example: et
         type: string
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: error
+      id: et
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -206,7 +206,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 6PZ3efa16hvacbgdV8E45Dk'
+      - 'Bearer hVbZ3v6D5eka64dc8E1afgP'
     controller: null
     method: null
     route: null
@@ -233,13 +233,13 @@ endpoints:
         name: id
         description: 'The ID of the delete.'
         required: true
-        example: nobis
+        example: vero
         type: string
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: nobis
+      id: vero
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -250,7 +250,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer eZgPa661V5f3Db4hc8adkvE'
+      - 'Bearer 6dE4h1VfgaPc8Zab5Dvek36'
     controller: null
     method: null
     route: null

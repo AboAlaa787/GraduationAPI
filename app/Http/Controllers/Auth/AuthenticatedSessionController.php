@@ -3,14 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use function auth;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\Auth\LoginRequest;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Response;
-use App\Http\Requests\Auth\LoginRequest;
-use App\Models\User;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -56,10 +53,11 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): JsonResponse
     {
+        $user = $request->user();
 
-        $user = auth()->user();
+        $currentAccessToken = $user->currentAccessToken()->token;
 
-        $user->tokens()->where('id', $user->currentAccessToken()->id)->delete();
+        $user->tokens()->where('token', $currentAccessToken)->delete();
 
         return $this->apiResponse();
     }

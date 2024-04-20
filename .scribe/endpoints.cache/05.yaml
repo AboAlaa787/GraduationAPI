@@ -70,7 +70,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer vd8fkc3Va1h646PebZEDa5g'
+      - 'Bearer VebDPZh4Ekcd6fga6v13a85'
     controller: null
     method: null
     route: null
@@ -101,20 +101,20 @@ endpoints:
         name: name
         description: 'Must contain only letters.'
         required: true
-        example: bzigpi
+        example: rdnpcc
         type: string
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanBodyParameters:
-      name: bzigpi
+      name: rdnpcc
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer vEka6g1f45Zc3b86DaPhVde'
+      - 'Bearer h6fkePED8Z3aV5v4b16acgd'
     controller: null
     method: null
     route: null
@@ -141,17 +141,26 @@ endpoints:
         name: id
         description: 'The ID of the Rule.'
         required: true
-        example: 13
+        example: 19
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 13
+      id: 19
     queryParameters:
       with:
         name: with
         description: 'To query related data.'
+        required: false
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      withCount:
+        name: withCount
+        description: 'To query the number of records for related data.'
         required: false
         example: null
         type: string
@@ -177,7 +186,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer fgdv43Z1hbEaV56acPe6Dk8'
+      - 'Bearer eE3h84gPavaZDf65k6d1cVb'
     controller: null
     method: null
     route: null
@@ -222,7 +231,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer bE3ed5avaV86kcPDgfZ461h'
+      - 'Bearer dgP5bEvD4ZV6fha1k63ce8a'
     controller: null
     method: null
     route: null
@@ -249,13 +258,13 @@ endpoints:
         name: id
         description: 'The ID of the Rule.'
         required: true
-        example: 19
+        example: 4
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 19
+      id: 4
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -266,7 +275,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer aZ5aV6ek63P1b8dEvD4fgch'
+      - 'Bearer hv8f4Z5Eckgd6aPae1Db63V'
     controller: null
     method: null
     route: null

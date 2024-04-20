@@ -68,7 +68,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer dv4Da6h1e6kEb3Pa5gc8ZVf'
+      - 'Bearer 4Pg3bhae1fv6aZDEV8d5c6k'
     controller: null
     method: null
     route: null
@@ -120,7 +120,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer Pe3vda4fa85c6k6EDbh1gVZ'
+      - 'Bearer 1e5haD686PdZvbkca3fgVE4'
     controller: null
     method: null
     route: null
@@ -147,13 +147,13 @@ endpoints:
         name: id
         description: 'The ID of the Permission_Client.'
         required: true
-        example: 4
+        example: 6
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 4
+      id: 6
     queryParameters:
       with:
         name: with
@@ -183,7 +183,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer bavga3P6h51EVk6D8efd4Zc'
+      - 'Bearer g6k5ehEvdab8D4ZPc36afV1'
     controller: null
     method: null
     route: null
@@ -210,13 +210,13 @@ endpoints:
         name: id
         description: 'The ID of the Permission_Client.'
         required: true
-        example: 10
+        example: 7
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 10
+      id: 7
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -227,7 +227,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 1dEaD5Zf46V63gvkehcP8ba'
+      - 'Bearer 631agEd6eDZfbcVavhP4k58'
     controller: null
     method: null
     route: null

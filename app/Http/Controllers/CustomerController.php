@@ -21,6 +21,7 @@ class CustomerController extends Controller
      * @queryParam with string To query related data. No-example
      * @queryParam orderBy To sort data. No-example
      * @queryParam dir To determine the direction of the sort, default is asc. Example:[asc,desc]
+     * @queryParam withCount string To query the number of records for related data. No-example
      * @return JsonResponse
      */
     public function index(Request $request): JsonResponse

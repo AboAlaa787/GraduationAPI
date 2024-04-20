@@ -32,13 +32,16 @@ trait CRUDTrait
             $relations = $this->parseRelations($with);
             $this->validateRelations($model, $relations);
 
+            $withCount = $this->parseRelations($request->get('withCount',''));
+            $this->validateRelations($model, $withCount);
+
             $table = $model->getTable();
             [$keys, $customKeys] = $this->extractKeys($request);
             $orderBy = $request->get('orderBy');
             $orderDirection = $this->validateOrderDirection($request->get('dir', 'asc'));
             $query = $model->newQuery();
 
-            return $this->filterAndOrder($query, $table, $keys, $orderBy, $orderDirection, $relations, $customKeys);
+            return $this->filterAndOrder($query, $table, $keys, $orderBy, $orderDirection, $relations, $customKeys, $withCount);
         } catch (AuthorizationException $e) {
             return $this->apiResponse(null, 403, 'Error: ' . $e->getMessage());
         } catch (InvalidArgumentException|Exception $e) {
@@ -97,7 +100,7 @@ trait CRUDTrait
      */
     protected function extractKeys(Request $request): array
     {
-        $keys = $request->except(['orderBy', 'dir', 'with', 'page']);
+        $keys = $request->except(['orderBy', 'dir', 'with', 'page', 'withCount']);
         $customKeys = [];
 
         foreach ($keys as $key => $value) {
@@ -131,9 +134,10 @@ trait CRUDTrait
      * @param string $orderDirection
      * @param array $relations
      * @param array $customKeys
+     * @param array $withCount
      * @return JsonResponse
      */
-    protected function filterAndOrder(Builder $query, string $table, array $keys, ?string $orderBy, string $orderDirection, array $relations, array $customKeys): JsonResponse
+    protected function filterAndOrder(Builder $query, string $table, array $keys, ?string $orderBy, string $orderDirection, array $relations, array $customKeys, array $withCount): JsonResponse
     {
         $missingColumns = [];
 
@@ -157,7 +161,7 @@ trait CRUDTrait
             return $this->apiResponse(null, 422, 'Missing columns: ' . implode(', ', $missingColumns));
         }
 
-        return $this->handleOrdering($query, $table, $orderBy, $orderDirection, $relations, $customKeys);
+        return $this->handleOrdering($query, $table, $orderBy, $orderDirection, $relations, $customKeys, $withCount);
     }
 
     /**
@@ -184,10 +188,10 @@ trait CRUDTrait
      * @param string $orderDirection
      * @param array $relations
      * @param array $customKeys
+     * @param array $withCount
      * @return JsonResponse
-     * @throws InvalidArgumentException
      */
-    protected function handleOrdering(Builder $query, string $table, ?string $orderBy, string $orderDirection, array $relations, array $customKeys): JsonResponse
+    protected function handleOrdering(Builder $query, string $table, ?string $orderBy, string $orderDirection, array $relations, array $customKeys, array $withCount): JsonResponse
     {
         if ($orderBy && $this->validateColumn($table, $orderBy)) {
             $query->orderBy($orderBy, $orderDirection);
@@ -208,8 +212,8 @@ trait CRUDTrait
             });
         }
 
-        $data = $query->with($relations)->get();//->paginate();
-
+        $query->with($relations);//->get();//->paginate();
+        $data = $query->withCount($withCount)->get();
         return $this->apiResponse($data);
     }
 
