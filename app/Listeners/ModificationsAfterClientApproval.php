@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Enums\DeviceStatus;
 use App\Events\ClientApproval;
 use App\Models\Device;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -22,9 +23,9 @@ class ModificationsAfterClientApproval
      */
     public function handle(ClientApproval $event): void
     {
-        $device = Device::find($event->id);
-        if ($device && ($device->status === 'NotAgree') && ($device->client_approval !== null)) {
-            $status = $device->client_approval ? 'NotStarted' : 'Ready';
+        $device = $event->Device;
+        if ($device->client_approval !== null) {
+            $status = $device->client_approval ?  DeviceStatus::InProgress :  DeviceStatus::NotAgree;
             $device->update(['status' => $status]);
         }
     }

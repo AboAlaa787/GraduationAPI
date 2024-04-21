@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Events\ClientApproval;
+use App\Events\DeleteDevice;
+use App\Events\NotificationEvents\DeviceNotifications;
 use DB;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
@@ -73,6 +76,17 @@ class Device extends Model
 
             foreach ($devicesToUpdate as $deviceToUpdate) {
                 $deviceToUpdate->update(['client_priority' => $deviceToUpdate->client_priority - 1]);
+            }
+        });
+        static::updating(function ($device) {
+            if ($device->isDirty('client_approval')) {
+                event(new ClientApproval($device));
+            }
+            if ($device->isDirty('deliver_to_client') || $device->isDirty('deliver_to_customer')) {
+                event(new DeleteDevice($device));
+            }
+            if ($device->isDirty('status')) {
+                event(new DeviceNotifications($device));
             }
         });
     }

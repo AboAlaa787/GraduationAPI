@@ -3,17 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Events\AddDevice;
-use App\Events\ClientApproval;
 use App\Events\DeleteDevice;
-use App\Events\NotificationEvents\DeviceNotifications;
 use App\Http\Requests\Devices\CreateDeviceRequest;
 use App\Http\Requests\Devices\UpdateDeviceRequest;
-use App\Models\Client;
-use App\Models\CompletedDevice;
 use App\Models\Device;
 use App\Traits\CRUDTrait;
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Console\Scheduling\Event;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -45,7 +40,6 @@ class DeviceController extends Controller
     {
         $response = $this->store_data($request, Device::class);
         if ($response->isSuccessful()) {
-            // Event::dispatch(new AddDevice($request->client_id));
             event(new AddDevice($request->client_id));
         }
         return $response;
@@ -56,16 +50,7 @@ class DeviceController extends Controller
      */
     public function update(UpdateDeviceRequest $request, $id): JsonResponse
     {
-        $response = $this->update_data($request, $id, Device::class);
-        if ($response->isSuccessful()) {
-            // Event::dispa(new ClientApproval($id));
-            // Event::dispatch(new DeleteDevice($id));
-            // Event::dispatch(new DeviceNotifications($id));
-            event(new ClientApproval($id));
-            event(new DeleteDevice($id));
-            event(new DeviceNotifications($id));
-        }
-        return $response;
+        return $this->update_data($request, $id, Device::class);;
     }
 
     /**
@@ -76,9 +61,7 @@ class DeviceController extends Controller
         $device = Device::find($id);
         $response = $this->delete_data($id, Device::class);
         if ($response->isSuccessful()) {
-            // Event::dispatch(new DeleteDevice($id));
             event(new DeleteDevice($id));
-
         }
         return $response;
     }
