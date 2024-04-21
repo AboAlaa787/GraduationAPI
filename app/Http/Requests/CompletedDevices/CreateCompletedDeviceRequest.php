@@ -26,9 +26,9 @@ class CreateCompletedDeviceRequest extends FormRequest
             'model' => 'required|string',
             'imei' => 'nullable|string|max:15|min:15',
             'code' => 'required|unique:devices,code',
-            'client_id' => 'required|exists:clients,id',
+            'client_id' => 'integer|required|exists:clients,id',
             'client_name' => 'required|string|alpha',
-            'user_id' => 'required|exists:users,id',
+            'user_id' => 'integer|required|exists:users,id',
             'user_name' => 'required|string|alpha',
             'info' => 'nullable|string',
             'problem' => 'required|string',
@@ -41,7 +41,7 @@ class CreateCompletedDeviceRequest extends FormRequest
             'date_warranty' => 'date',
             'deliver_to_client'=>'boolean',
             'deliver_to_customer'=>'boolean',
-            'customer_id' => 'nullable|exists:customers,id',
+            'customer_id' => 'integer|nullable|exists:customers,id',
             'repaired_in_center' => 'required|boolean',
         ];
     }

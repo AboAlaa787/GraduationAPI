@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use App\Models\Client;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Mail\ResetPasswordMail;
@@ -22,7 +23,7 @@ class ResetPasswordController extends Controller
 {
     use ApiResponseTrait;
 
-    public function resetPasswordRequest(Request $request)
+    public function resetPasswordRequest(Request $request): JsonResponse
     {
         $request->validate([
             'email' => 'required|email',
@@ -58,7 +59,7 @@ class ResetPasswordController extends Controller
     }
 
 
-    protected function rules()
+    protected function rules(): array
     {
         return [
             'token' => 'required',
@@ -73,7 +74,7 @@ class ResetPasswordController extends Controller
         return $request->only(['email', 'password', 'password_confirmation', 'token']);
     }
 
-    protected function resetPasswordConfirm(Request $request)
+    protected function resetPasswordConfirm(Request $request): JsonResponse
     {
         $validation =   validator::make($this->credentials($request), $this->rules());
 
@@ -100,8 +101,8 @@ class ResetPasswordController extends Controller
             DB::table('password_reset_tokens')
                 ->where('email', $email)->delete();
             return $this->apiresponse($response, 200, 'password reset successfully');
-        } else {
-            return $this->apiresponse(['error' => 'unable to reset password'], 422, 'failed');
         }
+
+        return $this->apiresponse(['error' => 'unable to reset password'], 422, 'failed');
     }
 }

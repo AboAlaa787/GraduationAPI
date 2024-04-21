@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
             $table->foreignId('order_id')->constrained()->cascadeOnDelete();
+            $table->unique(['product_id', 'order_id']);
             $table->boolean('deliver_to_client')->default(false);
+            $table->boolean('deliver_to_user')->default(false);
             $table->time('deliver_time')->nullable();
             $table->timestamps();
         });

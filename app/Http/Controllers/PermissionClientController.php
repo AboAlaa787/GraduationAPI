@@ -5,52 +5,62 @@ namespace App\Http\Controllers;
 use App\Models\Permission_client;
 use App\Traits\ApiResponseTrait;
 use App\Traits\CRUDTrait;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+/**
+ * @group Permissions_Clients management
+ */
 class PermissionClientController extends Controller
 {
     use ApiResponseTrait;
     use CRUDTrait;
 
     /**
-     * @throws AuthorizationException
+     * @param Request $request
+     * @queryParam with string To query related data. No-example
+     * @queryParam orderBy To sort data. No-example
+     * @queryParam dir To determine the direction of the sort, default is asc. Example:[asc,desc]
+     * @return JsonResponse
      */
     public function index(Request $request): JsonResponse
     {
-        return $this->get_data(Permission_client::class,$request, $request->with);
+        return $this->index_data(new Permission_client(), $request, str($request->with));
     }
 
     /**
-     * @throws AuthorizationException
+     * @param $id
+     * @param Request $request
+     * @urlParam  id  integer required The ID of the Permission_Client.
+     * @queryParam with string To query related data. No-example
+     * @return JsonResponse
      */
     public function show($id, Request $request): JsonResponse
     {
-        return $this->show_data(Permission_client::class, $id, $request->with);
+        return $this->show_data(new Permission_client(), $id, str($request->with));
     }
 
     /**
-     * @throws AuthorizationException
+     * @param Request $request
+     * @return JsonResponse
      */
     public function store(Request $request): JsonResponse
     {
-        $validation =   Validator::make($request->all(), [
-            'permission_id' => 'required|exists:permissions,id|unique:permission_clients,permission_id,NULL,id,client_id,' . $request->input('client_id'),
-            'client_id' => 'required|exists:clients,id|unique:permission_clients,client_id,NULL,id,permission_id,' . $request->input('permission_id')
-        ]);
-        if ($validation->fails()){
-            return $this->apiResponse($validation->messages(),404,'Failed');
+        $validation = Validator::make($request->all(), ['permission_id' => 'required|exists:permissions,id|unique:permission_clients,permission_id,NULL,id,client_id,' . $request->input('client_id'), 'client_id' => 'required|exists:clients,id|unique:permission_clients,client_id,NULL,id,permission_id,' . $request->input('permission_id')]);
+        if ($validation->fails()) {
+            return $this->apiResponse($validation->messages(), 404, 'Failed');
         }
-        return  $this->store_data($request, Permission_client::class);
+        return $this->store_data($request, new Permission_client());
     }
 
     /**
-     * @throws AuthorizationException
+     * @param $id
+     * @return JsonResponse
+     * @urlParam  id  integer required The ID of the Permission_Client.
      */
     public function destroy($id): JsonResponse
     {
-        return $this->delete_data($id,Permission_client::class);
+        return $this->destroy_data($id, new Permission_client());
     }
 }

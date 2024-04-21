@@ -6,7 +6,6 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "backpack/theme-tabler": "^1.2",
         "guzzlehttp/guzzle": "^7.2",
         "ichtrojan/laravel-otp": "^2.0",
         "kongulov/interact-with-enum": "^1.0",
@@ -16,8 +15,8 @@
         "laravel/tinker": "^2.8"
     },
     "require-dev": {
-        "backpack/generators": "^4.0",
         "fakerphp/faker": "^1.9.1",
+        "knuckleswtf/scribe": "^4.35",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
         "mockery/mockery": "^1.4.4",
@@ -70,9 +69,6 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "repositories": {
-        "backpack": {
-            "type": "composer",
-            "url": "https://repo.backpackforlaravel.com/"
-        }
+
     }
 }

@@ -25,6 +25,14 @@ class Order extends Model
         'products',
     ];
 
+    protected static function boot(): void
+    {
+        parent::boot();
+        static::creating(function ($order) {
+
+        });
+    }
+
     public function devices(): BelongsToMany
     {
         return $this->belongsToMany(Device::class, 'devices_orders');

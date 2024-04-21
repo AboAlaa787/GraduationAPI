@@ -23,8 +23,8 @@ class UpdateOrderRequest extends FormRequest
     {
         return [
             'description' => 'string|filled',
-            'client_id' => 'exists:clients,id',
-            'user_id' => 'nullable|exists:users,id',
+            'client_id' => 'integer|exists:clients,id',
+            'user_id' => 'integer|nullable|exists:users,id',
         ];
     }
 }

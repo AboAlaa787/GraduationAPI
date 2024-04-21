@@ -25,7 +25,7 @@ class CheckIfAdmin
      * @param  \Illuminate\Contracts\Auth\Authenticatable|null  $user
      * @return bool
      */
-    private function checkIfUserIsAdmin($user)
+    private function checkIfUserIsAdmin($user): bool
     {
         // return ($user->is_admin == 1);
         return true;
@@ -41,9 +41,9 @@ class CheckIfAdmin
     {
         if ($request->ajax() || $request->wantsJson()) {
             return response(trans('backpack::base.unauthorized'), 401);
-        } else {
-            return redirect()->guest(backpack_url('login'));
         }
+
+        return redirect()->guest(backpack_url('login'));
     }
 
     /**

@@ -4,51 +4,75 @@ namespace App\Http\Controllers;
 
 use App\Models\Permission;
 use App\Traits\CRUDTrait;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * @group Permissions management
+ */
 class PermissionController extends Controller
 {
     use CRUDTrait;
 
     /**
-     * @throws AuthorizationException
+     * @param Request $request
+     * @queryParam with string To query related data. No-example
+     * @queryParam orderBy To sort data. No-example
+     * @queryParam dir To determine the direction of the sort, default is asc. Example:[asc,desc]
+     * @queryParam withCount string To query the number of records for related data. No-example
+     * @return JsonResponse
      */
     public function index(Request $request): JsonResponse
     {
-        return $this->get_data(Permission::class,$request, $request->with);
+        return $this->index_data(new Permission(), $request, str($request->with));
     }
 
     /**
-     * @throws AuthorizationException
+     * @param $id
+     * @param Request $request
+     * @urlParam  id  integer required The ID of the Permission.
+     * @queryParam with string To query related data. No-example
+     * @return JsonResponse
      */
-    public function show($id,Request $request): JsonResponse
+    public function show($id, Request $request): JsonResponse
     {
-        return $this->show_data(Permission::class, $id,$request->with);
+        return $this->show_data(new Permission(), $id, str($request->with));
     }
 
     /**
-     * @throws AuthorizationException
+     * Adding a permission is not allowed
+     * @param Request $request
+     * @return JsonResponse
      */
     public function store(Request $request): JsonResponse
     {
-        return $this->store_data($request, Permission::class);
+        // return $this->store_data($request, new Permission());
+        return $this->apiResponse([], 403, 'Adding a permission is not allowed');
     }
 
     /**
-     * @throws AuthorizationException
+     * Updating a permission is not allowed
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     * @urlParam  id  integer required The ID of the Permission.
      */
     public function update(Request $request, $id): JsonResponse
     {
-        return $this->update_data($request, $id, Permission::class);
+        // return $this->update_data($request, $id, new Permission());
+        return $this->apiResponse([], 403, 'Updating a permission is not allowed');
     }
 
     /**
-     * @throws AuthorizationException
+     * Deleting a permission is not allowed
+     * @param $id
+     * @return JsonResponse
+     * @urlParam  id  integer required The ID of the Permission.
      */
     public function destroy($id): JsonResponse
     {
-        return $this->delete_data($id, Permission::class);
+        // return $this->delete_data($id, new Permission());
+        return $this->apiResponse([], 403, 'Deleting a permission is not allowed');
+
     }
 }

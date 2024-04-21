@@ -10,12 +10,12 @@ use Illuminate\Contracts\Validation\ValidationRule;
 
 class UniqueEmailAcrossTables implements Rule
 {
-    public function passes($attribute, $value)
+    public function passes($attribute, $value): bool
     {
         return !User::where('email', $value)->exists() && !Client::where('email', $value)->exists();
     }
 
-    public function message()
+    public function message(): string
     {
         return 'The email has already been taken.';
     }

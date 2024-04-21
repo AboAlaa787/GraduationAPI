@@ -45,7 +45,7 @@ class UpdateUserRequest extends FormRequest
                 'filled',
             ],
             'rule_id' => [
-                'numeric',
+                'integer',
                 'filled',
                 'exists:rules,id'
             ],

@@ -3,54 +3,69 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Rules\CreateRuleRequest;
-use App\Http\Requests\Rules\UpdateRuleRequest;
 use App\Models\Rule;
 use App\Traits\CRUDTrait;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * @group Rule management
+ */
 class RuleController extends Controller
 {
     use CRUDTrait;
 
     /**
-     * @throws AuthorizationException
+     * @param Request $request
+     * @queryParam with string To query related data. No-example
+     * @queryParam orderBy To sort data. No-example
+     * @queryParam dir To determine the direction of the sort, default is asc. Example:[asc,desc]
+     * @return JsonResponse
      */
     public function index(Request $request): JsonResponse
     {
-        return $this->get_data(Rule::class,$request, $request->with);
+        return $this->index_data(new Rule(), $request, str($request->with));
     }
 
     /**
-     * @throws AuthorizationException
+     * @param $id
+     * @param Request $request
+     * @urlParam  id  integer required The ID of the Rule.
+     * @queryParam with string To query related data. No-example
+     * @queryParam withCount string To query the number of records for related data. No-example
+     * @return JsonResponse
      */
     public function show($id, Request $request): JsonResponse
     {
-        return $this->show_data(Rule::class, $id, $request->with);
+        return $this->show_data(new Rule(), $id, str($request->with));
     }
 
     /**
-     * @throws AuthorizationException
+     * @param CreateRuleRequest $request
+     * @return JsonResponse
      */
     public function store(CreateRuleRequest $request): JsonResponse
     {
-        return $this->store_data($request, Rule::class);
+        return $this->apiResponse([], 403, 'Adding a rule is not allowed');
     }
 
     /**
-     * @throws AuthorizationException
+     * @param $id
+     * @urlParam  id  integer required The ID of the Rule.
+     * @return JsonResponse
      */
-    public function update(UpdateRuleRequest $request, $id): JsonResponse
+    public function update($id): JsonResponse
     {
-        return $this->update_data($request, $id, Rule::class);
+        return $this->apiResponse([], 403, 'Updating a rule is not allowed');
     }
 
     /**
-     * @throws AuthorizationException
+     * @param $id
+     * @urlParam  id  integer required The ID of the Rule.
+     * @return JsonResponse
      */
     public function destroy($id): JsonResponse
     {
-        return $this->delete_data($id, Rule::class);
+        return $this->destroy_data($id, new Rule());
     }
 }

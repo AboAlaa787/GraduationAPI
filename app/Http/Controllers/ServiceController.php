@@ -6,51 +6,68 @@ use App\Http\Requests\Services\CreateServiceRequest;
 use App\Http\Requests\Services\UpdateServiceRequest;
 use App\Models\Service;
 use App\Traits\CRUDTrait;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * @group Services management
+ */
 class ServiceController extends Controller
 {
     use CRUDTrait;
 
     /**
-     * @throws AuthorizationException
+     * @param Request $request
+     * @queryParam with string To query related data. No-example
+     * @queryParam orderBy To sort data. No-example
+     * @queryParam dir To determine the direction of the sort, default is asc. Example:[asc,desc]
+     * @return JsonResponse
      */
     public function index(Request $request): JsonResponse
     {
-        return $this->get_data(Service::class,$request, $request->with);
+        return $this->index_data(new Service(), $request, str($request->with));
     }
 
     /**
-     * @throws AuthorizationException
+     * @param $id
+     * @param Request $request
+     * @urlParam  id  integer required The ID of the Service.
+     * @queryParam with string To query related data. No-example
+     * @return JsonResponse
      */
     public function show($id, Request $request): JsonResponse
     {
-        return $this->show_data(Service::class, $id, $request->with);
+        return $this->show_data(new Service(), $id, str($request->with));
     }
 
     /**
-     * @throws AuthorizationException
+     * @param CreateServiceRequest $request
+     * @urlParam  id  integer required The ID of the Service.
+     * @return JsonResponse
      */
     public function store(CreateServiceRequest $request): JsonResponse
     {
-        return $this->store_data($request, Service::class);
+        return $this->store_data($request, new Service());
     }
 
     /**
-     * @throws AuthorizationException
+     * @param UpdateServiceRequest $request
+     * @param $id
+     * @urlParam  id  integer required The ID of the Service.
+     * @return JsonResponse
      */
     public function update(UpdateServiceRequest $request, $id): JsonResponse
     {
-        return $this->update_data($request, $id, Service::class);
+        return $this->update_data($request, $id, new Service());
     }
 
     /**
-     * @throws AuthorizationException
+     * @param $id
+     * @urlParam  id  integer required The ID of the Service.
+     * @return JsonResponse
      */
     public function destroy($id): JsonResponse
     {
-        return $this->delete_data($id, Service::class);
+        return $this->destroy_data($id, new Service());
     }
 }

@@ -3,144 +3,157 @@
 namespace App\Traits;
 
 use Exception;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
+use InvalidArgumentException;
 
 trait CRUDTrait
 {
     use ApiResponseTrait;
 
     /**
-     * @throws AuthorizationException
+     * Display a listing of the resource.
+     *
+     * @param Model $model
+     * @param Request $request
+     * @param string $with
+     * @return JsonResponse
      */
-    public function get_data($model, Request $request, $with = ''): JsonResponse
+    public function index_data(Model $model, Request $request, string $with = ''): JsonResponse
     {
         try {
-            $this->authorize('viewAny', $model);
-        } catch (Exception $e) {
-            return $this->apiResponse(null, 403, 'Unauthorized');
+            $this->authorizeForModel($model, 'viewAny');
+            $relations = $this->parseRelations($with);
+            $this->validateRelations($model, $relations);
+
+            $withCount = $this->parseRelations($request->get('withCount',''));
+            $this->validateRelations($model, $withCount);
+
+            $table = $model->getTable();
+            [$keys, $customKeys] = $this->extractKeys($request);
+            $orderBy = $request->get('orderBy');
+            $orderDirection = $this->validateOrderDirection($request->get('dir', 'asc'));
+            $query = $model->newQuery();
+
+            return $this->filterAndOrder($query, $table, $keys, $orderBy, $orderDirection, $relations, $customKeys, $withCount);
+        } catch (AuthorizationException $e) {
+            return $this->apiResponse(null, 403, 'Error: ' . $e->getMessage());
+        } catch (InvalidArgumentException|Exception $e) {
+            return $this->apiResponse(null, 400, 'Error: ' . $e->getMessage());
         }
+    }
 
-        $relations = $this->parseRelations($with);
+    /**
+     * Authorize the user for the given model and ability.
+     *
+     * @param Model $model
+     * @param string $ability
+     * @return void
+     * @throws AuthorizationException
+     */
+    protected function authorizeForModel(Model $model, string $ability): void
+    {
+        $this->authorize($ability, $model);
+    }
 
-        if ($relations === false) {
-            return $this->apiResponse(null, 422, "Invalid relations format");
+    /**
+     * Parse the given "with" string into an array of relations.
+     *
+     * @param string $with
+     * @return array
+     */
+    protected function parseRelations(string $with): array
+    {
+        return empty($with) ? [] : explode(',', $with);
+    }
+
+    /**
+     * Validate the given relations against the model's available relations.
+     *
+     * @param Model $model
+     * @param array $relations
+     * @return void
+     * @throws InvalidArgumentException
+     */
+    protected function validateRelations(Model $model, array $relations): void
+    {
+        $modelRelations = $model->getRelations();
+        $invalidRelations = array_diff($relations, $modelRelations);
+
+        if (!empty($invalidRelations)) {
+            $invalidRelationsStr = implode(', ', $invalidRelations);
+            throw new InvalidArgumentException("Invalid relations: $invalidRelationsStr");
         }
+    }
 
-        $response = $this->validateRelations((new $model()), $relations);
-
-        if ($response) return $response;
-
-        $table = (new $model())->getTable();
-        $keys = $request->except(['orderBy', 'dir', 'with']);
+    /**
+     * Extract the keys and custom keys from the request.
+     *
+     * @param Request $request
+     * @return array
+     */
+    protected function extractKeys(Request $request): array
+    {
+        $keys = $request->except(['orderBy', 'dir', 'with', 'page', 'withCount']);
         $customKeys = [];
+
         foreach ($keys as $key => $value) {
-            if (strpos($key, '*') !== false) {
-                $newKey = str_replace('*', '.', $key);
-                $customKeys[$newKey] = $value;
+            if (str_contains($key, '*')) {
+                $customKeys[str_replace('*', '.', $key)] = $value;
                 unset($keys[$key]);
             }
         }
-        $orderBy = $request->get('orderBy');
-        $orderDirection = $request->get('dir', 'asc');
-        $modelQuery = $model::query();
 
-        return $this->filterAndOrder($modelQuery, $table, $keys, $orderBy, $orderDirection, $relations, $customKeys);
+        return [$keys, $customKeys];
     }
 
-    private function handleOrdering($modelQuery, $table, $orderBy, $orderDirection, $relations, $customKeys)
+    /**
+     * Validate the order direction.
+     *
+     * @param string $orderDirection
+     * @return string
+     */
+    protected function validateOrderDirection(string $orderDirection): string
     {
-        if (empty($orderBy)) {
-            foreach ($customKeys as $customKey => $value) {
-                $parts = explode('.', $customKey);
-                if (count($parts) === 2) {
-                    [$relation, $column] = $parts;
-
-                    $operator = Str::substr($column, -1);
-                    if ($operator == '!') {
-                        $column = Str::substr($column, 0, -1);
-                        if ($this->validateColumn($relation, $column)) {
-                            $modelQuery->whereHas($relation, function ($query) use ($column, $value) {
-                                $query->where($column, '!=', $value);
-                            });
-                        }
-                    } else {
-
-                        if (!$this->validateColumn($relation, $column)) {
-                            return $this->apiResponse(['error' => 'Invalid column: ' . $column], 422, 'Failed');
-                        }
-                        $modelQuery->whereHas($relation, function ($query) use ($column, $value) {
-                            $query->where($column, $value);
-                        });
-                    }
-                } else {
-                    return $this->apiResponse(null, 422, "Invalid custom key format");
-                }
-            }
-            $modelQuery = $modelQuery->with($relations);
-            return $this->apiResponse($modelQuery->get());
-        }
-
-        if (!$this->validateColumn($table, $orderBy)) {
-            return $this->apiResponse(['error' => 'Invalid column: ' . $orderBy], 422, 'Failed');
-        }
-
-        if (!in_array($orderDirection, ['asc', 'desc'])) {
-            $orderDirection = 'asc'; // Default to 'asc' if invalid direction is provided
-        }
-
-        foreach ($customKeys as $customKey => $value) {
-            $parts = explode('.', $customKey);
-            if (count($parts) === 2) {
-                [$relation, $column] = $parts;
-
-                $operator = Str::substr($column, -1);
-                if ($operator == '!') {
-                    $column = Str::substr($column, 0, -1);
-                    if ($this->validateColumn($relation, $column)) {
-                        $modelQuery->whereHas($relation, function ($query) use ($column, $value) {
-                            $query->where($column, '!=', $value);
-                        });
-                    }
-                } else {
-                    if (!$this->validateColumn($relation, $column)) {
-                        return $this->apiResponse(['error' => 'Invalid column: ' . $column], 422, 'Failed');
-                    }
-                    $modelQuery->whereHas($relation, function ($query) use ($column, $value) {
-                        $query->where($column, $value);
-                    });
-                }
-            } else {
-                return $this->apiResponse(null, 422, "Invalid custom key format");
-            }
-        }
-        $modelQuery = $modelQuery->orderBy($orderBy, $orderDirection)->with($relations);
-
-        return $this->apiResponse($modelQuery->get());
+        return in_array($orderDirection, ['asc', 'desc']) ? $orderDirection : 'asc';
     }
 
-    private function filterAndOrder($modelQuery, $table, $keys, $orderBy, $orderDirection, $relations, $customKeys)
+    /**
+     * Filter and order the query based on the given parameters.
+     *
+     * @param Builder $query
+     * @param string $table
+     * @param array $keys
+     * @param string|null $orderBy
+     * @param string $orderDirection
+     * @param array $relations
+     * @param array $customKeys
+     * @param array $withCount
+     * @return JsonResponse
+     */
+    protected function filterAndOrder(Builder $query, string $table, array $keys, ?string $orderBy, string $orderDirection, array $relations, array $customKeys, array $withCount): JsonResponse
     {
         $missingColumns = [];
 
         foreach ($keys as $key => $value) {
             $operator = Str::substr($key, -1);
-            if ($operator == '!') {
+            if ($operator === '!') {
                 $key = Str::substr($key, 0, -1);
                 if ($this->validateColumn($table, $key)) {
-                    $modelQuery->where($key,  '!=',  $value);
+                    $query->where($key, '!=', $value);
                 } else {
                     $missingColumns[] = $key;
                 }
+            } elseif ($this->validateColumn($table, $key)) {
+                $query->where($key, 'LIKE', '%' . $value . '%');
             } else {
-                if ($this->validateColumn($table, $key)) {
-                    $modelQuery->where($key, 'LIKE', '%' . $value . '%');
-                } else {
-                    $missingColumns[] = $key;
-                }
+                $missingColumns[] = $key;
             }
         }
 
@@ -148,131 +161,182 @@ trait CRUDTrait
             return $this->apiResponse(null, 422, 'Missing columns: ' . implode(', ', $missingColumns));
         }
 
-        return $this->handleOrdering($modelQuery, $table, $orderBy, $orderDirection, $relations, $customKeys);
+        return $this->handleOrdering($query, $table, $orderBy, $orderDirection, $relations, $customKeys, $withCount);
     }
 
-    private function validateColumn($table, $column)
+    /**
+     *  Validate the given column against the table schema.
+     *
+     * @param string $table
+     * @param string $column
+     * @return bool
+     */
+    protected function validateColumn(string $table, string $column): bool
     {
         if (!Schema::hasTable($table)) {
-            $table = $table . 's';
+            $table .= 's';
         }
         return Schema::hasColumn($table, $column);
     }
 
     /**
-     * @throws AuthorizationException
+     * Handle the ordering of the query based on the given parameters.
+     *
+     * @param Builder $query
+     * @param string $table
+     * @param string|null $orderBy
+     * @param string $orderDirection
+     * @param array $relations
+     * @param array $customKeys
+     * @param array $withCount
+     * @return JsonResponse
      */
-    public function show_data($model, $id, $with = ''): JsonResponse
+    protected function handleOrdering(Builder $query, string $table, ?string $orderBy, string $orderDirection, array $relations, array $customKeys, array $withCount): JsonResponse
     {
-        try {
-            $this->authorize('view', $model);
-        } catch (Exception $e) {
-            return $this->apiResponse(null, 403, 'Unauthorized');
+        if ($orderBy && $this->validateColumn($table, $orderBy)) {
+            $query->orderBy($orderBy, $orderDirection);
+        } else {
+            $query->orderBy('id', $orderDirection);
         }
 
-        $object = $model::find($id);
-
-        if (!$object) {
-            return $this->apiResponse(null, 404, "No item found with id: $id");
+        foreach ($customKeys as $key => $value) {
+            [$relation, $column, $operator] = $this->parseCustomKey($key);
+            if (empty($relation) || empty($column) || empty($operator)) {
+                throw new InvalidArgumentException("Invalid custom key format");
+            }
+            if (!$this->validateColumn($relation, $column)) {
+                throw new InvalidArgumentException('Invalid column: ' . $column);
+            }
+            $query->whereHas($relation, function ($q) use ($column, $value, $operator) {
+                $q->where($column, $operator === '!' ? '!=' : '=', $value);
+            });
         }
 
-
-        $relations = $this->parseRelations($with);
-
-        if ($relations === false) {
-            return $this->apiResponse(null, 422, "Invalid relations format");
-        }
-
-        $response = $this->validateRelations($object, $relations);
-
-        if ($response) {
-            return $response;
-        }
-
-        $data = $object->load($relations);
+        $query->with($relations);//->get();//->paginate();
+        $data = $query->withCount($withCount)->get();
         return $this->apiResponse($data);
     }
 
-    private function parseRelations($with)
+    /**
+     * Parse the custom keys.
+     *
+     * @param string $customKey
+     * @return array|null
+     */
+    protected function parseCustomKey(string $customKey): array|null
     {
-        if (empty($with)) {
-            return [];
-        }
-
-        $relations = explode(',', $with);
-
-        return $relations;
-    }
-
-    private function validateRelations($object, $relations): ?JsonResponse
-    {
-        try {
-            $modelRelations = $object->getRelations();
-
-            $invalidRelations = array_diff($relations, $modelRelations);
-
-            if (!empty($invalidRelations)) {
-                $invalidRelationsStr = implode(', ', $invalidRelations);
-                return $this->apiResponse([], 400, "Invalid relations: $invalidRelationsStr");
-            }
+        $parts = explode('.', $customKey);
+        if (count($parts) !== 2) {
             return null;
-        } catch (Exception $ex) {
-            return $this->apiResponse(['error' => $ex->getMessage()], 422, 'Failed');
+        }
+
+        $column = array_pop($parts);
+        $operator = Str::substr($column, -1) === '!' ? '!' : '=';
+        $column = $operator === '!' ? Str::substr($column, 0, -1) : $column;
+
+        return [$parts[0], $column, $operator];
+    }
+
+    /**
+     * Show the specified resource.
+     *
+     * @param Model $model
+     * @param int $id
+     * @param string $with
+     * @return JsonResponse
+     */
+    public function show_data(Model $model, int $id, string $with = ''): JsonResponse
+    {
+        try {
+            $this->authorizeForModel($model, 'view');
+            $object = $model->findOrFail($id);
+            $relations = $this->parseRelations($with);
+            $this->validateRelations($object, $relations);
+
+            $data = $object->load($relations);
+            return $this->apiResponse($data);
+        } catch (AuthorizationException $e) {
+            return $this->apiResponse(null, 403, 'Error: ' . $e->getMessage());
+        } catch (ModelNotFoundException  $e) {
+            $exceptionModel = explode('\\', $e->getModel());
+            $exceptionModel = end($exceptionModel);
+            return $this->apiResponse(null, 404, "Error: $exceptionModel with ID $id not found.");
+        } catch (InvalidArgumentException|Exception $e) {
+            return $this->apiResponse(null, 400, 'Error: ' . $e->getMessage());
         }
     }
 
     /**
-     * @throws AuthorizationException
+     * Store a newly created resource in storage.
+     *
+     * @param Request $request
+     * @param Model $model
+     * @return JsonResponse
      */
-    public function store_data($request, $model): JsonResponse
+    public function store_data(Request $request, Model $model): JsonResponse
     {
         try {
-            $this->authorize('create', $model);
-        } catch (Exception) {
-            return $this->apiResponse(null, 403, 'Unauthorized');
-        }
-        return $this->apiResponse($model::create($request->all()), 201, 'Add successful');
-    }
-
-    /**
-     * @throws AuthorizationException
-     */
-    public function update_data($request, $id, $model): JsonResponse
-    {
-        try {
-            $this->authorize('update', $model);
+            $this->authorizeForModel($model, 'create');
+            return $this->apiResponse($model::create($request->all()), 201, 'Add successful');
+        } catch (AuthorizationException $e) {
+            return $this->apiResponse(null, 403, 'Error: ' . $e->getMessage());
         } catch (Exception $e) {
-            return $this->apiResponse(null, 403, 'Unauthorized');
+            return $this->apiResponse(null, 400, 'Error: ' . $e->getMessage());
         }
-        $object = $model::find($id);
-        if (!$object) {
-            return $this->apiResponse(null, 404, 'There is no item with id ' . $id);
-        }
-        $columns = $request->keys();
-        foreach ($columns as $column) {
-            if ($column !== 'password' && $this->validateColumn((new $model())->getTable(), $column)) {
-                $object->$column = $request[$column];
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param Request $request
+     * @param int $id
+     * @param Model $model
+     * @return JsonResponse
+     */
+    public function update_data(Request $request, int $id, Model $model): JsonResponse
+    {
+        try {
+            $this->authorizeForModel($model, 'update');
+            $object = $model->findOrFail($id);
+            $columns = $request->keys();
+            foreach ($columns as $column) {
+                if ($column !== 'password' && $this->validateColumn($model->getTable(), $column)) {
+                    $object->$column = $request[$column];
+                }
             }
+            $object->save();
+            return $this->apiResponse($object, 200, 'Update successful');
+        } catch (AuthorizationException $e) {
+            return $this->apiResponse(null, 403, 'Error: ' . $e->getMessage());
+        } catch (ModelNotFoundException $e) {
+            $exceptionModel = explode('\\', $e->getModel());
+            $exceptionModel = end($exceptionModel);
+            return $this->apiResponse(null, 404, "Error: $exceptionModel with ID $id not found.");
+        } catch (InvalidArgumentException|Exception $e) {
+            return $this->apiResponse(null, 400, 'Error: ' . $e->getMessage());
         }
-        $object->save();
-        return $this->apiResponse($object, 201, 'Update successful');
     }
 
     /**
-     * @throws AuthorizationException
+     * Remove the specified resource from storage.
+     *
+     * @param int $id
+     * @param Model $model
+     * @return JsonResponse
      */
-    public function delete_data($id, $model): JsonResponse
+    public function destroy_data(int $id, Model $model): JsonResponse
     {
         try {
-            $this->authorize('delete', $model);
-        } catch (Exception $e) {
-            return $this->apiResponse(null, 403, 'Unauthorized');
+            $this->authorizeForModel($model, 'delete');
+            $object = $model->findOrFail($id);
+            $object->delete();
+            return $this->apiResponse('Delete successful');
+        } catch (AuthorizationException $e) {
+            return $this->apiResponse(null, 403, 'Error: ' . $e->getMessage());
+        } catch (ModelNotFoundException $e) {
+            $exceptionModel = explode('\\', $e->getModel());
+            $exceptionModel = end($exceptionModel);
+            return $this->apiResponse(null, 404, "Error: $exceptionModel with ID $id not found.");
         }
-        $delete = $model::find($id);
-        if (!$delete) {
-            return $this->apiResponse(null, 404, 'There is no item with id ' . $id);
-        }
-        $delete->destroy($id);
-        return $this->apiResponse('Delete successfully', 200);
     }
 }

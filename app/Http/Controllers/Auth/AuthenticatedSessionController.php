@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\Auth;
 
 use function auth;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\Auth\LoginRequest;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Response;
-use App\Http\Requests\Auth\LoginRequest;
-use App\Models\User;
 use Illuminate\Validation\ValidationException;
 
+/**
+ * @group Sessions management
+ */
 class AuthenticatedSessionController extends Controller
 {
     /**
@@ -22,7 +22,11 @@ class AuthenticatedSessionController extends Controller
     use ApiResponseTrait;
 
     /**
+     * Login
+     * @param LoginRequest $request
+     * @return JsonResponse
      * @throws ValidationException
+     * @unauthenticated
      */
     public function store(LoginRequest $request): JsonResponse
     {
@@ -32,32 +36,45 @@ class AuthenticatedSessionController extends Controller
         if (!$user) {
             $user = auth()->user();
         }
-        $token = $user->createToken('login')->plainTextToken;
+        $user->rule;
+        $expiration=config('sanctum.expiration');
+        $expires_at=now()->addMinutes($expiration);
+        $token = $request->user()->createToken('login',['*'],$expires_at);
 
         $message['auth'] = $user;
-        $message['token'] = $token;
+        $message['token'] = $token->plainTextToken;
         return $this->apiResponse($message);
     }
 
     /**
-     * Destroy an authenticated session.
+     * Logout
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function destroy(Request $request)
+    public function destroy(Request $request): JsonResponse
     {
+        $user = $request->user();
 
-        $user = auth()->user();
+        $currentAccessToken = $user->currentAccessToken()->token;
 
-        $user->tokens()->where('id', $user->currentAccessToken()->id)->delete();
+        $user->tokens()->where('token', $currentAccessToken)->delete();
 
         return $this->apiResponse();
     }
 
-    function refresh_token(Request $request): JsonResponse
+    /**
+     * Refresh token
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function refresh_token(Request $request): JsonResponse
     {
         $user = $request->user();
         $oldTokenId = $request->user()->currentAccessToken()->id;
-        $token = $request->user()->createToken('refresh-token');
+        $expiration=config('sanctum.expiration');
+        $expires_at=now()->addMinutes($expiration);
+        $token = $request->user()->createToken('refresh-token',['*'],$expires_at);
         $user->tokens()->where('id', $oldTokenId)->delete();
-        return $this->apiResponse(['token'=>$token->plainTextToken]);
+        return $this->apiResponse(['token' => $token->plainTextToken]);
     }
 }

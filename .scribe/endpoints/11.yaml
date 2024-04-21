@@ -1,0 +1,671 @@
+name: 'Completed devices management'
+description: ''
+endpoints:
+  -
+    httpMethods:
+      - GET
+    uri: api/completed_devices
+    metadata:
+      groupName: 'Completed devices management'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      with:
+        name: with
+        description: 'To query related data.'
+        required: false
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      orderBy:
+        name: orderBy
+        description: 'To sort data.'
+        required: false
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      dir:
+        name: dir
+        description: 'To determine the direction of the sort, default is asc.'
+        required: false
+        example: '[asc,desc]'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        custom: []
+    cleanQueryParameters:
+      dir: '[asc,desc]'
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: 'http://localhost:3000'
+          access-control-allow-credentials: 'true'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer hD4a631kgcPab68vef5ZVdE'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/completed_devices
+    metadata:
+      groupName: 'Completed devices management'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      model:
+        name: model
+        description: ''
+        required: true
+        example: dicta
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      imei:
+        name: imei
+        description: 'Must not be greater than 15 characters. Must be at least 15 characters.'
+        required: false
+        example: izzhybokhhitxvgmgiarvghjwroikqjkspvqmlwgobiaujrcryeokwjpnyzqhozqliicxzjphlt
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      code:
+        name: code
+        description: ''
+        required: true
+        example: distinctio
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      client_id:
+        name: client_id
+        description: ''
+        required: true
+        example: 9
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      client_name:
+        name: client_name
+        description: 'Must contain only letters.'
+        required: true
+        example: xznatu
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      user_id:
+        name: user_id
+        description: ''
+        required: true
+        example: 6
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      user_name:
+        name: user_name
+        description: 'Must contain only letters.'
+        required: true
+        example: smikwk
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      info:
+        name: info
+        description: ''
+        required: false
+        example: mollitia
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      problem:
+        name: problem
+        description: ''
+        required: true
+        example: quia
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      cost_to_client:
+        name: cost_to_client
+        description: ''
+        required: true
+        example: 5.78310241
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      cost_to_customer:
+        name: cost_to_customer
+        description: ''
+        required: false
+        example: 79.565
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      status:
+        name: status
+        description: ''
+        required: true
+        example: 'غير جاهز'
+        type: string
+        enumValues:
+          - جاهز
+          - 'غير جاهز'
+          - 'لا يصلح'
+          - 'قيد العمل'
+          - 'لم يتم بدء العمل فيه'
+          - 'لم يوافق على العمل به'
+        exampleWasSpecified: false
+        custom: []
+      fix_steps:
+        name: fix_steps
+        description: ''
+        required: false
+        example: repellendus
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      date_receipt:
+        name: date_receipt
+        description: 'Must be a valid date.'
+        required: true
+        example: '2024-04-20T19:01:26'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      date_delivery:
+        name: date_delivery
+        description: 'Must be a valid date.'
+        required: false
+        example: '2024-04-20T19:01:26'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      date_warranty:
+        name: date_warranty
+        description: 'Must be a valid date.'
+        required: false
+        example: '2024-04-20T19:01:26'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      deliver_to_client:
+        name: deliver_to_client
+        description: ''
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      deliver_to_customer:
+        name: deliver_to_customer
+        description: ''
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      customer_id:
+        name: customer_id
+        description: ''
+        required: false
+        example: 9
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      repaired_in_center:
+        name: repaired_in_center
+        description: ''
+        required: true
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanBodyParameters:
+      model: dicta
+      imei: izzhybokhhitxvgmgiarvghjwroikqjkspvqmlwgobiaujrcryeokwjpnyzqhozqliicxzjphlt
+      code: distinctio
+      client_id: 9
+      client_name: xznatu
+      user_id: 6
+      user_name: smikwk
+      info: mollitia
+      problem: quia
+      cost_to_client: 5.78310241
+      cost_to_customer: 79.565
+      status: 'غير جاهز'
+      fix_steps: repellendus
+      date_receipt: '2024-04-20T19:01:26'
+      date_delivery: '2024-04-20T19:01:26'
+      date_warranty: '2024-04-20T19:01:26'
+      deliver_to_client: true
+      deliver_to_customer: true
+      customer_id: 9
+      repaired_in_center: true
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer aa4hZDEg3fbv6c1Pd5Ve8k6'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/completed_devices/{id}'
+    metadata:
+      groupName: 'Completed devices management'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the Completed Device.'
+        required: true
+        example: 8
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanUrlParameters:
+      id: 8
+    queryParameters:
+      with:
+        name: with
+        description: 'To query related data.'
+        required: false
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: 'http://localhost:3000'
+          access-control-allow-credentials: 'true'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer hkaP6cDgaf384VZebdv61E5'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - PUT
+      - PATCH
+    uri: 'api/completed_devices/{id}'
+    metadata:
+      groupName: 'Completed devices management'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the Completed Device.'
+        required: true
+        example: 12
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanUrlParameters:
+      id: 12
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      model:
+        name: model
+        description: ''
+        required: false
+        example: omnis
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      imei:
+        name: imei
+        description: 'Must not be greater than 15 characters. Must be at least 15 characters.'
+        required: false
+        example: vlulnpcyupvybmnahgkoigykeapysqricujvjkcdibypcpuwcsboggucfraevmksbbtnlalkotm
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      code:
+        name: code
+        description: ''
+        required: false
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      client_id:
+        name: client_id
+        description: ''
+        required: false
+        example: 14
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      client_name:
+        name: client_name
+        description: 'Must contain only letters.'
+        required: false
+        example: wcgfjb
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      user_id:
+        name: user_id
+        description: ''
+        required: false
+        example: 17
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      user_name:
+        name: user_name
+        description: 'Must contain only letters.'
+        required: false
+        example: nkygrw
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      info:
+        name: info
+        description: ''
+        required: false
+        example: natus
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      problem:
+        name: problem
+        description: ''
+        required: false
+        example: labore
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      cost_to_client:
+        name: cost_to_client
+        description: ''
+        required: false
+        example: 65657019.136101
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      cost_to_customer:
+        name: cost_to_customer
+        description: ''
+        required: false
+        example: 0.0
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      status:
+        name: status
+        description: ''
+        required: false
+        example: 'لا يصلح'
+        type: string
+        enumValues:
+          - جاهز
+          - 'غير جاهز'
+          - 'لا يصلح'
+          - 'قيد العمل'
+          - 'لم يتم بدء العمل فيه'
+          - 'لم يوافق على العمل به'
+        exampleWasSpecified: false
+        custom: []
+      fix_steps:
+        name: fix_steps
+        description: ''
+        required: false
+        example: tempora
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      date_receipt:
+        name: date_receipt
+        description: 'Must be a valid date.'
+        required: false
+        example: '2024-04-20T19:01:26'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      date_delivery:
+        name: date_delivery
+        description: 'Must be a valid date.'
+        required: false
+        example: '2024-04-20T19:01:26'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      date_warranty:
+        name: date_warranty
+        description: 'Must be a valid date.'
+        required: false
+        example: '2024-04-20T19:01:26'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      deliver_to_client:
+        name: deliver_to_client
+        description: ''
+        required: false
+        example: false
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      deliver_to_customer:
+        name: deliver_to_customer
+        description: ''
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      customer_id:
+        name: customer_id
+        description: ''
+        required: false
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      repaired_in_center:
+        name: repaired_in_center
+        description: ''
+        required: false
+        example: false
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanBodyParameters:
+      model: omnis
+      imei: vlulnpcyupvybmnahgkoigykeapysqricujvjkcdibypcpuwcsboggucfraevmksbbtnlalkotm
+      client_id: 14
+      client_name: wcgfjb
+      user_id: 17
+      user_name: nkygrw
+      info: natus
+      problem: labore
+      cost_to_client: 65657019.136101
+      cost_to_customer: 0.0
+      status: 'لا يصلح'
+      fix_steps: tempora
+      date_receipt: '2024-04-20T19:01:26'
+      date_delivery: '2024-04-20T19:01:26'
+      date_warranty: '2024-04-20T19:01:26'
+      deliver_to_client: false
+      deliver_to_customer: true
+      repaired_in_center: false
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer edVP864avcZf65b1h3EgaDk'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - DELETE
+    uri: 'api/completed_devices/{id}'
+    metadata:
+      groupName: 'Completed devices management'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the Completed Device.'
+        required: true
+        example: 4
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanUrlParameters:
+      id: 4
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3k6v5cPhe1Vf6Ddg8Eaab4Z'
+    controller: null
+    method: null
+    route: null
+    custom: []

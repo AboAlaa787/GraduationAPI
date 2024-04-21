@@ -6,51 +6,67 @@ use App\Http\Requests\CompletedDevices\CreateCompletedDeviceRequest;
 use App\Http\Requests\CompletedDevices\UpdateCompletedDeviceRequest;
 use App\Models\CompletedDevice;
 use App\Traits\CRUDTrait;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * @group Completed devices management
+ */
 class CompletedDeviceController extends Controller
 {
     use CRUDTrait;
 
     /**
-     * @throws AuthorizationException
+     * @param Request $request
+     * @queryParam with string To query related data. No-example
+     * @queryParam orderBy To sort data. No-example
+     * @queryParam dir To determine the direction of the sort, default is asc. Example:[asc,desc]
+     * @return JsonResponse
      */
     public function index(Request $request): JsonResponse
     {
-        return $this->get_data(CompletedDevice::class,$request, $request->with);
+        return $this->index_data(new CompletedDevice(), $request, str($request->with));
     }
 
     /**
-     * @throws AuthorizationException
+     * @param integer $id
+     * @param Request $request
+     * @urlParam  id  integer required The ID of the Completed Device.
+     * @queryParam with string To query related data. No-example
+     * @return JsonResponse
      */
-    public function show($id, Request $request): JsonResponse
+    public function show(int $id, Request $request): JsonResponse
     {
-        return $this->show_data(CompletedDevice::class, $id, $request->with);
+        return $this->show_data(new CompletedDevice(), $id, str($request->with));
     }
 
     /**
-     * @throws AuthorizationException
+     * @param CreateCompletedDeviceRequest $request
+     * @return JsonResponse
      */
     public function store(CreateCompletedDeviceRequest $request): JsonResponse
     {
-        return $this->store_data($request, CompletedDevice::class);
+        return $this->store_data($request, new CompletedDevice());
     }
 
     /**
-     * @throws AuthorizationException
+     * @param UpdateCompletedDeviceRequest $request
+     * @param int $id
+     * @urlParam  id  integer required The ID of the Completed Device.
+     * @return JsonResponse
      */
-    public function update(UpdateCompletedDeviceRequest $request, $id): JsonResponse
+    public function update(UpdateCompletedDeviceRequest $request, int $id): JsonResponse
     {
-        return $this->update_data($request, $id, CompletedDevice::class);
+        return $this->update_data($request, $id, new CompletedDevice());
     }
 
     /**
-     * @throws AuthorizationException
+     * @param int $id
+     * @urlParam  id  integer required The ID of the Completed Device.
+     * @return JsonResponse
      */
-    public function destroy($id): JsonResponse
+    public function destroy(int $id): JsonResponse
     {
-        return $this->delete_data($id, CompletedDevice::class);
+        return $this->destroy_data($id, new CompletedDevice());
     }
 }

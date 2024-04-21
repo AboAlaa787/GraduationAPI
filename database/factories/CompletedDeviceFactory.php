@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class CompletedDeviceFactory extends Factory
 {
+    private static $codeCounter = 1;
     /**
      * Define the model's default state.
      *
@@ -20,7 +21,7 @@ class CompletedDeviceFactory extends Factory
         return [
             'model' => fake()->word,
             'imei' => fake()->numerify('###############'),
-            'code' => fake()->unique()->word,
+            'code' => str_pad('CODE' .self::$codeCounter++, 4, '0', STR_PAD_LEFT),
             'client_id' => fake()->numberBetween(1, 50),
             'client_name' => fake()->name,
             'user_id' => fake()->numberBetween(1, 50),
