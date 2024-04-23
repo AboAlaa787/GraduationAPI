@@ -127,7 +127,7 @@ class OrderController extends Controller
     protected function getDelivery(): ?User
     {
         $deliveriesWithDevicesCount = User::withCount('devices')->where('at_work', true)->whereHas('rule', function ($query) {
-            $query->where('name', RuleNames::Technician);
+            $query->where('name', RuleNames::Delivery);
         })->get();
         if (!$deliveriesWithDevicesCount) {
             $minDevicesCount = $deliveriesWithDevicesCount->min('devices_count');
