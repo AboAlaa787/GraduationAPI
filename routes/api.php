@@ -36,7 +36,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 
-Route::resource('/store_clients', ClientController::class)->only(['store']);
+Route::post('/clients', [ClientController::class,'store']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
 
