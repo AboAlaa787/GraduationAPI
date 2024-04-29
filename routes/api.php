@@ -36,6 +36,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 
+Route::resource('/store_clients', ClientController::class)->only(['store']);
+
 Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('/user', static function (Request $request) {
@@ -48,7 +50,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('refresh_token', [AuthenticatedSessionController::class, 'refresh_token']);
 
-    Route::resource('/clients', ClientController::class);
+    Route::resource('/clients', ClientController::class)->except('store');
 
     Route::resource('/centers', CenterController::class);
 
@@ -92,10 +94,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::delete('/delete/{id}', [NotificationController::class, 'deleteNotification']);
     });
 
-    Route::post('/devices/with_customer',[DeviceController::class,'storeDeviceAndCustomer']);
+    Route::post('/devices/with_customer', [DeviceController::class, 'storeDeviceAndCustomer']);
 });
-Route::get('t',function (){
-   $tt=User::withCount(['devices','orders'])->get();
-   return response()->json($tt);
+Route::get('t', function () {
+    $tt = User::withCount(['devices', 'orders'])->get();
+    return response()->json($tt);
 });
 require __DIR__ . '/auth.php';
