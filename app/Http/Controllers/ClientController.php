@@ -51,7 +51,7 @@ class ClientController extends Controller
     public function store(CreateClientRequest $request): JsonResponse
     {
         try {
-            $this->authorize('create', new Client());
+            // $this->authorize('create', new Client());
             $request['password'] = Hash::make($request['password']);
             $response['client'] = Client::create($request->all());
             $response['token'] = $response['client']->createToken('register')->plainTextToken;

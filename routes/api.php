@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\RuleNames;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CenterController;
 use App\Http\Controllers\ClientController;
@@ -19,6 +20,7 @@ use App\Http\Controllers\ProductOrderController;
 use App\Http\Controllers\RuleController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserController;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -89,12 +91,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/mark_as_read/{id}', [NotificationController::class, 'markAsRead']);
 
         Route::delete('/delete/{id}', [NotificationController::class, 'deleteNotification']);
-
-//        Route::post('/send', [NotificationController::class, 'sendNotification']);
     });
 
     Route::post('/devices/with_customer',[DeviceController::class,'storeDeviceAndCustomer']);
 
     Route::post('firebase/store_token',[FirebaseNotificationsController::class,'storeToken']);
 });
+
 require __DIR__ . '/auth.php';

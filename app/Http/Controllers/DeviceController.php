@@ -4,15 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Events\AddDevice;
 use App\Events\DeleteDevice;
-use App\Events\NotificationEvents\DeviceNotifications;
-use App\Http\Requests\Devices\CreateDeviceAndCustomerRequest;
 use App\Http\Requests\Devices\CreateDeviceRequest;
 use App\Http\Requests\Devices\UpdateDeviceRequest;
+use App\Events\NotificationEvents\DeviceNotifications;
+use App\Http\Requests\Devices\CreateDeviceAndCustomerRequest;
 use App\Models\Customer;
 use App\Models\Device;
 use App\Traits\CRUDTrait;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
