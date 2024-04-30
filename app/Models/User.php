@@ -28,6 +28,7 @@ class User extends Authenticatable
         'center_id',
         'phone',
         'address',
+        'device_token',
     ];
 
     /**
