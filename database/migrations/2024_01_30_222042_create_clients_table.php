@@ -23,6 +23,7 @@ return new class extends Migration
             $table->foreignId('rule_id')->nullable()->constrained()->nullOnDelete();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('device_token')->nullable();
             $table->string('address');
             $table->string('remember_token')->nullable();
             $table->timestamps();

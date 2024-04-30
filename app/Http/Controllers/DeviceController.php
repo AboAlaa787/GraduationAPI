@@ -4,24 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Events\AddDevice;
 use App\Events\DeleteDevice;
-<<<<<<< HEAD
-use App\Http\Requests\Devices\CreateDeviceRequest;
-use App\Http\Requests\Devices\UpdateDeviceRequest;
-=======
 use App\Events\NotificationEvents\DeviceNotifications;
 use App\Http\Requests\Devices\CreateDeviceAndCustomerRequest;
 use App\Http\Requests\Devices\CreateDeviceRequest;
 use App\Http\Requests\Devices\UpdateDeviceRequest;
 use App\Models\Customer;
->>>>>>> 612f2e305d8e32f7970dfc697857273af0d3d8c4
 use App\Models\Device;
 use App\Traits\CRUDTrait;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
-<<<<<<< HEAD
-=======
-use Illuminate\Database\Eloquent\Model;
->>>>>>> 612f2e305d8e32f7970dfc697857273af0d3d8c4
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -77,17 +68,7 @@ class DeviceController extends Controller
      */
     public function update(UpdateDeviceRequest $request, $id): JsonResponse
     {
-<<<<<<< HEAD
-        return $this->update_data($request, $id, Device::class);;
-=======
-        $response = $this->update_data($request, $id, new Device());
-        if ($response->isSuccessful()) {
-            event(new ClientApproval($id));
-            event(new DeleteDevice($id));
-            event(new DeviceNotifications($id));
-        }
-        return $response;
->>>>>>> 612f2e305d8e32f7970dfc697857273af0d3d8c4
+        return $this->update_data($request, $id, new Device());
     }
 
     /**

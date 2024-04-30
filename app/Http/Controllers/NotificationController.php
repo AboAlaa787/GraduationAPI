@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Traits\ApiResponseTrait;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -79,16 +80,18 @@ class NotificationController extends Controller
      */
     public function markAsRead(Request $request, $notificationId): JsonResponse
     {
-        $user = $request->user();
-        $unreadNotification = $user->notifications->where('id', $notificationId);
-        if (!$unreadNotification) {
-            return $this->apiResponse(null, 404, "No item found with id: $notificationId");
+        try {
+            $user = $request->user();
+            $unreadNotification = $user->notifications->findOrFail($notificationId);
+            if ($unreadNotification->read()) {
+                return $this->apiResponse(null, 409, "The message has already been read");
+            }
+            $unreadNotification->markAsRead();
+
+            return $this->apiResponse();
+        } catch (ModelNotFoundException) {
+            return $this->apiResponse([], 404, "Notification Not Found");
         }
-        if ($unreadNotification->read()) {
-            return $this->apiResponse(null, 409, "The message has already been read");
-        }
-        $unreadNotification->markAsRead();
-        return $this->apiResponse();
     }
 
     /**
@@ -100,13 +103,21 @@ class NotificationController extends Controller
      */
     public function deleteNotification(Request $request, int $notificationId): JsonResponse
     {
-        $user = $request->user();
-        $notification = $user->notifications->where('id', $notificationId)->first();
-        if (!$notification) {
-            return $this->apiResponse(null, 404, "No item found with id: $notificationId");
-        }
+        try {
+            $user = $request->user();
+            $notification = $user->notifications->findOrFail($notificationId);
 
-        $notification->delete();
-        return $this->apiResponse();
+            $notification->delete();
+            return $this->apiResponse();
+        } catch (ModelNotFoundException) {
+            return $this->apiResponse([], 404, "Notification Not Found");
+        }
     }
+
+//    public function sendNotification(Request $request):JsonResponse
+//    {
+//        $this->validate($request,[
+//            'message' => 'required',
+//        ]);
+//    }
 }

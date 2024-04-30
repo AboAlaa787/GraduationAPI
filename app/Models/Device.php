@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use App\Enums\RuleNames;
 use App\Events\ClientApproval;
 use App\Events\DeleteDevice;
 use App\Events\NotificationEvents\DeviceNotifications;
 use DB;
-use App\Enums\RuleNames;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,7 +18,7 @@ class Device extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['model', 'imei', 'code', 'client_id', 'user_id', 'client_priority', 'manager_priority', 'info', 'problem', 'cost_to_client', 'cost_to_customer', 'fix_steps', 'status', 'client_approval', 'date_receipt', 'customer_id', 'Expected_date_of_delivery', 'deliver_to_client', 'deliver_to_customer', 'repaired_in_center',];
+    protected $fillable = ['model', 'imei', 'code', 'client_id', 'user_id', 'client_priority', 'manager_priority', 'info', 'problem', 'cost_to_client', 'cost_to_customer', 'fix_steps', 'status', 'client_approval', 'date_receipt', 'customer_id', 'Expected_date_of_delivery', 'deliver_to_client', 'deliver_to_customer', 'repaired_in_center', 'at_work'];
     protected $relations = ['client', 'user', 'customer', 'orders',];
 
     protected static function boot(): void

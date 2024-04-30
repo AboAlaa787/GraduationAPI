@@ -42,6 +42,7 @@ class Client extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'device_token',
     ];
 
     protected $casts = [
