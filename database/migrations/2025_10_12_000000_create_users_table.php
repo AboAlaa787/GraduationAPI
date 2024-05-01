@@ -21,7 +21,6 @@ return new class extends Migration
             $table->foreignId('rule_id')->constrained()->cascadeOnDelete();
             $table->string('phone',10)->nullable();
             $table->string('address')->nullable();
-            $table->string('device_token')->nullable();
             $table->boolean('at_work')->default(false);
             $table->rememberToken();
             $table->timestamps();

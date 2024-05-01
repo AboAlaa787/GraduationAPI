@@ -22,6 +22,7 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserController;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -96,6 +97,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/devices/with_customer',[DeviceController::class,'storeDeviceAndCustomer']);
 
     Route::post('firebase/store_token',[FirebaseNotificationsController::class,'storeToken']);
+
+    Route::post('firebase/push',[FirebaseNotificationsController::class,'pushNotification']);
 });
 
 require __DIR__ . '/auth.php';

@@ -37,11 +37,16 @@ trait CRUDTrait
 
             $table = $model->getTable();
             [$keys, $customKeys] = $this->extractKeys($request);
+
             $orderBy = $request->get('orderBy');
             $orderDirection = $this->validateOrderDirection($request->get('dir', 'asc'));
+
+            $page=$request->get('page',1);
+            $perPage=$request->get('per_page',20);
+
             $query = $model->newQuery();
 
-            return $this->filterAndOrder($query, $table, $keys, $orderBy, $orderDirection, $relations, $customKeys, $withCount);
+            return $this->filterAndOrder($query, $table, $keys, $orderBy, $orderDirection, $relations, $customKeys, $withCount,$page,$perPage);
         } catch (AuthorizationException $e) {
             return $this->apiResponse(null, 403, 'Error: ' . $e->getMessage());
         } catch (InvalidArgumentException|Exception $e) {
@@ -100,7 +105,7 @@ trait CRUDTrait
      */
     protected function extractKeys(Request $request): array
     {
-        $keys = $request->except(['orderBy', 'dir', 'with', 'page', 'withCount']);
+        $keys = $request->except(['orderBy', 'dir', 'with', 'withCount', 'page','per_page']);
         $customKeys = [];
 
         foreach ($keys as $key => $value) {
@@ -135,9 +140,11 @@ trait CRUDTrait
      * @param array $relations
      * @param array $customKeys
      * @param array $withCount
+     * @param int $page
+     * @param int $perPage
      * @return JsonResponse
      */
-    protected function filterAndOrder(Builder $query, string $table, array $keys, ?string $orderBy, string $orderDirection, array $relations, array $customKeys, array $withCount): JsonResponse
+    protected function filterAndOrder(Builder $query, string $table, array $keys, ?string $orderBy, string $orderDirection, array $relations, array $customKeys, array $withCount,int $page,int $perPage): JsonResponse
     {
         $missingColumns = [];
 
@@ -161,7 +168,7 @@ trait CRUDTrait
             return $this->apiResponse(null, 422, 'Missing columns: ' . implode(', ', $missingColumns));
         }
 
-        return $this->handleOrdering($query, $table, $orderBy, $orderDirection, $relations, $customKeys, $withCount);
+        return $this->handleOrdering($query, $table, $orderBy, $orderDirection, $relations, $customKeys, $withCount,$page,$perPage);
     }
 
     /**
@@ -191,7 +198,7 @@ trait CRUDTrait
      * @param array $withCount
      * @return JsonResponse
      */
-    protected function handleOrdering(Builder $query, string $table, ?string $orderBy, string $orderDirection, array $relations, array $customKeys, array $withCount): JsonResponse
+    protected function handleOrdering(Builder $query, string $table, ?string $orderBy, string $orderDirection, array $relations, array $customKeys, array $withCount,int $page,int $perPage): JsonResponse
     {
         if ($orderBy && $this->validateColumn($table, $orderBy)) {
             $query->orderBy($orderBy, $orderDirection);
@@ -212,8 +219,8 @@ trait CRUDTrait
             });
         }
 
-        $query->with($relations);//->get();//->paginate();
-        $data = $query->withCount($withCount)->get();
+        $query->with($relations);
+        $data = $query->withCount($withCount)->paginate($perPage, page: $page);
         return $this->apiResponse($data);
     }
 

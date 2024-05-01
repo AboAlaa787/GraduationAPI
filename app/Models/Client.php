@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\FirebaseNotifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -14,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Client extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable,FirebaseNotifiable;
 
     protected $fillable = [
         'name',
@@ -29,7 +30,6 @@ class Client extends Authenticatable
         'national_id',
         'remember_token',
         'account_active',
-        'device_token',
     ];
 
     protected $relations = [
@@ -44,7 +44,6 @@ class Client extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
-        'device_token',
     ];
 
     protected $casts = [

@@ -75,14 +75,17 @@ class NotificationController extends Controller
      * Mark specific notification as read by id
      *
      * @param Request $request
-     * @param $notificationId
+     * @param string $notificationId
      * @return JsonResponse
      */
-    public function markAsRead(Request $request, $notificationId): JsonResponse
+    public function markAsRead(Request $request, string $notificationId): JsonResponse
     {
         try {
             $user = $request->user();
-            $unreadNotification = $user->notifications->findOrFail($notificationId);
+            $unreadNotification = $user->notifications->find($notificationId);
+            if ($unreadNotification == null) {
+                return $this->apiResponse([], 404, "Notification Not Found");
+            }
             if ($unreadNotification->read()) {
                 return $this->apiResponse(null, 409, "The message has already been read");
             }
@@ -98,19 +101,21 @@ class NotificationController extends Controller
      * Delete specific notification by id
      *
      * @param Request $request
-     * @param integer $notificationId
+     * @param string $notificationId
      * @return JsonResponse
      */
-    public function deleteNotification(Request $request, int $notificationId): JsonResponse
+    public function deleteNotification(Request $request, string $notificationId): JsonResponse
     {
         try {
             $user = $request->user();
-            $notification = $user->notifications->findOrFail($notificationId);
-
+            $notification = $user->notifications->find($notificationId);
+            if ($notification == null) {
+                return $this->apiResponse([], 404, "Notification Not Found");
+            }
             $notification->delete();
             return $this->apiResponse();
-        } catch (ModelNotFoundException) {
-            return $this->apiResponse([], 404, "Notification Not Found");
+        } catch (Exception $exception) {
+            return $this->apiResponse([], 422, "Error: " . $exception->getMessage());
         }
     }
 

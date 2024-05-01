@@ -1,30 +1,27 @@
 <?php
 
-namespace App\Notifications\DevicesStatus;
+namespace App\Notifications;
 
+use App\Enums\DeviceStatus;
+use App\Models\Device;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class NotAgreeNotification extends Notification
+class DeviceStateNotification extends Notification
 {
     use Queueable;
-    public $device_id;
-    public $user_id;
-    public $client_id;
-    public $problem;
-    public $cost;
+
+    private Device $device;
+    private DeviceStatus $status;
+
     /**
      * Create a new notification instance.
      */
-    public function __construct($device_id, $user_id, $client_id,  $problem, $cost)
+    public function __construct(Device $device)
     {
-        $this->device_id = $device_id;
-        $this->user_id = $user_id;
-        $this->client_id = $client_id;
-        $this->problem = $problem;
-        $this->cost = $cost;
+        $this->device = $device;
+        $this->status = $device->status;
     }
 
     /**
@@ -55,11 +52,20 @@ class NotAgreeNotification extends Notification
      */
     public function toArray(object $notifiable): array
     {
+        $model = $this->device->model;
+        $code = $this->device->code;
+        $status = $this->device->status;
+            $message = [
+            'تحية طيبة سيد ' . $notifiable->name,
+            'الجهاز ذات نوع ' . $model,
+            'والذي كوده هو ' . $code,
+            'في حالة ' . $status,
+            'وأصبح قابل للاستلام من قبل حضرتكم. هل تريد أن نوصله إليك؟'
+        ];
         return [
-            'device_id' => $this->device_id,
-            'user_id' => $this->user_id,
-            'client_id' =>  $this->client_id,
-            'message' => 'The device was examined and found a malfunction:' .  $this->problem . 'repair cost:' .  $this->cost . 'Do you agree',
+            'title' => 'اشعار بحالة جهاز',
+            'body' => $message,
+            'Replyable' => true
         ];
     }
 }

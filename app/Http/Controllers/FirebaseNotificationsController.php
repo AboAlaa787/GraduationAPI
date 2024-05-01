@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Firebase;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -25,8 +26,14 @@ class FirebaseNotificationsController extends Controller
         ]);
         $device_token = $request->get('device_token');
         $user = $request->user();
-        $user->update(['device_token' => $device_token]);
+        $currentAccessToken = $user->currentAccessToken()->token;
+        $userDevicesTokens = ($user->tokens()->where('token', $currentAccessToken)->pluck('device_token')->first());
+        if (is_null($userDevicesTokens)) {
+            $user->tokens()->where('token', $currentAccessToken)->update(['device_token' => $device_token]);
+            return $this->apiResponse($user, 200, 'Success: Device token stored successfully.');
+        }
         return $this->apiResponse($user, 200, 'Success: Device token stored successfully.');
+
     }
 
     /**
@@ -42,53 +49,20 @@ class FirebaseNotificationsController extends Controller
             'devices_tokens' => 'required|array',
             'title' => 'required|string',
             'body' => 'required|string',
+            'notification_id' => 'required|string|exists:notifications,id'
         ]);
-        $SERVER_API_KEY = env('FIREBASE_SERVER_KEY');
-
-        $devicesTokens = $request->get('devices_tokens');
-        $title = $request->get('title');
-        $body = $request->get('body');
-
-        $data = [
-            'registration_ids' => $devicesTokens,
-            'notification' => [
-                'title' => $title,
-                'body' => $body,
-                'sound' => 'default',
-            ],
-        ];
-
-        $dataString = json_encode($data);
-
-        $headers = [
-
-            'Authorization: key=' . $SERVER_API_KEY,
-
-            'Content-Type: application/json',
-
-        ];
-
-        $ch = curl_init();
-
-        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
-
-        curl_setopt($ch, CURLOPT_POST, true);
-
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
-
-        $response = curl_exec($ch);
-        if ($response === false) {
-            return $this->apiResponse(null, 422, 'Error: Failed to send notification.');
+        $user = $request->user();
+        $currentAccessToken = $user->currentAccessToken()->token;
+        $senderDeviceTokens = ($user->tokens()->where('token', $currentAccessToken)->pluck('device_token')->first());
+        if ($senderDeviceTokens == null) {
+            return $this->apiResponse(null, 404, 'No devices tokens stored.');
         }
-
-        curl_close($ch);
-
-        return $this->apiResponse($response, 200, 'Success: Notification sent.');
+        return (new Firebase())->pushNotification(
+            $request->get('devices_tokens'),
+            $request->get('title'),
+            $request->get('body'),
+            $request->get('notification_id'),
+            $senderDeviceTokens
+        );
     }
 }
