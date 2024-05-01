@@ -38,6 +38,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 
+Route::post('/clients', [ClientController::class,'store']);
+
 Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('/user', static function (Request $request) {
@@ -50,7 +52,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('refresh_token', [AuthenticatedSessionController::class, 'refresh_token']);
 
-    Route::resource('/clients', ClientController::class);
+    Route::resource('/clients', ClientController::class)->except('store');;
 
     Route::resource('/centers', CenterController::class);
 
