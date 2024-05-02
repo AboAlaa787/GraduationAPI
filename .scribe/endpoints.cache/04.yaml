@@ -62,15 +62,14 @@ endpoints:
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
-          access-control-allow-origin: 'http://localhost:3000'
-          access-control-allow-credentials: 'true'
+          vary: Origin
         description: null
         custom: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer v6Da3kgfVPZ6bEh1ecad584'
+      - 'Bearer fZ36D8k15vb6eadgV4cEPha'
     controller: null
     method: null
     route: null
@@ -97,13 +96,13 @@ endpoints:
         name: id
         description: 'The ID of the Service.'
         required: true
-        example: 11
+        example: 15
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 11
+      id: 15
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -111,7 +110,7 @@ endpoints:
         name: name
         description: ''
         required: true
-        example: assumenda
+        example: placeat
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -120,7 +119,7 @@ endpoints:
         name: price
         description: ''
         required: true
-        example: 38843893.820494
+        example: 0.346
         type: number
         enumValues: []
         exampleWasSpecified: false
@@ -129,22 +128,22 @@ endpoints:
         name: time_required
         description: 'Must be a valid date in the format <code>H:i:s</code>.'
         required: true
-        example: '19:01:26'
+        example: '03:09:29'
         type: string
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanBodyParameters:
-      name: assumenda
-      price: 38843893.820494
-      time_required: '19:01:26'
+      name: placeat
+      price: 0.346
+      time_required: '03:09:29'
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer Pb1aVe6fZ64dkED8c3hvg5a'
+      - 'Bearer d8Zbg1h6PvV34kaefc5aD6E'
     controller: null
     method: null
     route: null
@@ -171,13 +170,13 @@ endpoints:
         name: id
         description: 'The ID of the Service.'
         required: true
-        example: 1
+        example: 20
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 1
+      id: 20
     queryParameters:
       with:
         name: with
@@ -199,15 +198,14 @@ endpoints:
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
-          access-control-allow-origin: 'http://localhost:3000'
-          access-control-allow-credentials: 'true'
+          vary: Origin
         description: null
         custom: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer c136bgDda8fv465ZPEkeVah'
+      - 'Bearer PD561Zkfhvcad8bV4a6eEg3'
     controller: null
     method: null
     route: null
@@ -235,13 +233,13 @@ endpoints:
         name: id
         description: 'The ID of the Service.'
         required: true
-        example: 11
+        example: 17
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 11
+      id: 17
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -249,7 +247,7 @@ endpoints:
         name: name
         description: ''
         required: false
-        example: magni
+        example: quis
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -258,7 +256,7 @@ endpoints:
         name: price
         description: ''
         required: false
-        example: 56779.254791023
+        example: 2719.488043291
         type: number
         enumValues: []
         exampleWasSpecified: false
@@ -267,22 +265,22 @@ endpoints:
         name: time_required
         description: 'Must be a valid date in the format <code>H:i:s</code>.'
         required: false
-        example: '19:01:26'
+        example: '03:09:29'
         type: string
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanBodyParameters:
-      name: magni
-      price: 56779.254791023
-      time_required: '19:01:26'
+      name: quis
+      price: 2719.488043291
+      time_required: '03:09:29'
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 3f6cP51vbgdaZhVE6D84eka'
+      - 'Bearer 6f1DebkvacP4ZhEa58g3dV6'
     controller: null
     method: null
     route: null
@@ -309,13 +307,13 @@ endpoints:
         name: id
         description: 'The ID of the Service.'
         required: true
-        example: 12
+        example: 3
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 12
+      id: 3
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -326,7 +324,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer Dk8cP6aebdE6vhVf1Z3a5g4'
+      - 'Bearer ZPk3ba6Dd854gfcveE6ahV1'
     controller: null
     method: null
     route: null

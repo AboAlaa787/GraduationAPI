@@ -22,6 +22,8 @@ class ProductOrderController extends Controller
      * @queryParam with string To query related data. No-example
      * @queryParam orderBy To sort data. No-example
      * @queryParam dir To determine the direction of the sort, default is asc. Example:[asc,desc]
+     * @queryParam page integer To specify the page number to be retrieved. Example:1
+     * @queryParam per_page integer To specify the number of records per page. No-example
      * @return JsonResponse
      */
     public function index(Request $request): JsonResponse

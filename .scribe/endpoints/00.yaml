@@ -26,7 +26,7 @@ endpoints:
         name: email
         description: 'Must not be greater than 50 characters. Must be at least 5 characters.'
         required: true
-        example: kpagac@example.net
+        example: tyrique61@example.com
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -35,14 +35,14 @@ endpoints:
         name: password
         description: ''
         required: true
-        example: ';MyxyP]FL'
+        example: 'hN%>;}q'
         type: string
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanBodyParameters:
-      email: kpagac@example.net
-      password: ';MyxyP]FL'
+      email: tyrique61@example.com
+      password: 'hN%>;}q'
     fileParameters: []
     responses: []
     responseFields: []
@@ -80,7 +80,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer E4vkbP1VecaadgD86h365Zf'
+      - 'Bearer 6vaec4aV3dZ1hk5g8E6DPbf'
     controller: null
     method: null
     route: null
@@ -114,7 +114,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer kE6ZcgV8f6D13a5e4hPvdab'
+      - 'Bearer ED18cf635vVk46hbPZegada'
     controller: null
     method: null
     route: null

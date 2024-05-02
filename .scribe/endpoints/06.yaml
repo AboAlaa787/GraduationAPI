@@ -60,15 +60,14 @@ endpoints:
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
-          access-control-allow-origin: 'http://localhost:3000'
-          access-control-allow-credentials: 'true'
+          vary: Origin
         description: null
         custom: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer Zb66v4dDghk15fa8VeaPEc3'
+      - 'Bearer a1PhvEdf683k5D46begZacV'
     controller: null
     method: null
     route: null
@@ -99,7 +98,7 @@ endpoints:
         name: name
         description: ''
         required: true
-        example: sit
+        example: assumenda
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -108,7 +107,7 @@ endpoints:
         name: price
         description: ''
         required: true
-        example: 400778195.76247
+        example: 282211.05
         type: number
         enumValues: []
         exampleWasSpecified: false
@@ -117,22 +116,22 @@ endpoints:
         name: quantity
         description: ''
         required: true
-        example: 13
+        example: 19
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanBodyParameters:
-      name: sit
-      price: 400778195.76247
-      quantity: 13
+      name: assumenda
+      price: 282211.05
+      quantity: 19
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer f4cb6V1ahd6EgD3ev8P5Zka'
+      - 'Bearer d6P3Zc8gbEV5k6ha4vefDa1'
     controller: null
     method: null
     route: null
@@ -159,13 +158,13 @@ endpoints:
         name: id
         description: 'The ID of the Product.'
         required: true
-        example: 6
+        example: 2
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 6
+      id: 2
     queryParameters:
       with:
         name: with
@@ -187,15 +186,14 @@ endpoints:
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
-          access-control-allow-origin: 'http://localhost:3000'
-          access-control-allow-credentials: 'true'
+          vary: Origin
         description: null
         custom: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer gdf5vD1h4Pe8Vaca36kbEZ6'
+      - 'Bearer a6v1cdagPhbE5f3eZ6kV84D'
     controller: null
     method: null
     route: null
@@ -223,13 +221,13 @@ endpoints:
         name: id
         description: 'The ID of the Product.'
         required: true
-        example: 17
+        example: 1
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 17
+      id: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -237,7 +235,7 @@ endpoints:
         name: name
         description: ''
         required: false
-        example: quasi
+        example: delectus
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -246,7 +244,7 @@ endpoints:
         name: price
         description: ''
         required: false
-        example: 4518.54885
+        example: 7792.068575028
         type: number
         enumValues: []
         exampleWasSpecified: false
@@ -261,8 +259,8 @@ endpoints:
         exampleWasSpecified: false
         custom: []
     cleanBodyParameters:
-      name: quasi
-      price: 4518.54885
+      name: delectus
+      price: 7792.068575028
       quantity: 7
     fileParameters: []
     responses: []
@@ -270,7 +268,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer v4a3PVk6DbEfeZ1ah5c6dg8'
+      - 'Bearer ZaahbV1Dvf6PkE6cg3d4e85'
     controller: null
     method: null
     route: null
@@ -314,7 +312,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 864k1aZEfPvD3ea5Vcgdh6b'
+      - 'Bearer Vkae5ahb6dPDE3vZ814fcg6'
     controller: null
     method: null
     route: null

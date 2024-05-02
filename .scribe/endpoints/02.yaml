@@ -1,12 +1,12 @@
-name: 'Users management'
+name: Endpoints
 description: ''
 endpoints:
   -
     httpMethods:
       - GET
-    uri: api/users
+    uri: api/user
     metadata:
-      groupName: 'Users management'
+      groupName: Endpoints
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
@@ -20,45 +20,8 @@ endpoints:
       Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
-    queryParameters:
-      with:
-        name: with
-        description: 'To query related data.'
-        required: false
-        example: null
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        custom: []
-      orderBy:
-        name: orderBy
-        description: 'To sort data.'
-        required: false
-        example: null
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        custom: []
-      dir:
-        name: dir
-        description: 'To determine the direction of the sort, default is asc.'
-        required: false
-        example: '[asc,desc]'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        custom: []
-      withCount:
-        name: withCount
-        description: 'To query the number of records for related data.'
-        required: false
-        example: null
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        custom: []
-    cleanQueryParameters:
-      dir: '[asc,desc]'
+    queryParameters: []
+    cleanQueryParameters: []
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
@@ -69,15 +32,57 @@ endpoints:
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
-          access-control-allow-origin: 'http://localhost:3000'
-          access-control-allow-credentials: 'true'
+          vary: Origin
         description: null
         custom: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer VPdbc16v6e4aEhZk5gaf3D8'
+      - 'Bearer vbk5fh1c6aPEVDZ48d6ge3a'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/centers
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          vary: Origin
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer eav5ca4fhkP8D63db61VEZg'
     controller: null
     method: null
     route: null
@@ -85,9 +90,9 @@ endpoints:
   -
     httpMethods:
       - POST
-    uri: api/users
+    uri: api/centers
     metadata:
-      groupName: 'Users management'
+      groupName: Endpoints
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
@@ -104,74 +109,66 @@ endpoints:
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
-      email:
-        name: email
-        description: 'Must be a valid email address.'
-        required: true
-        example: rfadel@example.org
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        custom: []
       name:
         name: name
-        description: 'Must contain only letters. Must not be greater than 20 characters. Must be at least 2 characters.'
+        description: 'Must contain only letters.'
         required: true
-        example: chsbtnej
+        example: bfiwth
         type: string
         enumValues: []
         exampleWasSpecified: false
         custom: []
-      last_name:
-        name: last_name
-        description: 'Must contain only letters. Must not be greater than 20 characters. Must be at least 2 characters.'
-        required: true
-        example: djisvcbpyfzzhboui
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        custom: []
-      password:
-        name: password
+      status:
+        name: status
         description: ''
         required: true
-        example: accusantium
+        example: مغلق
+        type: string
+        enumValues:
+          - مفتوح
+          - مغلق
+        exampleWasSpecified: false
+        custom: []
+      address:
+        name: address
+        description: ''
+        required: true
+        example: fuga
         type: string
         enumValues: []
         exampleWasSpecified: false
         custom: []
-      rule_id:
-        name: rule_id
-        description: ''
-        required: true
-        example: 486894328.20477
-        type: number
-        enumValues: []
-        exampleWasSpecified: false
-        custom: []
-      phone:
-        name: phone
-        description: 'Must not be greater than 10 characters. Must be at least 10 characters.'
+      start_work:
+        name: start_work
+        description: 'Must be a valid date in the format <code>H:i</code>.'
         required: false
-        example: wxkbugqkkxqftmoygggaoiowkoachvslpbdqtopchthnuwidirqoesxbha
+        example: '03:09'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      end_work:
+        name: end_work
+        description: 'Must be a valid date in the format <code>H:i</code>. Must be a date after <code>start_work</code>.'
+        required: false
+        example: '2057-05-29'
         type: string
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanBodyParameters:
-      email: rfadel@example.org
-      name: chsbtnej
-      last_name: djisvcbpyfzzhboui
-      password: accusantium
-      rule_id: 486894328.20477
-      phone: wxkbugqkkxqftmoygggaoiowkoachvslpbdqtopchthnuwidirqoesxbha
+      name: bfiwth
+      status: مغلق
+      address: fuga
+      start_work: '03:09'
+      end_work: '2057-05-29'
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer fd83h56av6ePZVack4E1bDg'
+      - 'Bearer cafb3Dg4v8dk65PEZhaVe16'
     controller: null
     method: null
     route: null
@@ -179,9 +176,9 @@ endpoints:
   -
     httpMethods:
       - GET
-    uri: 'api/users/{id}'
+    uri: 'api/centers/{id}'
     metadata:
-      groupName: 'Users management'
+      groupName: Endpoints
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
@@ -196,25 +193,16 @@ endpoints:
     urlParameters:
       id:
         name: id
-        description: 'The ID of the User.'
+        description: 'The ID of the center.'
         required: true
-        example: 6
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        custom: []
-    cleanUrlParameters:
-      id: 6
-    queryParameters:
-      with:
-        name: with
-        description: 'To query related data.'
-        required: false
-        example: null
+        example: corporis
         type: string
         enumValues: []
         exampleWasSpecified: false
         custom: []
+    cleanUrlParameters:
+      id: corporis
+    queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
     cleanBodyParameters: []
@@ -226,15 +214,14 @@ endpoints:
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
-          access-control-allow-origin: 'http://localhost:3000'
-          access-control-allow-credentials: 'true'
+          vary: Origin
         description: null
         custom: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 618ZDVgeacbaPE3f4kvd56h'
+      - 'Bearer 6kEhdgPf431bDV6ae85Zcav'
     controller: null
     method: null
     route: null
@@ -243,9 +230,9 @@ endpoints:
     httpMethods:
       - PUT
       - PATCH
-    uri: 'api/users/{id}'
+    uri: 'api/centers/{id}'
     metadata:
-      groupName: 'Users management'
+      groupName: Endpoints
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
@@ -260,85 +247,58 @@ endpoints:
     urlParameters:
       id:
         name: id
-        description: 'The ID of the User.'
+        description: 'The ID of the center.'
         required: true
-        example: 11
-        type: integer
+        example: voluptatem
+        type: string
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 11
+      id: voluptatem
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
-      email:
-        name: email
-        description: 'Must be a valid email address.'
-        required: false
-        example: lmante@example.org
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        custom: []
-      name:
-        name: name
-        description: 'Must contain only letters. Must not be greater than 20 characters. Must be at least 2 characters.'
-        required: false
-        example: oojsogfotvqb
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        custom: []
-      last_name:
-        name: last_name
-        description: 'Must contain only letters. Must not be greater than 20 characters. Must be at least 2 characters.'
-        required: false
-        example: mvgmcychxxfbylkxnsstxrwalrntdjqtvmv
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        custom: []
-      password:
-        name: password
+      status:
+        name: status
         description: ''
         required: false
-        example: null
+        example: مغلق
+        type: string
+        enumValues:
+          - مفتوح
+          - مغلق
+        exampleWasSpecified: false
+        custom: []
+      start_work:
+        name: start_work
+        description: 'Must be a valid date in the format <code>H:i</code>.'
+        required: false
+        example: '03:09'
         type: string
         enumValues: []
         exampleWasSpecified: false
         custom: []
-      rule_id:
-        name: rule_id
-        description: ''
+      end_work:
+        name: end_work
+        description: 'Must be a valid date in the format <code>H:i</code>. Must be a date after <code>start_work</code>.'
         required: false
-        example: 12
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        custom: []
-      phone:
-        name: phone
-        description: 'Must not be greater than 10 characters. Must be at least 10 characters.'
-        required: false
-        example: wpgsjrepsltnitxcejszraqksfxuxwhapdjmshvedpma
+        example: '2050-10-26'
         type: string
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanBodyParameters:
-      email: lmante@example.org
-      name: oojsogfotvqb
-      last_name: mvgmcychxxfbylkxnsstxrwalrntdjqtvmv
-      rule_id: 12
-      phone: wpgsjrepsltnitxcejszraqksfxuxwhapdjmshvedpma
+      status: مغلق
+      start_work: '03:09'
+      end_work: '2050-10-26'
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer E84hk1e6d36vaabcfZV5PDg'
+      - 'Bearer 4P8ad665evgkhD3cfbZ1aEV'
     controller: null
     method: null
     route: null
@@ -346,9 +306,9 @@ endpoints:
   -
     httpMethods:
       - DELETE
-    uri: 'api/users/{id}'
+    uri: 'api/centers/{id}'
     metadata:
-      groupName: 'Users management'
+      groupName: Endpoints
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
@@ -363,15 +323,15 @@ endpoints:
     urlParameters:
       id:
         name: id
-        description: 'The ID of the User.'
+        description: 'The ID of the center.'
         required: true
-        example: 11
-        type: integer
+        example: rem
+        type: string
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 11
+      id: rem
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -382,7 +342,300 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer cVvfD6b8ge31ZP6dEkh4a5a'
+      - 'Bearer Dbe6vgcZ5PE648akh3faV1d'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/firebase/store_token
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Store FCM token'
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      device_token:
+        name: device_token
+        description: ''
+        required: true
+        example: incidunt
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanBodyParameters:
+      device_token: incidunt
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 1bfZ4Vv65Ecde8Da36hgPka'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/firebase/push
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Push notification to device'
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      devices_tokens:
+        name: devices_tokens
+        description: ''
+        required: true
+        example: []
+        type: object
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      title:
+        name: title
+        description: ''
+        required: true
+        example: ut
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      body:
+        name: body
+        description: ''
+        required: true
+        example: in
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      notification_id:
+        name: notification_id
+        description: ''
+        required: true
+        example: numquam
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanBodyParameters:
+      devices_tokens: []
+      title: ut
+      body: in
+      notification_id: numquam
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6h35b6Za8ke4c1VaEvPfDgd'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/password/reset/request
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      email:
+        name: email
+        description: 'Must be a valid email address.'
+        required: true
+        example: schmidt.neil@example.net
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      front_url:
+        name: front_url
+        description: 'Must be a valid URL.'
+        required: true
+        example: 'https://www.rice.com/ut-voluptatum-exercitationem-veniam-qui-quia-est'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanBodyParameters:
+      email: schmidt.neil@example.net
+      front_url: 'https://www.rice.com/ut-voluptatum-exercitationem-veniam-qui-quia-est'
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer P46Dgab861vkchf5adeZV3E'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/password/reset/confirm
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer ZVd6vabe8413cD6PagE5fhk'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/email/verify/request
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          vary: Origin
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer E6Z4avDVkbh6gaPd1fc5e38'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/email/verify/confirm
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Mark email as verified'
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      code:
+        name: code
+        description: 'Must be at least 6.'
+        required: true
+        example: 7
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanBodyParameters:
+      code: 7
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer dVe1gv3Db8kaEcfZPh54a66'
     controller: null
     method: null
     route: null

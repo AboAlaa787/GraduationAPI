@@ -69,15 +69,14 @@ endpoints:
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
-          access-control-allow-origin: 'http://localhost:3000'
-          access-control-allow-credentials: 'true'
+          vary: Origin
         description: null
         custom: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 63vadV1f4be6ZahcPkEg5D8'
+      - 'Bearer 3eP4af6EcdV61bgZ8hvkD5a'
     controller: null
     method: null
     route: null
@@ -108,7 +107,7 @@ endpoints:
         name: name
         description: 'Must contain only letters.'
         required: true
-        example: iwmuhj
+        example: lyorjd
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -117,7 +116,7 @@ endpoints:
         name: last_name
         description: 'Must contain only letters.'
         required: true
-        example: beuexo
+        example: tomvgm
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -126,7 +125,7 @@ endpoints:
         name: national_id
         description: 'Must be 11 characters.'
         required: true
-        example: pcpgrxnrwhu
+        example: wiplxmewimx
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -135,7 +134,7 @@ endpoints:
         name: client_id
         description: ''
         required: true
-        example: 13
+        example: 8
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -144,7 +143,7 @@ endpoints:
         name: phone
         description: 'Must be 10 characters.'
         required: true
-        example: vfusghmtwu
+        example: hpunwcxtgk
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -153,7 +152,7 @@ endpoints:
         name: email
         description: 'Must be a valid email address.'
         required: true
-        example: sierra14@example.org
+        example: fred.block@example.org
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -162,26 +161,26 @@ endpoints:
         name: devices_count
         description: 'Must be at least 0.'
         required: false
-        example: 24
+        example: 58
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanBodyParameters:
-      name: iwmuhj
-      last_name: beuexo
-      national_id: pcpgrxnrwhu
-      client_id: 13
-      phone: vfusghmtwu
-      email: sierra14@example.org
-      devices_count: 24
+      name: lyorjd
+      last_name: tomvgm
+      national_id: wiplxmewimx
+      client_id: 8
+      phone: hpunwcxtgk
+      email: fred.block@example.org
+      devices_count: 58
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 1ZfPg3Eb6aedkhDa48v5Vc6'
+      - 'Bearer DaPV6h1kd6fZEgv8a543cbe'
     controller: null
     method: null
     route: null
@@ -208,13 +207,13 @@ endpoints:
         name: id
         description: 'The ID of the Customer.'
         required: true
-        example: 16
+        example: 19
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 16
+      id: 19
     queryParameters:
       with:
         name: with
@@ -236,15 +235,14 @@ endpoints:
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
-          access-control-allow-origin: 'http://localhost:3000'
-          access-control-allow-credentials: 'true'
+          vary: Origin
         description: null
         custom: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer E4aad6hk65f1eZb3vPg8VcD'
+      - 'Bearer kb8DPevdEc61a4Zg6aV3f5h'
     controller: null
     method: null
     route: null
@@ -272,13 +270,13 @@ endpoints:
         name: id
         description: 'The ID of the Customer.'
         required: true
-        example: 2
+        example: 20
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 2
+      id: 20
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -286,7 +284,7 @@ endpoints:
         name: name
         description: 'Must contain only letters.'
         required: false
-        example: ktrang
+        example: abqfkr
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -295,7 +293,7 @@ endpoints:
         name: last_name
         description: 'Must contain only letters.'
         required: false
-        example: quwihm
+        example: ygpdzf
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -304,7 +302,7 @@ endpoints:
         name: national_id
         description: 'Must be 11 characters.'
         required: false
-        example: diwngxzooin
+        example: gxvozrwysvh
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -313,7 +311,7 @@ endpoints:
         name: client_id
         description: ''
         required: false
-        example: 19
+        example: 14
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -322,7 +320,7 @@ endpoints:
         name: phone
         description: 'Must be 10 characters.'
         required: false
-        example: ebgmwhstuz
+        example: uwclljvbhs
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -331,7 +329,7 @@ endpoints:
         name: email
         description: 'Must be a valid email address.'
         required: false
-        example: abraham80@example.org
+        example: hschamberger@example.org
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -340,26 +338,26 @@ endpoints:
         name: devices_count
         description: 'Must be at least 0.'
         required: false
-        example: 14
+        example: 65
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanBodyParameters:
-      name: ktrang
-      last_name: quwihm
-      national_id: diwngxzooin
-      client_id: 19
-      phone: ebgmwhstuz
-      email: abraham80@example.org
-      devices_count: 14
+      name: abqfkr
+      last_name: ygpdzf
+      national_id: gxvozrwysvh
+      client_id: 14
+      phone: uwclljvbhs
+      email: hschamberger@example.org
+      devices_count: 65
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 63P5kDdh4cVvfb8ZEg61aae'
+      - 'Bearer 61EaPd3Dcfaehk8bZ4Vv6g5'
     controller: null
     method: null
     route: null
@@ -386,13 +384,13 @@ endpoints:
         name: id
         description: 'The ID of the Customer.'
         required: true
-        example: 10
+        example: 20
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 10
+      id: 20
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -403,7 +401,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer v6365kdeaD1bcPV8ZEa4fgh'
+      - 'Bearer 8Zdkv1fPDEghV435cea66ab'
     controller: null
     method: null
     route: null

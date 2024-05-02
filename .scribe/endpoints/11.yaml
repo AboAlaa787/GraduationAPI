@@ -60,15 +60,14 @@ endpoints:
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
-          access-control-allow-origin: 'http://localhost:3000'
-          access-control-allow-credentials: 'true'
+          vary: Origin
         description: null
         custom: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer hD4a631kgcPab68vef5ZVdE'
+      - 'Bearer P5ehcbED83V1664Zavdfgka'
     controller: null
     method: null
     route: null
@@ -99,7 +98,7 @@ endpoints:
         name: model
         description: ''
         required: true
-        example: dicta
+        example: possimus
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -108,7 +107,7 @@ endpoints:
         name: imei
         description: 'Must not be greater than 15 characters. Must be at least 15 characters.'
         required: false
-        example: izzhybokhhitxvgmgiarvghjwroikqjkspvqmlwgobiaujrcryeokwjpnyzqhozqliicxzjphlt
+        example: estsmcdncsamkzsmtlvsaclfm
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -117,7 +116,7 @@ endpoints:
         name: code
         description: ''
         required: true
-        example: distinctio
+        example: soluta
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -126,7 +125,7 @@ endpoints:
         name: client_id
         description: ''
         required: true
-        example: 9
+        example: 8
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -135,7 +134,7 @@ endpoints:
         name: client_name
         description: 'Must contain only letters.'
         required: true
-        example: xznatu
+        example: eygsew
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -144,7 +143,7 @@ endpoints:
         name: user_id
         description: ''
         required: true
-        example: 6
+        example: 18
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -153,7 +152,7 @@ endpoints:
         name: user_name
         description: 'Must contain only letters.'
         required: true
-        example: smikwk
+        example: meqznv
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -162,7 +161,7 @@ endpoints:
         name: info
         description: ''
         required: false
-        example: mollitia
+        example: natus
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -171,7 +170,7 @@ endpoints:
         name: problem
         description: ''
         required: true
-        example: quia
+        example: aut
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -180,7 +179,7 @@ endpoints:
         name: cost_to_client
         description: ''
         required: true
-        example: 5.78310241
+        example: 517362934.686
         type: number
         enumValues: []
         exampleWasSpecified: false
@@ -189,7 +188,7 @@ endpoints:
         name: cost_to_customer
         description: ''
         required: false
-        example: 79.565
+        example: 78558.976387
         type: number
         enumValues: []
         exampleWasSpecified: false
@@ -198,7 +197,7 @@ endpoints:
         name: status
         description: ''
         required: true
-        example: 'غير جاهز'
+        example: 'لا يصلح'
         type: string
         enumValues:
           - جاهز
@@ -207,13 +206,15 @@ endpoints:
           - 'قيد العمل'
           - 'لم يتم بدء العمل فيه'
           - 'لم يوافق على العمل به'
+          - 'يتم فحصه'
+          - 'بانتظار استجابة العميل'
         exampleWasSpecified: false
         custom: []
       fix_steps:
         name: fix_steps
         description: ''
         required: false
-        example: repellendus
+        example: quisquam
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -222,7 +223,7 @@ endpoints:
         name: date_receipt
         description: 'Must be a valid date.'
         required: true
-        example: '2024-04-20T19:01:26'
+        example: '2024-05-02T03:09:32'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -231,7 +232,7 @@ endpoints:
         name: date_delivery
         description: 'Must be a valid date.'
         required: false
-        example: '2024-04-20T19:01:26'
+        example: '2024-05-02T03:09:32'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -240,7 +241,7 @@ endpoints:
         name: date_warranty
         description: 'Must be a valid date.'
         required: false
-        example: '2024-04-20T19:01:26'
+        example: '2024-05-02T03:09:32'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -249,7 +250,7 @@ endpoints:
         name: deliver_to_client
         description: ''
         required: false
-        example: true
+        example: false
         type: boolean
         enumValues: []
         exampleWasSpecified: false
@@ -267,7 +268,7 @@ endpoints:
         name: customer_id
         description: ''
         required: false
-        example: 9
+        example: 7
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -276,39 +277,39 @@ endpoints:
         name: repaired_in_center
         description: ''
         required: true
-        example: true
+        example: false
         type: boolean
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanBodyParameters:
-      model: dicta
-      imei: izzhybokhhitxvgmgiarvghjwroikqjkspvqmlwgobiaujrcryeokwjpnyzqhozqliicxzjphlt
-      code: distinctio
-      client_id: 9
-      client_name: xznatu
-      user_id: 6
-      user_name: smikwk
-      info: mollitia
-      problem: quia
-      cost_to_client: 5.78310241
-      cost_to_customer: 79.565
-      status: 'غير جاهز'
-      fix_steps: repellendus
-      date_receipt: '2024-04-20T19:01:26'
-      date_delivery: '2024-04-20T19:01:26'
-      date_warranty: '2024-04-20T19:01:26'
-      deliver_to_client: true
+      model: possimus
+      imei: estsmcdncsamkzsmtlvsaclfm
+      code: soluta
+      client_id: 8
+      client_name: eygsew
+      user_id: 18
+      user_name: meqznv
+      info: natus
+      problem: aut
+      cost_to_client: 517362934.686
+      cost_to_customer: 78558.976387
+      status: 'لا يصلح'
+      fix_steps: quisquam
+      date_receipt: '2024-05-02T03:09:32'
+      date_delivery: '2024-05-02T03:09:32'
+      date_warranty: '2024-05-02T03:09:32'
+      deliver_to_client: false
       deliver_to_customer: true
-      customer_id: 9
-      repaired_in_center: true
+      customer_id: 7
+      repaired_in_center: false
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer aa4hZDEg3fbv6c1Pd5Ve8k6'
+      - 'Bearer f58h664dZgvbPE1eakVDac3'
     controller: null
     method: null
     route: null
@@ -335,13 +336,13 @@ endpoints:
         name: id
         description: 'The ID of the Completed Device.'
         required: true
-        example: 8
+        example: 11
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 8
+      id: 11
     queryParameters:
       with:
         name: with
@@ -363,15 +364,14 @@ endpoints:
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
-          access-control-allow-origin: 'http://localhost:3000'
-          access-control-allow-credentials: 'true'
+          vary: Origin
         description: null
         custom: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer hkaP6cDgaf384VZebdv61E5'
+      - 'Bearer aD8dvfhaVEc36gPb54e16Zk'
     controller: null
     method: null
     route: null
@@ -399,13 +399,13 @@ endpoints:
         name: id
         description: 'The ID of the Completed Device.'
         required: true
-        example: 12
+        example: 16
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 12
+      id: 16
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -413,7 +413,7 @@ endpoints:
         name: model
         description: ''
         required: false
-        example: omnis
+        example: adipisci
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -422,7 +422,7 @@ endpoints:
         name: imei
         description: 'Must not be greater than 15 characters. Must be at least 15 characters.'
         required: false
-        example: vlulnpcyupvybmnahgkoigykeapysqricujvjkcdibypcpuwcsboggucfraevmksbbtnlalkotm
+        example: cisohzgoolccdzfnkmelnboengfivojixechcpkmbykewatoaatgckgxymedtkeikhpvpmsxyujwtks
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -440,7 +440,7 @@ endpoints:
         name: client_id
         description: ''
         required: false
-        example: 14
+        example: 9
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -449,7 +449,7 @@ endpoints:
         name: client_name
         description: 'Must contain only letters.'
         required: false
-        example: wcgfjb
+        example: qeklmj
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -467,7 +467,7 @@ endpoints:
         name: user_name
         description: 'Must contain only letters.'
         required: false
-        example: nkygrw
+        example: hvpwyo
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -476,7 +476,7 @@ endpoints:
         name: info
         description: ''
         required: false
-        example: natus
+        example: omnis
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -485,7 +485,7 @@ endpoints:
         name: problem
         description: ''
         required: false
-        example: labore
+        example: commodi
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -494,7 +494,7 @@ endpoints:
         name: cost_to_client
         description: ''
         required: false
-        example: 65657019.136101
+        example: 514.33
         type: number
         enumValues: []
         exampleWasSpecified: false
@@ -503,7 +503,7 @@ endpoints:
         name: cost_to_customer
         description: ''
         required: false
-        example: 0.0
+        example: 29737067.05
         type: number
         enumValues: []
         exampleWasSpecified: false
@@ -512,7 +512,7 @@ endpoints:
         name: status
         description: ''
         required: false
-        example: 'لا يصلح'
+        example: 'يتم فحصه'
         type: string
         enumValues:
           - جاهز
@@ -521,13 +521,15 @@ endpoints:
           - 'قيد العمل'
           - 'لم يتم بدء العمل فيه'
           - 'لم يوافق على العمل به'
+          - 'يتم فحصه'
+          - 'بانتظار استجابة العميل'
         exampleWasSpecified: false
         custom: []
       fix_steps:
         name: fix_steps
         description: ''
         required: false
-        example: tempora
+        example: reiciendis
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -536,7 +538,7 @@ endpoints:
         name: date_receipt
         description: 'Must be a valid date.'
         required: false
-        example: '2024-04-20T19:01:26'
+        example: '2024-05-02T03:09:32'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -545,7 +547,7 @@ endpoints:
         name: date_delivery
         description: 'Must be a valid date.'
         required: false
-        example: '2024-04-20T19:01:26'
+        example: '2024-05-02T03:09:32'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -554,7 +556,7 @@ endpoints:
         name: date_warranty
         description: 'Must be a valid date.'
         required: false
-        example: '2024-04-20T19:01:26'
+        example: '2024-05-02T03:09:32'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -572,7 +574,7 @@ endpoints:
         name: deliver_to_customer
         description: ''
         required: false
-        example: true
+        example: false
         type: boolean
         enumValues: []
         exampleWasSpecified: false
@@ -590,37 +592,37 @@ endpoints:
         name: repaired_in_center
         description: ''
         required: false
-        example: false
+        example: true
         type: boolean
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanBodyParameters:
-      model: omnis
-      imei: vlulnpcyupvybmnahgkoigykeapysqricujvjkcdibypcpuwcsboggucfraevmksbbtnlalkotm
-      client_id: 14
-      client_name: wcgfjb
+      model: adipisci
+      imei: cisohzgoolccdzfnkmelnboengfivojixechcpkmbykewatoaatgckgxymedtkeikhpvpmsxyujwtks
+      client_id: 9
+      client_name: qeklmj
       user_id: 17
-      user_name: nkygrw
-      info: natus
-      problem: labore
-      cost_to_client: 65657019.136101
-      cost_to_customer: 0.0
-      status: 'لا يصلح'
-      fix_steps: tempora
-      date_receipt: '2024-04-20T19:01:26'
-      date_delivery: '2024-04-20T19:01:26'
-      date_warranty: '2024-04-20T19:01:26'
+      user_name: hvpwyo
+      info: omnis
+      problem: commodi
+      cost_to_client: 514.33
+      cost_to_customer: 29737067.05
+      status: 'يتم فحصه'
+      fix_steps: reiciendis
+      date_receipt: '2024-05-02T03:09:32'
+      date_delivery: '2024-05-02T03:09:32'
+      date_warranty: '2024-05-02T03:09:32'
       deliver_to_client: false
-      deliver_to_customer: true
-      repaired_in_center: false
+      deliver_to_customer: false
+      repaired_in_center: true
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer edVP864avcZf65b1h3EgaDk'
+      - 'Bearer fv41gP36kEaZehacbV8dD56'
     controller: null
     method: null
     route: null
@@ -647,13 +649,13 @@ endpoints:
         name: id
         description: 'The ID of the Completed Device.'
         required: true
-        example: 4
+        example: 17
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 4
+      id: 17
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -664,7 +666,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 3k6v5cPhe1Vf6Ddg8Eaab4Z'
+      - 'Bearer Z5ke1c64dg6DP83VahabvfE'
     controller: null
     method: null
     route: null

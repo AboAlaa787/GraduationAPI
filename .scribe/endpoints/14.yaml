@@ -60,15 +60,14 @@ endpoints:
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
-          access-control-allow-origin: 'http://localhost:3000'
-          access-control-allow-credentials: 'true'
+          vary: Origin
         description: null
         custom: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer evk45fVd66ghaDZa1Pb8Ec3'
+      - 'Bearer vbhk6d8Z1ef3Pa5a6Vcg4DE'
     controller: null
     method: null
     route: null
@@ -120,7 +119,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 56e48bdEaVgPaDZv6h3fck1'
+      - 'Bearer 4ZDbEvd3Pe56ahg6kacf18V'
     controller: null
     method: null
     route: null
@@ -147,13 +146,13 @@ endpoints:
         name: id
         description: 'The ID of the Permission_Rule.'
         required: true
-        example: 14
+        example: 5
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 14
+      id: 5
     queryParameters:
       with:
         name: with
@@ -175,15 +174,14 @@ endpoints:
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
-          access-control-allow-origin: 'http://localhost:3000'
-          access-control-allow-credentials: 'true'
+          vary: Origin
         description: null
         custom: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer eaa4vZcV636d5b81ghDEfkP'
+      - 'Bearer 4gc8fEv5dak66ha3ePbDVZ1'
     controller: null
     method: null
     route: null
@@ -210,13 +208,13 @@ endpoints:
         name: id
         description: 'The ID of the Permission_Rule.'
         required: true
-        example: 2
+        example: 12
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 2
+      id: 12
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -227,7 +225,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 6hd6c3E5Vgbk84eDaaf1PvZ'
+      - 'Bearer a3cf6kvZD516VdP84eEbgah'
     controller: null
     method: null
     route: null

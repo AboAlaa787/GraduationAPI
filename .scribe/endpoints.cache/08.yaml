@@ -71,15 +71,14 @@ endpoints:
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
-          access-control-allow-origin: 'http://localhost:3000'
-          access-control-allow-credentials: 'true'
+          vary: Origin
         description: null
         custom: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 5a183ZVv6Pkf4aEedgbcD6h'
+      - 'Bearer 4agDed615fPh8Z63bkvEcaV'
     controller: null
     method: null
     route: null
@@ -110,7 +109,7 @@ endpoints:
         name: description
         description: ''
         required: true
-        example: 'Possimus molestias non ullam molestias.'
+        example: 'Est explicabo vel nulla consequuntur.'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -119,16 +118,7 @@ endpoints:
         name: client_id
         description: ''
         required: true
-        example: 14
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        custom: []
-      user_id:
-        name: user_id
-        description: ''
-        required: false
-        example: 8
+        example: 15
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -137,33 +127,36 @@ endpoints:
         name: products_ids
         description: 'Product numbers to be added to the order.'
         required: false
-        example: null
+        example:
+          - 12
         type: 'integer[]'
         enumValues: []
-        exampleWasSpecified: true
+        exampleWasSpecified: false
         custom: []
       devices_ids:
         name: devices_ids
         description: 'devices numbers to be added to the order.'
         required: false
-        example: null
+        example:
+          - 20
         type: 'integer[]'
         enumValues: []
-        exampleWasSpecified: true
+        exampleWasSpecified: false
         custom: []
     cleanBodyParameters:
-      description: 'Possimus molestias non ullam molestias.'
-      client_id: 14
-      user_id: 8
-      products_ids: null
-      devices_ids: null
+      description: 'Est explicabo vel nulla consequuntur.'
+      client_id: 15
+      products_ids:
+        - 12
+      devices_ids:
+        - 20
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer D3c5e1v4fkghaPZaE8b6V6d'
+      - 'Bearer hb63ed8V4gPEavk5acDf6Z1'
     controller: null
     method: null
     route: null
@@ -190,13 +183,13 @@ endpoints:
         name: id
         description: 'The ID of the Order.'
         required: true
-        example: 19
+        example: 2
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 19
+      id: 2
     queryParameters:
       with:
         name: with
@@ -218,15 +211,14 @@ endpoints:
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
-          access-control-allow-origin: 'http://localhost:3000'
-          access-control-allow-credentials: 'true'
+          vary: Origin
         description: null
         custom: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer h1Pv8Dgk663VbedEfaa5cZ4'
+      - 'Bearer c5ae34kdE8f16hPDaZVbgv6'
     controller: null
     method: null
     route: null
@@ -254,13 +246,13 @@ endpoints:
         name: id
         description: 'The ID of the Order.'
         required: true
-        example: 6
+        example: 2
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 6
+      id: 2
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -268,7 +260,7 @@ endpoints:
         name: description
         description: ''
         required: false
-        example: 'Est doloribus iure dolor ab deserunt.'
+        example: 'Voluptate dolor tempora sit quas assumenda.'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -277,7 +269,7 @@ endpoints:
         name: client_id
         description: ''
         required: false
-        example: 5
+        example: 18
         type: integer
         enumValues: []
         exampleWasSpecified: false
@@ -286,22 +278,22 @@ endpoints:
         name: user_id
         description: ''
         required: false
-        example: 19
+        example: 10
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanBodyParameters:
-      description: 'Est doloribus iure dolor ab deserunt.'
-      client_id: 5
-      user_id: 19
+      description: 'Voluptate dolor tempora sit quas assumenda.'
+      client_id: 18
+      user_id: 10
     fileParameters: []
     responses: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 6v3fbaEad58e1gc4DhP6VkZ'
+      - 'Bearer 45P61fVEk6aevgZbhadcD83'
     controller: null
     method: null
     route: null
@@ -328,13 +320,13 @@ endpoints:
         name: id
         description: 'The ID of the Order.'
         required: true
-        example: 18
+        example: 17
         type: integer
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: 18
+      id: 17
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -345,7 +337,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer Da5vkVfc3168gb4aZhd6PeE'
+      - 'Bearer EZ43ck861ea6gDfbP5hdaVv'
     controller: null
     method: null
     route: null

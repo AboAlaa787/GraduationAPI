@@ -32,15 +32,14 @@ endpoints:
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
-          access-control-allow-origin: 'http://localhost:3000'
-          access-control-allow-credentials: 'true'
+          vary: Origin
         description: null
         custom: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer gDa5kd8bfcZV4E36v1hP6ae'
+      - 'Bearer c6gPZdDVa658Ekbah3vf14e'
     controller: null
     method: null
     route: null
@@ -76,15 +75,14 @@ endpoints:
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
-          access-control-allow-origin: 'http://localhost:3000'
-          access-control-allow-credentials: 'true'
+          vary: Origin
         description: null
         custom: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer 4D5g6a6hfV8kv1PZbae3Edc'
+      - 'Bearer df4cg36b8eZa6kVP5v1aEDh'
     controller: null
     method: null
     route: null
@@ -120,15 +118,14 @@ endpoints:
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
-          access-control-allow-origin: 'http://localhost:3000'
-          access-control-allow-credentials: 'true'
+          vary: Origin
         description: null
         custom: []
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer fbk61Pe5aVc86EDvga3d4hZ'
+      - 'Bearer E3Zea615kg84bavV6PchfDd'
     controller: null
     method: null
     route: null
@@ -162,7 +159,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer aZDk4gEVah86P1vfcdb635e'
+      - 'Bearer dcv5a6ZE3841eagbPVhDkf6'
     controller: null
     method: null
     route: null
@@ -189,13 +186,13 @@ endpoints:
         name: id
         description: 'The ID of the mark as read.'
         required: true
-        example: et
+        example: dignissimos
         type: string
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: et
+      id: dignissimos
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -206,7 +203,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer hVbZ3v6D5eka64dc8E1afgP'
+      - 'Bearer f34P656haagbE8vV1kcdZeD'
     controller: null
     method: null
     route: null
@@ -233,13 +230,13 @@ endpoints:
         name: id
         description: 'The ID of the delete.'
         required: true
-        example: vero
+        example: qui
         type: string
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanUrlParameters:
-      id: vero
+      id: qui
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -250,7 +247,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer 6dE4h1VfgaPc8Zab5Dvek36'
+      - 'Bearer vZe4kh1ab653D8P6agEfdVc'
     controller: null
     method: null
     route: null
