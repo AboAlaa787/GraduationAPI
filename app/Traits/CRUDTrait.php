@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -241,9 +242,22 @@ trait CRUDTrait
         }
 
         $query->with($relations);
-        $data = $allData == 1 ? $query->withCount($withCount)->get()
-            : $query->withCount($withCount)->paginate($perPage, page: $page);
-        return $this->apiResponse($data);
+        if ($allData==1){
+            $data=$query->withCount($withCount)->get();
+            return $this->apiResponse($data);
+        }
+        $data = $query->withCount($withCount)->paginate($perPage, page: $page);
+        $pagination['current_page']=$data->currentPage();
+        $pagination['first_page_url']=$data->url(1);
+        $pagination['from']=$data->firstItem();
+        $pagination['to']=$data->lastItem();
+        $pagination['last_page']=$data->lastPage();
+        $pagination['next_page_url']=$data->nextPageUrl();
+        $pagination['per_page']=$data->perPage();
+        $pagination['prev_page_url']=$data->previousPageUrl();
+        $pagination['total']=$data->total();
+        return $this->apiResponse(body:$data->items(),pagination: $pagination);
+
     }
 
     /**
