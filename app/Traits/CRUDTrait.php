@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 
@@ -28,6 +29,21 @@ trait CRUDTrait
     public function index_data(Model $model, Request $request, string $with = ''): JsonResponse
     {
         try {
+            $rules = [
+                'page' => 'integer|min:1',
+                'per_page' => 'integer|min:1',
+                'all_data' => 'integer|in:1,0'
+            ];
+            $data = [
+                'page' => $request->get('page', 1),
+                'per_page' => $request->get('per_page', 20),
+                'all_data' => $request->get('all_data', 0)
+            ];
+            $validator = Validator::make($data, $rules);
+
+            if ($validator->fails()) {
+                return response()->json(['error' => $validator->errors()], 400);
+            }
             $this->authorizeForModel($model, 'viewAny');
             $relations = $this->parseRelations($with);
             $this->validateRelations($model, $relations);
@@ -41,12 +57,13 @@ trait CRUDTrait
             $orderBy = $request->get('orderBy');
             $orderDirection = $this->validateOrderDirection($request->get('dir', 'asc'));
 
-            $page=$request->get('page',1);
-            $perPage=$request->get('per_page',20);
+            $page = $request->get('page', 1) ?: 1;
+            $perPage = $request->get('per_page', 20) ?: 20;
+            $allData = $request->get('all_data', 0);
 
             $query = $model->newQuery();
 
-            return $this->filterAndOrder($query, $table, $keys, $orderBy, $orderDirection, $relations, $customKeys, $withCount,$page,$perPage);
+            return $this->filterAndOrder($query, $table, $keys, $orderBy, $orderDirection, $relations, $customKeys, $withCount, $page, $perPage, $allData);
         } catch (AuthorizationException $e) {
             return $this->apiResponse(null, 403, 'Error: ' . $e->getMessage());
         } catch (InvalidArgumentException|Exception $e) {
@@ -105,7 +122,7 @@ trait CRUDTrait
      */
     protected function extractKeys(Request $request): array
     {
-        $keys = $request->except(['orderBy', 'dir', 'with', 'withCount', 'page','per_page']);
+        $keys = $request->except(['orderBy', 'dir', 'with', 'withCount', 'page', 'per_page', 'all_data']);
         $customKeys = [];
 
         foreach ($keys as $key => $value) {
@@ -142,9 +159,10 @@ trait CRUDTrait
      * @param array $withCount
      * @param int $page
      * @param int $perPage
+     * @param int $allData
      * @return JsonResponse
      */
-    protected function filterAndOrder(Builder $query, string $table, array $keys, ?string $orderBy, string $orderDirection, array $relations, array $customKeys, array $withCount,int $page,int $perPage): JsonResponse
+    protected function filterAndOrder(Builder $query, string $table, array $keys, ?string $orderBy, string $orderDirection, array $relations, array $customKeys, array $withCount, int $page, int $perPage, int $allData): JsonResponse
     {
         $missingColumns = [];
 
@@ -168,7 +186,7 @@ trait CRUDTrait
             return $this->apiResponse(null, 422, 'Missing columns: ' . implode(', ', $missingColumns));
         }
 
-        return $this->handleOrdering($query, $table, $orderBy, $orderDirection, $relations, $customKeys, $withCount,$page,$perPage);
+        return $this->handleOrdering($query, $table, $orderBy, $orderDirection, $relations, $customKeys, $withCount,$page,$perPage,$allData);
     }
 
     /**
@@ -196,9 +214,12 @@ trait CRUDTrait
      * @param array $relations
      * @param array $customKeys
      * @param array $withCount
+     * @param int $page
+     * @param int $perPage
+     * @param int $allData
      * @return JsonResponse
      */
-    protected function handleOrdering(Builder $query, string $table, ?string $orderBy, string $orderDirection, array $relations, array $customKeys, array $withCount,int $page,int $perPage): JsonResponse
+    protected function handleOrdering(Builder $query, string $table, ?string $orderBy, string $orderDirection, array $relations, array $customKeys, array $withCount, int $page, int $perPage, int $allData): JsonResponse
     {
         if ($orderBy && $this->validateColumn($table, $orderBy)) {
             $query->orderBy($orderBy, $orderDirection);
@@ -220,7 +241,8 @@ trait CRUDTrait
         }
 
         $query->with($relations);
-        $data = $query->withCount($withCount)->paginate($perPage, page: $page);
+        $data = $allData == 1 ? $query->withCount($withCount)->get()
+            : $query->withCount($withCount)->paginate($perPage, page: $page);
         return $this->apiResponse($data);
     }
 

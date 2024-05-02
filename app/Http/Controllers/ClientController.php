@@ -26,8 +26,9 @@ class ClientController extends Controller
      * @queryParam orderBy To sort data. No-example
      * @queryParam dir To determine the direction of the sort, default is asc. Example:[asc,desc]
      * @queryParam withCount string To query the number of records for related data. No-example
-     * @queryParam page integer To specify the page number to be retrieved. Example:1
-     * @queryParam per_page integer To specify the number of records per page. No-example
+     * @queryParam page integer To specify the page number to be retrieved, Default is 1. Example:1
+     * @queryParam per_page integer To specify the number of records per page, Default is 20. Example:10
+     * @queryParam all_data integer To ignore pagination process, Default is 0, Allowed values is 0,1. No-example
      * @return JsonResponse
      */
     public function index(Request $request): JsonResponse
