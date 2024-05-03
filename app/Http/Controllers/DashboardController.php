@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Enums\DeviceStatus;
+use App\Enums\RuleNames;
+use App\Models\Client;
 use App\Models\CompletedDevice;
 use App\Models\Device;
+use App\Models\User;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
 
@@ -69,6 +72,76 @@ class DashboardController extends Controller
             ->count();
         $response['completed_devices_count_in_this_month'] = $inMonthCompletedDevicesCount;
 
+        //Get technicians and their successful job
+        $techniciansWithReadyDevicesCount = User::
+        whereHas('rule', function ($rule) {
+            $rule->where('name', RuleNames::Technician);
+        })
+            ->whereHas('completed_devices')
+            ->withCount(['completed_devices' => function ($completedDevices) {
+                $completedDevices->where('status', DeviceStatus::Ready);
+            }])
+            ->orderBy('completed_devices_count')
+            ->get()
+            ->select('name', 'completed_devices_count');
+
+        $response['technicians_with_ready_devices_count'] = $techniciansWithReadyDevicesCount;
+
+        //Get top 4 clients and their contributions in this month to 4 sections
+
+        $currentDay = now()->day;
+        $response['clients_with_devices_count'] = [
+            'first_week' => $this->getWeeklyDeviceCount(0, 7)->map(function ($row) {
+                $newRow['name'] = $row->name;
+                $newRow['devices_count'] = $row->completed_devices_count + $row->devices_count;
+                return $newRow;
+            })->sortByDesc('devices_count')->values(),
+            'second_week' => $currentDay > 14 ? $this->getWeeklyDeviceCount(7, 14)->map(function ($row) {
+                $newRow['name'] = $row->name;
+                $newRow['devices_count'] = $row->completed_devices_count + $row->devices_count;
+                return $newRow;
+            })->sortByDesc('devices_count')->values() : null,
+            'third_week' => $currentDay > 21 ? $this->getWeeklyDeviceCount(14, 21)->map(function ($row) {
+                $newRow['name'] = $row->name;
+                $newRow['devices_count'] = $row->completed_devices_count + $row->devices_count;
+                return $newRow;
+            })->sortByDesc('devices_count')->values() : null,
+            'fourth_week' => $currentDay > 21 ? $this->getWeeklyDeviceCount(21)->map(function ($row) {
+                $newRow['name'] = $row->name;
+                $newRow['devices_count'] = $row->completed_devices_count + $row->devices_count;
+                return $newRow;
+            })->sortByDesc('devices_count')->values() : null,
+        ];
+
+
         return $this->apiResponse($response);
     }
+
+    function getWeeklyDeviceCount($startDay, $endDay = null)
+    {
+        $dateCondition = $endDay ? "DAYOFMONTH(date_receipt) > $startDay AND DAYOFMONTH(date_receipt) <= $endDay"
+            : "DAYOFMONTH(date_receipt) > $startDay";
+
+        return Client::select('name')
+            ->selectSub(function ($query) use ($dateCondition) {
+                $query->from('devices')
+                    ->selectRaw('COUNT(*)')
+                    ->whereColumn('client_id', 'clients.id')
+                    ->whereRaw("MONTH(date_receipt) = MONTH(CURRENT_DATE())")
+                    ->whereRaw("YEAR(date_receipt) = YEAR(CURRENT_DATE())")
+                    ->whereRaw($dateCondition);
+            }, 'devices_count')
+            ->selectSub(function ($query) use ($dateCondition) {
+                $query->from('completed_devices')
+                    ->selectRaw('COUNT(*)')
+                    ->whereColumn('client_id', 'clients.id')
+                    ->whereRaw("MONTH(date_receipt) = MONTH(CURRENT_DATE())")
+                    ->whereRaw("YEAR(date_receipt) = YEAR(CURRENT_DATE())")
+                    ->whereRaw($dateCondition);
+            }, 'completed_devices_count')
+            ->limit(4)
+            ->get();
+    }
+
+
 }
