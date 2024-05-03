@@ -72,7 +72,7 @@ class DashboardController extends Controller
             ->count();
         $response['completed_devices_count_in_this_month'] = $inMonthCompletedDevicesCount;
 
-        //Get technicians and their successful job
+        //Get top 5 technicians and their successful job
         $techniciansWithReadyDevicesCount = User::
         whereHas('rule', function ($rule) {
             $rule->where('name', RuleNames::Technician);
@@ -81,7 +81,8 @@ class DashboardController extends Controller
             ->withCount(['completed_devices' => function ($completedDevices) {
                 $completedDevices->where('status', DeviceStatus::Ready);
             }])
-            ->orderBy('completed_devices_count')
+            ->orderBy('completed_devices_count','desc')
+            ->limit(5)
             ->get()
             ->select('name', 'completed_devices_count');
 
