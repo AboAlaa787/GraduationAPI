@@ -31,7 +31,7 @@ class CreateClientRequest extends FormRequest
             'last_name' => 'required|string|alpha',
             'rule_id' => 'nullable|exists:rules,id',
             'email_verified_at' => 'nullable|date',
-            'password' => 'required|string|min:8',
+            'password' => 'required|string|min:8|confirmed',
             'address' => 'required|string',
             'national_id' => 'required|string|size:11|unique:clients,national_id',
         ];

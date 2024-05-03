@@ -61,7 +61,7 @@ class AuthenticatedSessionController extends Controller
 
         $user->tokens()->where('token', $currentAccessToken)->delete();
 
-        return $this->apiResponse();
+        return $this->apiResponse('Logout successfully');
     }
 
     /**

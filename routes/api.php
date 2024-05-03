@@ -6,6 +6,7 @@ use App\Http\Controllers\CenterController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CompletedDeviceController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\DevicesOrdersController;
 use App\Http\Controllers\FirebaseNotificationsController;
@@ -101,6 +102,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('firebase/store_token',[FirebaseNotificationsController::class,'storeToken']);
 
     Route::post('firebase/push',[FirebaseNotificationsController::class,'pushNotification']);
+
+    Route::get('dashboard_info',[DashboardController::class,'index']);
 });
 
 require __DIR__ . '/auth.php';
