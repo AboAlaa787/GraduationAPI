@@ -41,7 +41,7 @@ class AuthenticatedSessionController extends Controller
         $user->rule->permissions;
         $expiration=config('sanctum.expiration');
         $expires_at=now()->addMinutes($expiration);
-        $token = $request->user()->createToken('login',['*'],$expires_at);
+        $token = $user->createToken('login',['*'],$expires_at);
 
         $message['auth'] = $user;
         $message['token'] = $token->plainTextToken;
