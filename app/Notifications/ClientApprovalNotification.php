@@ -5,21 +5,20 @@ namespace App\Notifications;
 use App\Enums\DeviceStatus;
 use App\Models\Device;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class DeviceStateNotification extends Notification
+class ClientApprovalNotification extends Notification
 {
     use Queueable;
-
     private Device $device;
-
     /**
      * Create a new notification instance.
      */
-    public function __construct(Device $device)
+    public function __construct($device)
     {
-        $this->device = $device;
+        $this->device=$device;
     }
 
     /**
@@ -38,9 +37,9 @@ class DeviceStateNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+                    ->line('The introduction to the notification.')
+                    ->action('Notification Action', url('/'))
+                    ->line('Thank you for using our application!');
     }
 
     /**
@@ -53,17 +52,18 @@ class DeviceStateNotification extends Notification
         $model = $this->device->model;
         $code = $this->device->code;
         $status = $this->device->status;
-            $message = [
+        $clientName = $this->device->client->name;
+        $message = [
             'تحية طيبة سيد ' . $notifiable->name,
             'الجهاز ذات نوع ' . $model,
             'والذي كوده هو ' . $code,
-            'في حالة ' . $status,
-            'وأصبح قابل للاستلام من قبل حضرتكم. هل تريد أن نوصله إليك؟'
+            $status==DeviceStatus::NotAgree->value?
+            'تم رفض العمل به من قبل السيد '.$clientName:'تم الموافقة العمل به من قبل السيد '.$clientName
         ];
         return [
             'title' => 'اشعار بحالة جهاز',
             'body' => $message,
-            'Replyable' => true
+            'Replyable' => false
         ];
     }
 }

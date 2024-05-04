@@ -3,9 +3,10 @@
 namespace App\Models;
 
 use App\Enums\RuleNames;
+use App\Events\AddDevice;
 use App\Events\ClientApproval;
 use App\Events\DeleteDevice;
-use App\Events\NotificationEvents\DeviceNotifications;
+use App\Events\NotificationEvents\DeviceStateNotifications;
 use DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -54,7 +55,7 @@ class Device extends Model
                 $deviceToUpdate->update(['client_priority' => $deviceToUpdate->client_priority - 1]);
             }
         });
-        static::updating(function ($device) {
+        static::updated(function ($device) {
             if ($device->isDirty('client_approval')) {
                 event(new ClientApproval($device));
             }
@@ -62,8 +63,11 @@ class Device extends Model
                 event(new DeleteDevice($device));
             }
             if ($device->isDirty('status')) {
-                event(new DeviceNotifications($device));
+                event(new DeviceStateNotifications($device));
             }
+        });
+        static::created(function ($device) {
+            event(new AddDevice($device->client_id));
         });
     }
 

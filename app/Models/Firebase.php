@@ -12,7 +12,7 @@ class Firebase
 {
     use ApiResponseTrait;
 
-    public function pushNotification(array $devicesTokens, string $title, string $body, string $notificationId, string $senderDeviceToken): JsonResponse
+    public function pushNotification(array $devicesTokens, string $title, array|string $body, string $notificationId, string|null $senderDeviceToken): JsonResponse
     {
         $data = [
             'devicesTokens' => $devicesTokens,
@@ -21,11 +21,10 @@ class Firebase
             'notificationId' => $notificationId,
             'senderDeviceToken' => $senderDeviceToken
         ];
-
         $rules = [
             'devicesTokens' => 'required|array',
             'title' => 'required|string',
-            'body' => 'required|string',
+            'body' => 'required',
             'notificationId' => 'required|string|exists:notifications,id',
             'senderDeviceToken' => 'required|string'
         ];
@@ -60,7 +59,6 @@ class Firebase
         ];
 
         $dataString = json_encode($data);
-
         $headers = [
 
             'Authorization: key=' . $SERVER_API_KEY,

@@ -76,7 +76,6 @@ class UserController extends Controller
             $request['password'] = Hash::make($request['password']);
             $response['user'] = User::create($request->all());
             $response['token'] = $response['user']->createToken('register')->plainTextToken;
-            event(new Registered($response['user']));
             $response['user']->notify(new EmailVerificationNotification());
             return $this->apiResponse($response, 200, 'Successful and verification message has been sent');
         } catch (AuthorizationException $e) {

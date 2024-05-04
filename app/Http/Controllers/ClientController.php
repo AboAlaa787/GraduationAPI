@@ -58,7 +58,6 @@ class ClientController extends Controller
             $request['password'] = Hash::make($request['password']);
             $response['client'] = Client::create($request->all());
             $response['token'] = $response['client']->createToken('register')->plainTextToken;
-            event(new Registered($response['client']));
             $response['client']->notify(new EmailVerificationNotification());
             return $this->apiResponse($response, 200, 'Successful and verification message has been sent');
         } catch (AuthorizationException $e) {

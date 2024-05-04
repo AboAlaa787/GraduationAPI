@@ -6,7 +6,7 @@ use App\Events\AddDevice;
 use App\Events\DeleteDevice;
 use App\Http\Requests\Devices\CreateDeviceRequest;
 use App\Http\Requests\Devices\UpdateDeviceRequest;
-use App\Events\NotificationEvents\DeviceNotifications;
+use App\Events\NotificationEvents\DeviceStateNotifications;
 use App\Http\Requests\Devices\CreateDeviceAndCustomerRequest;
 use App\Models\Customer;
 use App\Models\Device;
@@ -57,11 +57,7 @@ class DeviceController extends Controller
      */
     public function store(CreateDeviceRequest $request): JsonResponse
     {
-        $response = $this->store_data($request, new Device());
-        if ($response->isSuccessful()) {
-            event(new AddDevice($request->client_id));
-        }
-        return $response;
+        return $this->store_data($request, new Device());
     }
 
     /**

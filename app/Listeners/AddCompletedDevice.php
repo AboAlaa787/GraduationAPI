@@ -24,9 +24,12 @@ class AddCompletedDevice
      */
     public function handle(DeleteDevice $event): void
     {
-
         $device = $event->Device;
-        if ($device->deliver_to_client === true) {
+        if ($device->deliver_to_customer) {
+           $device->delete();
+            return;
+        }
+        if ($device->deliver_to_client) {
             $client = $device->client;
             $user = $device->user;
             if ($client && $user) {
@@ -36,9 +39,6 @@ class AddCompletedDevice
                 $completedDevice = CompletedDevice::create($completedDevice);
                 if ($completedDevice) {
                     $client->decrement('devices_count');
-                }
-                if ($device->deliver_to_customer === true) {
-                    $device->delete();
                 }
             }
         }

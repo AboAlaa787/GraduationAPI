@@ -5,7 +5,7 @@ namespace App\Providers;
 use App\Events\AddDevice;
 use App\Events\ClientApproval;
 use App\Events\DeleteDevice;
-use App\Events\NotificationEvents\DeviceNotifications;
+use App\Events\NotificationEvents\DeviceStateNotifications;
 use App\Listeners\AddCompletedDevice;
 use App\Listeners\IncreaseCountDevice;
 use App\Listeners\ModificationsAfterClientApproval;
@@ -32,7 +32,7 @@ class EventServiceProvider extends ServiceProvider
         DeleteDevice::class => [
             AddCompletedDevice::class,
         ],
-        DeviceNotifications::class => [
+        DeviceStateNotifications::class => [
             SendDeviceNotifications::class,
         ],
         ClientApproval::class => [
