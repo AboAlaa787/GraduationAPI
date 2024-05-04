@@ -9,12 +9,13 @@ use App\Models\CompletedDevice;
 use App\Models\Device;
 use App\Models\User;
 use App\Traits\ApiResponseTrait;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
     use ApiResponseTrait;
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
         //Number of exist devices in the center
         $devicesCount = Device::
@@ -43,10 +44,13 @@ class DashboardController extends Controller
         $deliverableDevicesCount = Device::
         where('repaired_in_center', true)
             ->where('deliver_to_client', false)
-            ->where('status',DeviceStatus::Ready)
-            ->orWhere('status',DeviceStatus::NotReady)
-            ->orWhere('status',DeviceStatus::NotAgree)
-            ->orWhere('status',DeviceStatus::NotMaintainable)
+            ->whereIn('status',
+                [
+                    DeviceStatus::Ready,
+                    DeviceStatus::NotReady,
+                    DeviceStatus::NotAgree,
+                    DeviceStatus::NotMaintainable
+                ])
             ->count();
         $response['deliverable_devices_count'] = $deliverableDevicesCount;
 
