@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\RuleNames;
 use App\Traits\FirebaseNotifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Model;
@@ -49,6 +50,15 @@ class Client extends Authenticatable
     protected $casts = [
         'password' => 'hashed',
     ];
+
+    protected static function boot(): void
+    {
+        parent::boot();
+        static::creating(static function ($client) {
+            $client_rule_id=Rule::where('name',RuleNames::Client)->first()->id;
+            $client->rule_id = $client_rule_id;
+        });
+    }
 
     public function devices(): HasMany
     {

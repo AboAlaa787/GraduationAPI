@@ -23,7 +23,7 @@ class CreateClientRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'center_name' => 'required|string|alpha',
+            'center_name' => 'required|string',
             'phone' => 'nullable|string|max:10',
             'devices_count' => 'nullable|integer',
             'email' => ['required','email','string',new UniqueEmailAcrossTables],

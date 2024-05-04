@@ -100,22 +100,22 @@ class DashboardController extends Controller
                 $newRow['name'] = $row->name;
                 $newRow['devices_count'] = $row->completed_devices_count + $row->devices_count;
                 return $newRow;
-            })->sortByDesc('devices_count')->values(),
+            })->sortByDesc('devices_count')->take(4)->values(),
             'second_week' => $currentDay > 14 ? $this->getWeeklyDeviceCount(7, 14)->map(function ($row) {
                 $newRow['name'] = $row->name;
                 $newRow['devices_count'] = $row->completed_devices_count + $row->devices_count;
                 return $newRow;
-            })->sortByDesc('devices_count')->values() : null,
+            })->sortByDesc('devices_count')->take(4)->values() : null,
             'third_week' => $currentDay > 21 ? $this->getWeeklyDeviceCount(14, 21)->map(function ($row) {
                 $newRow['name'] = $row->name;
                 $newRow['devices_count'] = $row->completed_devices_count + $row->devices_count;
                 return $newRow;
-            })->sortByDesc('devices_count')->values() : null,
+            })->sortByDesc('devices_count')->take(4)->values() : null,
             'fourth_week' => $currentDay > 21 ? $this->getWeeklyDeviceCount(21)->map(function ($row) {
                 $newRow['name'] = $row->name;
                 $newRow['devices_count'] = $row->completed_devices_count + $row->devices_count;
                 return $newRow;
-            })->sortByDesc('devices_count')->values() : null,
+            })->sortByDesc('devices_count')->take(4)->values() : null,
         ];
 
 
@@ -144,9 +144,6 @@ class DashboardController extends Controller
                     ->whereRaw("YEAR(date_receipt) = YEAR(CURRENT_DATE())")
                     ->whereRaw($dateCondition);
             }, 'completed_devices_count')
-            ->limit(4)
             ->get();
     }
-
-
 }
