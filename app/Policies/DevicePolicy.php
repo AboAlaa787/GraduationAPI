@@ -15,7 +15,7 @@ class DevicePolicy
      */
     public function viewAny($user): bool
     {
-        return $this->hasPermission($user, 'استعلام عن اجهزة');
+        return $this->hasPermission($user, 'الاسنعلام عن الاجهزة');
     }
 
     /**
@@ -23,7 +23,7 @@ class DevicePolicy
      */
     public function view($user): bool
     {
-        return $this->hasPermission($user, 'استعلام عن جهاز');
+        return $this->hasPermission($user, 'الاسنعلام عن جهاز');
     }
 
     /**

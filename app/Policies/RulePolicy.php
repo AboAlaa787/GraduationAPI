@@ -14,12 +14,12 @@ class RulePolicy
      */
     public function viewAny($user): bool
     {
-        return $this->hasPermission($user, 'عرض الادوار');
+        return $this->hasPermission($user, 'الاسنعلام عن الادوار');
     }
 
     public function view($user): bool
     {
-        return $this->hasPermission($user, 'عرض دور');
+        return $this->hasPermission($user, 'الاسنعلام عن دور');
     }
 
     public function create($user): bool

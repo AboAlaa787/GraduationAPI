@@ -15,12 +15,12 @@ class ProductPolicy
      */
     public function viewAny($user): bool
     {
-        return $this->hasPermission($user, 'عرض المنتجات');
+        return $this->hasPermission($user, 'الاسنعلام عن المنتجات');
     }
 
     public function view($user): bool
     {
-        return $this->hasPermission($user, 'عرض منتج');
+        return $this->hasPermission($user, 'الاسنعلام عن منتج');
     }
 
     public function create($user): bool

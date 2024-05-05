@@ -17,7 +17,6 @@ return new class extends Migration {
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->date('date')->default(now());
             $table->boolean('done')->default(false);
-            $table->boolean('deliver_to_user')->default(false);
             $table->timestamps();
         });
     }

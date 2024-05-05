@@ -10,12 +10,12 @@ class ClientPolicy
     use PermissionCheckTrait;
     public function viewAny($user): bool
     {
-        return $this->hasPermission($user, 'عرض العملاء');
+        return $this->hasPermission($user, 'الاسنعلام عن العملاء');
     }
 
     public function view($user): bool
     {
-        return $this->hasPermission($user, 'عرض عميل');
+        return $this->hasPermission($user, 'الاسنعلام عن عميل');
     }
 
     public function create($user): bool

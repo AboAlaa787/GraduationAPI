@@ -19,7 +19,7 @@ class Permission_rulePolicy
 
     public function view( $user): bool
     {
-        return $this->hasPermission($user, 'الاستعلام عن صلاحيات الدور');
+        return $this->hasPermission($user, 'الاستعلام عن صلاحيات دور');
     }
 
     public function create( $user): bool

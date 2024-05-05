@@ -14,7 +14,7 @@ class PermissionPolicy
      */
     public function viewAny($user): bool
     {
-        return $this->hasPermission($user, 'عرض الصلاحيات');
+        return $this->hasPermission($user, 'الاسنعلام عن الصلاحيات');
     }
 
     /**
@@ -22,7 +22,7 @@ class PermissionPolicy
      */
     public function view($user): bool
     {
-        return $this->hasPermission($user, 'عرض صلاحية');
+        return $this->hasPermission($user, 'الاسنعلام عن صلاحية');
     }
 
     /**

@@ -10,13 +10,13 @@ class UserPolicy
 
     public function viewAny($user): bool
     {
-        return $this->hasPermission($user, 'استعلام عن مستخدمين');
+        return $this->hasPermission($user, 'الاسنعلام عن المستخدمين');
     }
 
 
     public function view($user): bool
     {
-        return $this->hasPermission($user, 'استعلام عن مستخدم');
+        return $this->hasPermission($user, 'الاسنعلام عن مستخدم');
     }
 
     public function create($user): bool

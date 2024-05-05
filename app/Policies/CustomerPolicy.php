@@ -12,7 +12,7 @@ class CustomerPolicy
      */
     public function viewAny($user): bool
     {
-        return $this->hasPermission($user,'عرض الزبائن');
+        return $this->hasPermission($user, 'الاسنعلام عن الزبائن');
     }
 
     /**
@@ -20,7 +20,7 @@ class CustomerPolicy
      */
     public function view($user): bool
     {
-        return $this->hasPermission($user,'عرض زبون');
+        return $this->hasPermission($user, 'الاسنعلام عن زبون');
     }
 
     /**

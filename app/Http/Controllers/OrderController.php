@@ -75,33 +75,38 @@ class OrderController extends Controller
             }
 
             if (empty($products_ids) && empty($devices_ids)) {
-                return $this->apiResponse(null, 400, 'Error: At least one of device_id or product_id is required.');
+                return $this->apiResponse(null, 400, 'Error: At least one of devices_ids or products_ids is required.');
             }
 
             return DB::transaction(function () use ($request, $products_ids, $devices_ids, $delivery) {
                 $client = Client::findOrFail($request->client_id);
                 $oldOrder = $client->orders()->where('deliver_to_user', false)->first();
-                $order = $oldOrder ?: $client->orders()->create(['client_id' => $request->client_id]);
+                $order = $oldOrder ?: $client->orders()->create([
+                    'client_id' => $request->client_id,
+                    'description' => $request->description,
+                ]);
 
-                if (!empty($devices_ids)) {
+                if (!empty ($devices_ids)) {
                     $this->authorize('create', Devices_orders::class);
-                    $this->attachItemsToOrder($devices_ids, Device::class, $order, 'devices');
+                    $this->attachItemsToOrder($devices_ids, Device::class, $order, 'devices', );
                 }
 
-                if (!empty($products_ids)) {
+                if (!empty ($products_ids)) {
                     $this->authorize('create', Product_order::class);
                     $this->attachItemsToOrder($products_ids, Product::class, $order, 'products');
                 }
 
-                $order->user_id = $delivery->id;
+                if (!$oldOrder) {
+                    $order->user_id = $delivery->id;
+                    $order->save();
+                } 
                 $order->load(['devices', 'products']);
-                $order->save();
                 return $this->apiResponse($order);
             });
-        } catch (InvalidArgumentException  $exception) {
+        } catch (InvalidArgumentException $exception) {
             return $this->apiResponse(null, 400, 'Error: ' . $exception->getMessage());
 
-        } catch (ModelNotFoundException  $exception) {
+        } catch (ModelNotFoundException $exception) {
             $model = explode('\\', $exception->getModel());
             $model = end($model);
             $id = $exception->getIds()[0];
@@ -117,14 +122,15 @@ class OrderController extends Controller
         if (!is_array($items)) {
             throw new InvalidArgumentException($relation . '_ids must be an array.');
         }
-        foreach ($items as $item_id) {
-            $item = $modelClass::findOrFail($item_id);
+            foreach ($items as $item_id => $type) {
+                $item = $modelClass::findOrFail($item_id);
 
-            if ($order->{$relation}->contains($item->id)) {
-                throw new InvalidArgumentException('Error: id ' . $item_id . ' in ' . $relation . '_id is already attached to the order.');
+                if ($order->{$relation}->contains($item->id)) {
+                    throw new InvalidArgumentException('Error: id ' . $item_id . ' in ' . $relation . '_id is already attached to the order.');
+                }
+                $attributes = $type ? ['order_type' => $type] : [];
+                $order->{$relation}()->attach($item_id, $attributes);
             }
-        }
-        $order->{$relation}()->syncWithoutDetaching($items);
     }
 
     protected function getDelivery(): ?User
@@ -132,7 +138,7 @@ class OrderController extends Controller
         $deliveriesWithDevicesCount = User::withCount('devices')->where('at_work', true)->whereHas('rule', function ($query) {
             $query->where('name', RuleNames::Delivery);
         })->get();
-        if (!$deliveriesWithDevicesCount) {
+        if ($deliveriesWithDevicesCount) {
             $minDevicesCount = $deliveriesWithDevicesCount->min('devices_count');
             return $deliveriesWithDevicesCount->where('devices_count', $minDevicesCount)->shuffle()->first();
         }

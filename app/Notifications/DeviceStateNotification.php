@@ -53,7 +53,7 @@ class DeviceStateNotification extends Notification
         $model = $this->device->model;
         $code = $this->device->code;
         $status = $this->device->status;
-            $message = [
+        $message = [
             'تحية طيبة سيد ' . $notifiable->name,
             'الجهاز ذات نوع ' . $model,
             'والذي كوده هو ' . $code,
@@ -63,7 +63,8 @@ class DeviceStateNotification extends Notification
         return [
             'title' => 'اشعار بحالة جهاز',
             'body' => $message,
-            'Replyable' => true
+            'Replyable' => true,
+            'device_id' => $this->device->id
         ];
     }
 }

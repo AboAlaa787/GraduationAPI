@@ -16,7 +16,7 @@ class CompletedDevicePolicy
      */
     public function viewAny($user): bool
     {
-        return $this->hasPermission($user, 'عرض الاجهزة التي تم تسليمها');
+        return $this->hasPermission($user, 'الاسنعلام عن الاجهزة التي تم تسليمها');
     }
 
     /**
@@ -24,7 +24,7 @@ class CompletedDevicePolicy
      */
     public function view($user): bool
     {
-        return $this->hasPermission($user, 'عرض الجهاز التي تم تسليمها');
+        return $this->hasPermission($user, 'الاسنعلام عن جهاز تم تسليمه');
     }
 
     /**

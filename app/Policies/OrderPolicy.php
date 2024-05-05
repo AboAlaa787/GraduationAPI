@@ -15,7 +15,7 @@ class OrderPolicy
      */
     public function viewAny($user): bool
     {
-        return $this->hasPermission($user, 'عرض الطلبات');
+        return $this->hasPermission($user, 'الاسنعلام عن الطلبات');
     }
 
     /**
@@ -23,7 +23,7 @@ class OrderPolicy
      */
     public function view($user): bool
     {
-        return $this->hasPermission($user, 'عرض الطلب');
+        return $this->hasPermission($user, 'الاسنعلام عن طلب');
     }
 
     /**
