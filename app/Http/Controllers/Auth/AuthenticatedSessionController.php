@@ -31,20 +31,18 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): JsonResponse
     {
         $request->authenticate();
-        $user = auth('clients')->user();
 
-        if (!$user) {
-            $user = auth()->user();
-        }
-        $user->rule;
-        $user->permissions;
-        $user->rule->permissions;
+        $user = auth()->user() ?? auth('clients')->user();
+
+        $user->load('rule', 'permissions', 'rule.permissions');
         $expiration=config('sanctum.expiration');
         $expires_at=now()->addMinutes($expiration);
         $token = $user->createToken('login',['*'],$expires_at);
 
-        $message['auth'] = $user;
-        $message['token'] = $token->plainTextToken;
+        $message = [
+            'auth' => $user,
+            'token' => $token->plainTextToken
+        ];
         return $this->apiResponse($message);
     }
 
