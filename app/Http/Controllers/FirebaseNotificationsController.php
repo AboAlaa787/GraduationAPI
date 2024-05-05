@@ -7,6 +7,7 @@ use App\Traits\ApiResponseTrait;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Notifications\DatabaseNotification;
 
 class FirebaseNotificationsController extends Controller
 {
@@ -47,22 +48,17 @@ class FirebaseNotificationsController extends Controller
     {
         $this->validate($request, [
             'devices_tokens' => 'required|array',
-            'title' => 'required|string',
-            'body' => 'required|string',
             'notification_id' => 'required|string|exists:notifications,id'
         ]);
-        $user = $request->user();
-        $currentAccessToken = $user->currentAccessToken()->token;
-        $senderDeviceTokens = ($user->tokens()->where('token', $currentAccessToken)->pluck('device_token')->first());
-        if ($senderDeviceTokens == null) {
-            return $this->apiResponse(null, 404, 'No devices tokens stored.');
-        }
-        return (new Firebase())->pushNotification(
+        $notificaitonId=$request->get('notification_id');
+        $notificationData=DatabaseNotification::find($notificaitonId)->data;
+        $notificationTitle=$notificationData['title'];
+        $notificationBody=implode(' ',$notificationData['body']);
+        return (new Firebase())->pushNotification(            
             $request->get('devices_tokens'),
-            $request->get('title'),
-            $request->get('body'),
-            $request->get('notification_id'),
-            $senderDeviceTokens
+            $notificationTitle,
+            $notificationBody,
+            $notificaitonId,
         );
     }
 }

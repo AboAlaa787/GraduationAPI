@@ -12,21 +12,19 @@ class Firebase
 {
     use ApiResponseTrait;
 
-    public function pushNotification(array $devicesTokens, string $title, array|string $body, string $notificationId, string|null $senderDeviceToken): JsonResponse
+    public function pushNotification(array $devicesTokens, string $title, array|string $body, string $notificationId): JsonResponse
     {
         $data = [
             'devicesTokens' => $devicesTokens,
             'title' => $title,
             'body' => $body,
             'notificationId' => $notificationId,
-            'senderDeviceToken' => $senderDeviceToken
         ];
         $rules = [
             'devicesTokens' => 'required|array',
             'title' => 'required|string',
             'body' => 'required',
             'notificationId' => 'required|string|exists:notifications,id',
-            'senderDeviceToken' => 'required|string'
         ];
         $validator = Validator::make($data, $rules);
 
@@ -54,7 +52,6 @@ class Firebase
             ],
             "data" => [
                 "notification_id" => $notificationId,
-                'sender_device_token' => $senderDeviceToken,
             ]
         ];
 
