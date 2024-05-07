@@ -2,10 +2,12 @@
 
 namespace App\Listeners;
 
+use App\Enums\DeviceStatus;
 use App\Events\DeleteDevice;
 use App\Models\Client;
 use App\Models\CompletedDevice;
 use App\Models\Device;
+use App\Notifications\CustomerNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -24,23 +26,12 @@ class AddCompletedDevice
      */
     public function handle(DeleteDevice $event): void
     {
-        $device = $event->Device;
+        $device = $event->device;
         if ($device->deliver_to_customer) {
+            $customer = $device->customer;
+            $customer->notify(new CustomerNotification($device));
            $device->delete();
             return;
-        }
-        if ($device->deliver_to_client) {
-            $client = $device->client;
-            $user = $device->user;
-            if ($client && $user) {
-                $completedDevice = $device->toArray();
-                $completedDevice['client_name'] = $client->name;
-                $completedDevice['user_name'] = $user->name;
-                $completedDevice = CompletedDevice::create($completedDevice);
-                if ($completedDevice) {
-                    $client->decrement('devices_count');
-                }
-            }
         }
     }
 }

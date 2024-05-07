@@ -57,6 +57,6 @@ class CompletedDevice extends Model
 
     public function orders(): BelongsToMany
     {
-        return $this->belongsToMany(Order::class,'devices_orders');
+        return $this->belongsToMany(Order::class, 'devices_orders');
     }
 }

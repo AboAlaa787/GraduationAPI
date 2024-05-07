@@ -59,7 +59,7 @@ class Device extends Model
             if ($device->isDirty('client_approval')) {
                 event(new ClientApproval($device));
             }
-            if ($device->isDirty('deliver_to_client') || $device->isDirty('deliver_to_customer')) {
+            if ($device->isDirty('deliver_to_customer')) {
                 event(new DeleteDevice($device));
             }
             if ($device->isDirty('status')) {

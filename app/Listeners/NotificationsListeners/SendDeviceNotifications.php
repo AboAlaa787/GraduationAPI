@@ -1,9 +1,12 @@
 <?php
 
 namespace App\Listeners\NotificationsListeners;
+
 use App\Enums\DeviceStatus;
 use App\Events\NotificationEvents\DeviceStateNotifications;
+use App\Models\CompletedDevice;
 use App\Notifications\ClientApprovalNotification;
+use App\Notifications\DeviceIsCheckedNotification;
 use App\Notifications\DeviceStateNotification;
 
 class SendDeviceNotifications
@@ -24,24 +27,6 @@ class SendDeviceNotifications
         $device = $event->Device;
         $client = $device->client;
         $user = $device->user;
-//        if (!$user || !$client) {
-//            return;
-//        }
-//        switch ($device->status) {
-//            case DeviceStatus::WaitingResponse:
-//                Notification::send($client, new NotAgreeNotification($device->id, $device->user_id, $device->client_id, $device->problem, $device->cost));
-//                break;
-//            case DeviceStatus::InProgress:
-//                Notification::send($user, new NotStartedNotification($device->id, $device->user_id,   $device->client_id));
-//                break;
-//            case DeviceStatus::Ready:
-//            case DeviceStatus::NotAgree:
-//                Notification::send($client, new ReadyNotification($device->id, $device->user_id,   $device->client_id));
-//                break;
-//            case DeviceStatus::NotMaintainable:
-//                Notification::send($client, new NotMaintainableNotification($device->id, $device->user_id,  $device->client_id, $device->problem));
-//                break;
-//        }
         //Notify the technician
         if (
             in_array($device->status, [
@@ -53,13 +38,32 @@ class SendDeviceNotifications
             return;
         }
         //Notify the client
-        if(in_array($device->status, [
+        if (in_array($device->status, [
             DeviceStatus::NotAgree->value,
             DeviceStatus::NotReady->value,
             DeviceStatus::Ready->value,
             DeviceStatus::NotMaintainable->value,
-        ])){
+        ])) {
             $client->pushNotification(new DeviceStateNotification($device));
+        }
+
+        if ($device->status == DeviceStatus::WaitingResponse) {
+            $client->pushNotification(new DeviceIsCheckedNotification($device));
+        }
+
+        if ($device->status == DeviceStatus::Ready) {
+            $client = $device->client;
+            $user = $device->user;
+            if ($client && $user) {
+                $completedDevice = $device->toArray();
+                $completedDevice['client_name'] = $client->name;
+                $completedDevice['user_name'] = $user->name;
+                $completedDevice = CompletedDevice::create($completedDevice);
+                if ($completedDevice) {
+                    $client->decrement('devices_count');
+                }
+            }
+            return;
         }
     }
 }

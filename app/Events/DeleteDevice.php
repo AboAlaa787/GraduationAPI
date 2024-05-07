@@ -2,6 +2,8 @@
 
 namespace App\Events;
 
+use App\Models\CompletedDevice;
+use App\Models\Device;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -13,13 +15,13 @@ use Illuminate\Queue\SerializesModels;
 class DeleteDevice
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-    public $Device;
+    public Device $device;
     /**
      * Create a new event instance.
      */
     public function __construct($device)
     {
-        $this->Device = $device;
+        $this->$device = $device;
     }
 
     /**
