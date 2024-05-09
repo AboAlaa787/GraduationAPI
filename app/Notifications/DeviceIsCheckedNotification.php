@@ -52,9 +52,10 @@ class DeviceIsCheckedNotification extends Notification
         $message = [
             'تحية طيبة سيد ' . $notifiable->name,
             'الجهاز ذات نوع ' . $this->device->model,
-            ' يحتاج إلى صيانة مدتها '. (now()-$this->device->Expected_date_of_delivery),
+            'التاريخ المتوقع للتسليم هو '.$this->device->Expected_date_of_delivery,
             'وتم اكتشاف العطل '.$this->device->problem,
             'وتكلفة تصليح هذا العطل '.$this->device->cost_to_client,
+            'هل تريد ان نبدأ العمل؟',
         ];
         return [
             'title' => 'اشعار بعطل جهاز',

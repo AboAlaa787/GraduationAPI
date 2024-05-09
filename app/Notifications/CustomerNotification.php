@@ -2,10 +2,8 @@
 
 namespace App\Notifications;
 
-use App\Models\CompletedDevice;
 use App\Models\Device;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -38,13 +36,15 @@ class CustomerNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         $customer = $this->device->customer;
+        $client = $this->device->client;
         return (new MailMessage)
             ->mailer('smtp')
             ->subject('اشعار تسليم جهاز')
-            ->greeting('تحية طيبة سيد '. $customer->name . $customer->last_name)
+            ->greeting('تحية طيبة سيد ' . $customer->name . ' ' . $customer->last_name)
             ->line( 'الجهاز ذات نوع ' . $this->device->model)
-            ->line('تم استلامه بتاريخ ' . now())
-            ->line(' تنتهي كفالة هذا الجهاز في تاريخ' . $this->device->customer_date_warranty);
+            ->line('تم استلامه من قبل حضرتكم بتاريخ ' . now()->format('Y-m-d H:i:s'))
+            ->line(' تنتهي كفالة هذا الجهاز في تاريخ' . $this->device->customer_date_warranty)
+            ->line('شكراً لزيارتكم مركز ' . $client->center_name);
     }
 
     /**

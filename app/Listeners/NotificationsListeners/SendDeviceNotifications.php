@@ -28,22 +28,15 @@ class SendDeviceNotifications
         $client = $device->client;
         $user = $device->user;
         //Notify the technician
-        if (
-            in_array($device->status, [
-                DeviceStatus::InProgress->value,
-                DeviceStatus::NotAgree->value,
-            ])
-        ) {
+        if (in_array($device->status, [DeviceStatus::InProgress->value, DeviceStatus::NotAgree->value,])) {
             $user->pushNotification(new ClientApprovalNotification($device));
-            return;
         }
         //Notify the client
         if (in_array($device->status, [
             DeviceStatus::NotAgree->value,
             DeviceStatus::NotReady->value,
             DeviceStatus::Ready->value,
-            DeviceStatus::NotMaintainable->value,
-        ])) {
+            DeviceStatus::NotMaintainable->value])) {
             $client->pushNotification(new DeviceStateNotification($device));
         }
 
@@ -51,10 +44,7 @@ class SendDeviceNotifications
             $client->pushNotification(new DeviceIsCheckedNotification($device));
         }
 
-        if ($device->status == DeviceStatus::Ready) {
-            $client = $device->client;
-            $user = $device->user;
-            if ($client && $user) {
+        if ($device->status == DeviceStatus::Ready && $client && $user) {
                 $completedDevice = $device->toArray();
                 $completedDevice['client_name'] = $client->name;
                 $completedDevice['user_name'] = $user->name;
@@ -62,8 +52,6 @@ class SendDeviceNotifications
                 if ($completedDevice) {
                     $client->decrement('devices_count');
                 }
-            }
-            return;
         }
     }
 }

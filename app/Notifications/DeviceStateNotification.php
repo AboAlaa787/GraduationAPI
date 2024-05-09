@@ -58,7 +58,9 @@ class DeviceStateNotification extends Notification
             'الجهاز ذات نوع ' . $model,
             'والذي كوده هو ' . $code,
             'في حالة ' . $status,
-            'وأصبح قابل للاستلام من قبل حضرتكم. هل تريد أن نوصله إليك؟'
+            'وأصبح قابل للاستلام من قبل حضرتكم. ',
+          $notifiable->hasPermission($notifiable,'اضافة طلب')
+          &&$notifiable->hasPermission($notifiable,'اضافة طلب لجهاز')??  'هل تريد أن نوصله إليك؟'
         ];
         return [
             'title' => 'اشعار بحالة جهاز',

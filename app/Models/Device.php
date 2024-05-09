@@ -19,7 +19,30 @@ class Device extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['model', 'imei', 'code', 'client_id', 'user_id', 'client_priority', 'manager_priority', 'info', 'problem', 'cost_to_client', 'cost_to_customer', 'fix_steps', 'status', 'client_approval', 'date_receipt', 'customer_id', 'Expected_date_of_delivery', 'deliver_to_client', 'deliver_to_customer', 'repaired_in_center', 'at_work'];
+    protected $fillable = [
+        'model',
+        'imei',
+        'code',
+        'client_id',
+        'user_id',
+        'client_priority',
+        'manager_priority',
+        'info',
+        'problem',
+        'cost_to_client',
+        'cost_to_customer',
+        'fix_steps',
+        'status',
+        'client_approval',
+        'date_receipt',
+        'customer_id',
+        'Expected_date_of_delivery',
+        'deliver_to_client',
+        'deliver_to_customer',
+        'repaired_in_center',
+        'at_work',
+        'client_date_warranty'
+    ];
     protected $relations = ['client', 'user', 'customer', 'orders',];
 
     protected static function boot(): void

@@ -29,8 +29,9 @@ class CompletedDevice extends Model
         'deliver_to_client',
         'deliver_to_customer',
         'date_receipt',
-        'date_delivery',
-        'date_warranty',
+        'date_delivery_client',
+        'date_delivery_customer',
+        'client_date_warranty',
         'repaired_in_center',
     ];
     protected $relations = [

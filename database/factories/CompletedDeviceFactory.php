@@ -36,8 +36,8 @@ class CompletedDeviceFactory extends Factory
             'deliver_to_client' => fake()->boolean,
             'deliver_to_customer' => fake()->boolean(false),
             'date_receipt' => fake()->dateTimeThisYear(),
-            'date_delivery' => fake()->dateTimeThisYear(),
-            'date_warranty' => fake()->dateTimeBetween('+1 week', '+2 weeks')->format('Y-m-d'),
+            'date_delivery_client' => fake()->dateTimeThisYear(),
+            'client_date_warranty' => fake()->dateTimeBetween('+1 week', '+2 weeks')->format('Y-m-d'),
             'repaired_in_center' => fake()->boolean,
         ];
     }
