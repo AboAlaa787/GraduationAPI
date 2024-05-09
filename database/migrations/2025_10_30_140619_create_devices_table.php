@@ -33,6 +33,7 @@ return new class extends Migration
             $table->boolean('client_approval')->nullable();
             $table->date('date_receipt')->default(now());
             $table->date('Expected_date_of_delivery')->nullable();
+            $table->date('client_date_warranty')->nullable();
             $table->boolean('deliver_to_client')->default(false);
             $table->boolean('deliver_to_customer')->default(false);
             $table->boolean('repaired_in_center')->default(false);

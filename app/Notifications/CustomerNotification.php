@@ -1,28 +1,25 @@
 <?php
 
-namespace App\Notifications\DevicesStatus;
+namespace App\Notifications;
 
+use App\Models\CompletedDevice;
+use App\Models\Device;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class NotStartedNotification extends Notification
+class CustomerNotification extends Notification
 {
     use Queueable;
-
-    public $devive_id;
-    public $user_id;
-    public $clirnt_id;
+    private Device $device;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct($devive_id, $user_id, $clirnt_id)
+    public function __construct(Device $device)
     {
-        $this->devive_id = $devive_id;
-        $this->user_id = $user_id;
-        $this->clirnt_id = $clirnt_id;
+        $this->device = $device;
     }
 
     /**
@@ -32,7 +29,7 @@ class NotStartedNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['database'];
+        return ['mail'];
     }
 
     /**
@@ -40,10 +37,14 @@ class NotStartedNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
+        $customer = $this->device->customer;
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+            ->mailer('smtp')
+            ->subject('اشعار تسليم جهاز')
+            ->greeting('تحية طيبة سيد '. $customer->name . $customer->last_name)
+            ->line( 'الجهاز ذات نوع ' . $this->device->model)
+            ->line('تم استلامه بتاريخ ' . now())
+            ->line(' تنتهي كفالة هذا الجهاز في تاريخ' . $this->device->customer_date_warranty);
     }
 
     /**
@@ -54,10 +55,7 @@ class NotStartedNotification extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'devive_id' => $this->devive_id,
-            'user_id' => $this->user_id,
-            'clirnt_id' =>  $this->clirnt_id,
-            'message' => 'The customer has agreed to repair the device with the number:' . $this->devive_id,
+            //
         ];
     }
 }
