@@ -247,15 +247,17 @@ trait CRUDTrait
             return $this->apiResponse($data);
         }
         $data = $query->withCount($withCount)->paginate($perPage, page: $page);
-        $pagination['current_page']=$data->currentPage();
-        $pagination['first_page_url']=$data->url(1);
-        $pagination['from']=$data->firstItem();
-        $pagination['to']=$data->lastItem();
-        $pagination['last_page']=$data->lastPage();
-        $pagination['next_page_url']=$data->nextPageUrl();
-        $pagination['per_page']=$data->perPage();
-        $pagination['prev_page_url']=$data->previousPageUrl();
-        $pagination['total']=$data->total();
+        $pagination = [
+            'current_page' => $data->currentPage(),
+            'first_page_url' => $data->url(1),
+            'from' => $data->firstItem(),
+            'to' => $data->lastItem(),
+            'last_page' => $data->lastPage(),
+            'next_page_url' => $data->nextPageUrl(),
+            'per_page' => $data->perPage(),
+            'prev_page_url' => $data->previousPageUrl(),
+            'total' => $data->total()
+        ];
         return $this->apiResponse(body:$data->items(),pagination: $pagination);
 
     }
