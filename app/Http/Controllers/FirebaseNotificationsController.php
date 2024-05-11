@@ -50,15 +50,12 @@ class FirebaseNotificationsController extends Controller
             'devices_tokens' => 'required|array',
             'notification_id' => 'required|string|exists:notifications,id'
         ]);
-        $notificaitonId=$request->get('notification_id');
-        $notificationData=DatabaseNotification::find($notificaitonId)->data;
-        $notificationTitle=$notificationData['title'];
-        $notificationBody=implode(' ',$notificationData['body']);
-        return (new Firebase())->pushNotification(            
+        $notificationId=$request->get('notification_id');
+        $notificationData=DatabaseNotification::find($notificationId)->data;
+        return (new Firebase())->pushNotification(
             $request->get('devices_tokens'),
-            $notificationTitle,
-            $notificationBody,
-            $notificaitonId,
+            $notificationId,
+            $notificationData
         );
     }
 }

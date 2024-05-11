@@ -28,8 +28,4 @@ class Service extends Model
         return $this->belongsToMany(Order::class, 'devices_orders');
     }
 
-    public function devices(): BelongsToMany
-    {
-        return $this->belongsToMany(Device::class, 'devices_orders');
-    }
 }

@@ -4,7 +4,6 @@ namespace App\Notifications;
 
 use App\Models\Device;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -61,7 +60,29 @@ class DeviceIsCheckedNotification extends Notification
             'title' => 'اشعار بعطل جهاز',
             'body' => $message,
             'Replyable' => true,
-            'device_id' => $this->device->id
+            'data' => [
+                'device_id' => $this->device->id,
+            ],
+            'actions' => [
+                [
+                    'title' => 'نعم',
+                    'url' => 'api/devices/' . $this->device->id,
+                    'method' => 'PUT',
+                    'request_body' => [
+                        'status' => 'قيد العمل',
+                        'client_approval' => true
+                    ]
+                ],
+                [
+                    "title" => "لا",
+                    'url' => 'api/devices/' . $this->device->id,
+                    'method' => 'PUT',
+                    'request_body' => [
+                        'status' => 'لم يوافق على العمل به',
+                        'client_approval' => false
+                    ]
+                ]
+            ],
         ];
     }
 }

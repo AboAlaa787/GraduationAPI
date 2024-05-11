@@ -14,7 +14,7 @@ trait FirebaseNotifiable
         try {
             $this->notify($notification);
             $notifiableId = $this->id;
-            $notificationBody =  $notification->toArray($this);
+            $notificationData = $notification->toArray($this);
             $notification = DatabaseNotification::where('notifiable_id', $notifiableId)->where('notifiable_type', get_class($this))->latest('id')->firstOrFail();
             $notificationId = $notification->id;
 
@@ -27,10 +27,8 @@ trait FirebaseNotifiable
             $senderDeviceToken=$sender->tokens()->where('token',$senderCurrentToken)->pluck('device_token')->first();
             (new Firebase())->pushNotification(
                 $userDevicesTokens->all(),
-                $notificationBody['title'],
-                implode(' ',$notificationBody['body']),
                 $notificationId,
-                $senderDeviceToken
+                $notificationData,
             );
         } catch (ModelNotFoundException) {
             return;

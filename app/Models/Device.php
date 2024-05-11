@@ -7,7 +7,6 @@ use App\Events\AddDevice;
 use App\Events\ClientApproval;
 use App\Events\DeleteDevice;
 use App\Events\NotificationEvents\DeviceStateNotifications;
-use DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

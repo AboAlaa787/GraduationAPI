@@ -36,6 +36,9 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::get("/login", function () {
+    return response()->json('unauthenticated', 401);
+})->name("login");
 
 Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 
@@ -53,7 +56,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('refresh_token', [AuthenticatedSessionController::class, 'refresh_token']);
 
-    Route::resource('/clients', ClientController::class)->except('store');;
+    Route::resource('/clients', ClientController::class)->except('store');
 
     Route::resource('/centers', CenterController::class);
 

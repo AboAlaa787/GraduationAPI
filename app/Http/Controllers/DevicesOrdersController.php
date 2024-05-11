@@ -60,6 +60,17 @@ class DevicesOrdersController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @param int $id
+     * @urlParam  id  integer required The ID of the Devices_Orders.
+     * @return JsonResponse
+     */
+    public function update(Request $request, int $id): JsonResponse
+    {
+        return $this->update_data($request, $id, new Devices_orders());
+    }
+
+    /**
      * @param $id
      * @urlParam  id  integer required The ID of the Devices_Orders.
      * @return JsonResponse

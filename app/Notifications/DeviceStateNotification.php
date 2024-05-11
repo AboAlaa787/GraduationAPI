@@ -2,7 +2,6 @@
 
 namespace App\Notifications;
 
-use App\Enums\DeviceStatus;
 use App\Models\Device;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -53,20 +52,43 @@ class DeviceStateNotification extends Notification
         $model = $this->device->model;
         $code = $this->device->code;
         $status = $this->device->status;
+        $hasOrderPermission = $notifiable->hasPermission($notifiable, 'اضافة طلب')
+            && $notifiable->hasPermission($notifiable, 'اضافة طلب لجهاز');
         $message = [
             'تحية طيبة سيد ' . $notifiable->name,
             'الجهاز ذات نوع ' . $model,
             'والذي كوده هو ' . $code,
             'في حالة ' . $status,
             'وأصبح قابل للاستلام من قبل حضرتكم. ',
-          $notifiable->hasPermission($notifiable,'اضافة طلب')
-          &&$notifiable->hasPermission($notifiable,'اضافة طلب لجهاز')??  'هل تريد أن نوصله إليك؟'
+            $hasOrderPermission ? 'هل تريد أن نوصله إليك؟' : ''
         ];
         return [
             'title' => 'اشعار بحالة جهاز',
             'body' => $message,
-            'Replyable' => true,
-            'device_id' => $this->device->id
+            'Replyable' => $hasOrderPermission,
+            'data' => [
+                'device_id' => [
+                    $this->device->id => 'تسليم'
+                ],
+            ],
+            'actions' => $hasOrderPermission ? [
+                [
+                    'title' => 'نعم',
+                    'url' => 'api/orders',
+                    'method' => 'POST',
+                    'request_body' => [
+                        'devices_ids' => [
+                            $this->device->id => 'تسليم'
+                        ],
+                        'client_id' => $this->device->client_id,
+                        'description' => 'توصيل جهاز الى العميل'
+                    ]
+                ],
+                [
+                    "title" => "لا",
+                    'url' => ''
+                ]
+            ] : []
         ];
     }
 }

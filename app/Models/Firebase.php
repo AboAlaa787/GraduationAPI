@@ -5,26 +5,33 @@ namespace App\Models;
 
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\Validator;
 
 class Firebase
 {
     use ApiResponseTrait;
 
-    public function pushNotification(array $devicesTokens, string $title, array|string $body, string $notificationId): JsonResponse
+    public function pushNotification(array $devicesTokens, string $notificationId, $notificationData): JsonResponse
     {
+        if (!is_array($notificationData) || !$notificationData) {
+            return response()->json(['error' => 'Invalid data'], 422);
+        }
+        $notificationTitle = $notificationData['title'];
+        $notificationBody = implode(' ', $notificationData['body']);
+        $notificationActions = $notificationData['actions'] ?? [];
         $data = [
             'devicesTokens' => $devicesTokens,
-            'title' => $title,
-            'body' => $body,
+            'title' => $notificationTitle,
+            'body' => $notificationBody,
             'notificationId' => $notificationId,
+            'actions' => $notificationActions,
         ];
         $rules = [
             'devicesTokens' => 'required|array',
             'title' => 'required|string',
-            'body' => 'required',
+            'body' => 'required|string',
             'notificationId' => 'required|string|exists:notifications,id',
+            'actions' => 'array',
         ];
         $validator = Validator::make($data, $rules);
 
@@ -36,23 +43,14 @@ class Firebase
         $data = [
             'registration_ids' => $devicesTokens,
             'notification' => [
-                'title' => $title,
-                'body' => $body,
+                'title' => $notificationTitle,
+                'body' => $notificationBody,
                 'sound' => 'default',
-                "actions" => [
-                    [
-                        "title" => "Yes",
-                        "action" => "yes_action"
-                    ],
-                    [
-                        "title" => "No",
-                        "action" => "no_action"
-                    ]
-                ]
+                "actions" => $notificationActions
             ],
             "data" => [
                 "notification_id" => $notificationId,
-            ]
+                ] + ($notificationData['data'] ?? [])
         ];
 
         $dataString = json_encode($data);
