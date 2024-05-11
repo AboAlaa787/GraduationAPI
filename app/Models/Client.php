@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\RuleNames;
 use App\Traits\FirebaseNotifiable;
+use App\Traits\PermissionCheckTrait;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -16,7 +17,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Client extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable,FirebaseNotifiable;
+    use HasApiTokens, HasFactory, Notifiable,FirebaseNotifiable,PermissionCheckTrait;
 
     protected $fillable = [
         'name',

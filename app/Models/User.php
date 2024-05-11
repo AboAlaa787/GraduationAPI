@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\FirebaseNotifiable;
+use App\Traits\PermissionCheckTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -13,7 +14,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable,FirebaseNotifiable;
+    use HasApiTokens, HasFactory, Notifiable,FirebaseNotifiable,PermissionCheckTrait;
 
     /**
      * The attributes that are mass assignable.
