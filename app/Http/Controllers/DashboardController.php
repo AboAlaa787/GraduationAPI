@@ -71,8 +71,8 @@ class DashboardController extends Controller
         //Number of delivered devices in this month
         $inMonthCompletedDevicesCount = CompletedDevice::
         where('repaired_in_center', true)
-            ->whereYear('date_delivery',now()->year)
-            ->whereMonth('date_delivery',now()->month)
+            ->whereYear('date_delivery_client',now()->year)
+            ->whereMonth('date_delivery_client',now()->month)
             ->count();
         $response['completed_devices_count_in_this_month'] = $inMonthCompletedDevicesCount;
 
