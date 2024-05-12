@@ -23,7 +23,7 @@ class UpdateClientRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'center_name' => 'string|alpha|filled',
+            'center_name' => 'string|filled',
             'phone' => 'nullable|string|filled',
             'devices_count' => 'nullable|integer|filled',
             'email' => ['string','filled',new UniqueEmailAcrossTables],

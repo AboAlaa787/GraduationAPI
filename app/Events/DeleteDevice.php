@@ -21,7 +21,7 @@ class DeleteDevice
      */
     public function __construct($device)
     {
-        $this->$device = $device;
+        $this->device = $device;
     }
 
     /**

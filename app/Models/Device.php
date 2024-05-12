@@ -40,7 +40,8 @@ class Device extends Model
         'deliver_to_customer',
         'repaired_in_center',
         'at_work',
-        'client_date_warranty'
+        'client_date_warranty',
+        'customer_date_warranty',
     ];
     protected $relations = ['client', 'user', 'customer', 'orders',];
 

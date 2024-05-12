@@ -24,7 +24,9 @@ class AddCompletedDevice
         $device = $event->device;
         if ($device->deliver_to_customer) {
             $customer = $device->customer;
-                $device->status == DeviceStatus::Ready ?? $customer->notify(new CustomerNotification($device));
+            if ($device->status === DeviceStatus::Ready->value) {
+                $customer->notify(new CustomerNotification($device));
+            }
            $device->delete();
         }
     }
