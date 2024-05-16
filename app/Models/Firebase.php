@@ -42,17 +42,16 @@ class Firebase
 
         $data = [
             'registration_ids' => $devicesTokens,
-            'notification' => [
-                'title' => $notificationTitle,
-                'body' => $notificationBody,
-                'sound' => 'default',
-            ],
             "data" => [
                 "actions" => $notificationActions,
+                'notification' => [
+                    'title' => $notificationTitle,
+                    'body' => $notificationBody,
+                    'sound' => 'default',
+                ],
                 "notification_id" => $notificationId,
-                ] + ($notificationData['data'] ?? [])
+            ] + ($notificationData['data'] ?? [])
         ];
-
         $dataString = json_encode($data);
         $headers = [
 
