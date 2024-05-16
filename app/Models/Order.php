@@ -17,6 +17,7 @@ class Order extends Model
         'date',
         'client_id',
         'user_id',
+        'done',
     ];
     protected $relations = [
         'client',
@@ -24,14 +25,6 @@ class Order extends Model
         'devices',
         'products',
     ];
-
-    protected static function boot(): void
-    {
-        parent::boot();
-        static::creating(function ($order) {
-
-        });
-    }
 
     public function devices(): BelongsToMany
     {

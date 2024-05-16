@@ -18,12 +18,29 @@ class Devices_orders extends Model
         'deliver_time',
     ];
 
-    protected $relations=[
+    protected $relations = [
         'order',
         'device',
         'service',
     ];
+    protected static function boot(): void
+    {
+        parent::boot();
+        static::updating(function ($devices_orders) {
+            if ($devices_orders->isDirty('deliver_to_client')) {
+                $order = $devices_orders->order;
 
+                $undeliveredDevicesCount = $order->devices->where('deliver_to_client', false)->count();
+                if ($undeliveredDevicesCount === 0) {
+                    $order->update(['done' => true]);
+                }
+
+                if ($devices_orders->deliver_to_client === true) {
+                    $devices_orders->update(['deliver_time' => now()]);
+                }
+            }
+        });
+    }
     /**
      * Get the device associated with the model.
      */
