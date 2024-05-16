@@ -70,7 +70,7 @@ class DeviceIsCheckedNotification extends Notification
                     'method' => 'PUT',
                     'request_body' => [
                         'status' => 'قيد العمل',
-                        'client_approval' => true
+                        'client_approval' => 1
                     ]
                 ],
                 [
@@ -79,7 +79,7 @@ class DeviceIsCheckedNotification extends Notification
                     'method' => 'PUT',
                     'request_body' => [
                         'status' => 'لم يوافق على العمل به',
-                        'client_approval' => false
+                        'client_approval' => 0
                     ]
                 ]
             ],
