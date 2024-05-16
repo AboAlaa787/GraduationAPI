@@ -25,7 +25,7 @@ class ModificationsAfterClientApproval
     {
         $device = $event->Device;
         if ($device->client_approval !== null) {
-            $status = $device->client_approval ?  DeviceStatus::InProgress :  DeviceStatus::NotAgree;
+            $status = $device->client_approval ?  DeviceStatus::InProgress->value :  DeviceStatus::NotAgree->value;
             $device->update(['status' => $status]);
         }
     }

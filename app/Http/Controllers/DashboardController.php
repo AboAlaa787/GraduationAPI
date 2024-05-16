@@ -28,7 +28,7 @@ class DashboardController extends Controller
         $readyDevicesCount = Device::
         where('repaired_in_center', true)
             ->where('deliver_to_client', false)
-            ->where('status',DeviceStatus::Ready)
+            ->where('status',DeviceStatus::Ready->value)
             ->count();
         $response['ready_devices_count'] = $readyDevicesCount;
 
@@ -36,7 +36,7 @@ class DashboardController extends Controller
         $inProgressDevicesCount = Device::
         where('repaired_in_center', true)
             ->where('deliver_to_client', false)
-            ->where('status',DeviceStatus::InProgress)
+            ->where('status',DeviceStatus::InProgress->value)
             ->count();
         $response['in_progress_devices_count'] = $inProgressDevicesCount;
 
@@ -57,14 +57,14 @@ class DashboardController extends Controller
         //Number of ready delivered devices
         $readyCompletedDevicesCount = CompletedDevice::
         where('repaired_in_center', true)
-            ->where('status',DeviceStatus::Ready)
+            ->where('status',DeviceStatus::Ready->value)
             ->count();
         $response['ready_completed_devices_count'] = $readyCompletedDevicesCount;
 
         //Number of unready delivered devices
         $unreadyCompletedDevicesCount = CompletedDevice::
         where('repaired_in_center', true)
-            ->where('status',DeviceStatus::NotReady)
+            ->where('status',DeviceStatus::NotReady->value)
             ->count();
         $response['unready_completed_devices_count'] = $unreadyCompletedDevicesCount;
 
@@ -83,7 +83,7 @@ class DashboardController extends Controller
         })
             ->whereHas('completed_devices')
             ->withCount(['completed_devices' => function ($completedDevices) {
-                $completedDevices->where('status', DeviceStatus::Ready);
+                $completedDevices->where('status', DeviceStatus::Ready->value);
             }])
             ->orderBy('completed_devices_count','desc')
             ->limit(5)

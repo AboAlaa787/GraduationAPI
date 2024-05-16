@@ -40,11 +40,11 @@ class SendDeviceNotifications
             $client->pushNotification(new DeviceStateNotification($device));
         }
 
-        if ($device->status == DeviceStatus::WaitingResponse) {
+        if ($device->status == DeviceStatus::WaitingResponse->value) {
             $client->pushNotification(new DeviceIsCheckedNotification($device));
         }
 
-        if ($device->status == DeviceStatus::Ready && $client && $user) {
+        if ($device->status == DeviceStatus::Ready->value && $client && $user) {
                 $completedDevice = $device->toArray();
                 $completedDevice['client_name'] = $client->name;
                 $completedDevice['user_name'] = $user->name;
