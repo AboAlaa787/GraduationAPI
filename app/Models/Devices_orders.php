@@ -26,7 +26,7 @@ class Devices_orders extends Model
     protected static function boot(): void
     {
         parent::boot();
-        static::updating(function ($devices_orders) {
+        static::updated(function ($devices_orders) {
             if ($devices_orders->isDirty('deliver_to_client')) {
                 $order = $devices_orders->order;
 
@@ -34,9 +34,12 @@ class Devices_orders extends Model
                 if ($undeliveredDevicesCount === 0) {
                     $order->update(['done' => true]);
                 }
-
-                if ($devices_orders->deliver_to_client === true) {
-                    $devices_orders->update(['deliver_time' => now()]);
+            }
+        });
+        static::updating(function ($devices_orders) {
+            if ($devices_orders->isDirty('deliver_to_client')) {
+                if ($devices_orders->deliver_to_client) {
+                    $devices_orders->deliver_time = now();
                 }
             }
         });
