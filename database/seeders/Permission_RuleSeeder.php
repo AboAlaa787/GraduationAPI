@@ -16,13 +16,37 @@ class Permission_RuleSeeder extends Seeder
      */
     public function run(): void
     {
-        $rule=Rule::where('name','مدير')->first();
-        $permissions=Permission::get();
+        $rule = Rule::where('name', 'مدير')->firstOrFail();
+        $permissions = Permission::get();
         foreach ($permissions as $permission) {
-            Permission_rule::create([
-                'rule_id'=>$rule->id,
-                'permission_id'=>$permission->id
-            ]);
+            if ($rule->permissions->contains($permission->id)) {
+                continue;
+            }
+            $rule->permissions()->attach($permission->id);
+        }
+
+        $rule = Rule::where('name', 'عميل')->firstOrFail();
+        $permissions = [
+            'الاسنعلام عن جهاز',
+            'الاسنعلام عن الاجهزة',
+            'اضافة جهاز',
+            'تعديل بيانات جهاز',
+            'حذف جهاز',
+            'الاسنعلام عن الاجهزة التي تم تسليمها',
+            'الاسنعلام عن جهاز تم تسليمه',
+            'تعديل بيانات جهاز تم تسليمه',
+            'تسليم جهاز',
+            'اضافة زبون',
+            'الاسنعلام عن الزبائن',
+            'الاسنعلام عن زبون',
+        ];
+        foreach ($permissions as $permissionName) {
+
+            $permission = Permission::where('name', $permissionName)->firstOrFail();
+            if ($rule->permissions->contains($permission->id)) {
+                continue;
+            }
+            $rule->permissions()->attach($permission->id);
         }
     }
 }
