@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
@@ -45,7 +46,9 @@ trait CRUDTrait
             if ($validator->fails()) {
                 return response()->json(['error' => $validator->errors()], 400);
             }
-            $this->authorizeForModel($model, 'viewAny');
+            if (!$model instanceof DatabaseNotification) {
+                $this->authorizeForModel($model, 'viewAny');
+            }
             $relations = $this->parseRelations($with);
             $this->validateRelations($model, $relations);
 

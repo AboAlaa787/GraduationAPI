@@ -4,19 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\NotificationResource;
 use App\Traits\ApiResponseTrait;
+use App\Traits\CRUDTrait;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 /**
  * @group Notifications management
  */
 class NotificationController extends Controller
 {
-    use ApiResponseTrait;
+    use ApiResponseTrait,CRUDTrait;
 
     /**
      * Get all notifications for authenticated user
@@ -125,9 +127,30 @@ class NotificationController extends Controller
     {
         $user = $request->user();
         if ($user->rule->name == "مدير") {
-            
-            return $this->apiResponse(NotificationResource::collection(DatabaseNotification::all()));
+            $rules = [
+                'page' => 'integer|min:1',
+                'per_page' => 'integer|min:1',
+                'all_data' => 'integer|in:1,0'
+            ];
+            $data = [
+                'page' => $request->get('page', 1),
+                'per_page' => $request->get('per_page', 20),
+                'all_data' => $request->get('all_data', 0)
+            ];
+            $validator = Validator::make($data, $rules);
 
+            if ($validator->fails()) {
+                return response()->json(['error' => $validator->errors()], 400);
+            }
+            $data=$this->index_data(new DatabaseNotification(),$request,'');
+            $hh=$data->getData();
+            $d=DatabaseNotification::hydrate($hh->body);
+            $r=NotificationResource::collection($d);
+            $b=$r->jsonSerialize();
+            if ($b) {
+                $b=$b[0];
+            }
+            return $this->apiResponse($b,200,"success",$hh->pagination);
         }
         return $this->apiResponse(null, 403, 'Unauthorized');
     }
