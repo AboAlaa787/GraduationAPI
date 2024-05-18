@@ -7,6 +7,7 @@ use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -119,10 +120,12 @@ class NotificationController extends Controller
         }
     }
 
-//    public function sendNotification(Request $request):JsonResponse
-//    {
-//        $this->validate($request,[
-//            'message' => 'required',
-//        ]);
-//    }
+    public function adminNotification(Request $request): JsonResponse
+    {
+        $user = $request->user();
+        if ($user->rule->name == "مدير") {
+            return $this->apiResponse(DatabaseNotification::all());
+        }
+        return $this->apiResponse(null, 403, 'Unauthorized');
+    }
 }
