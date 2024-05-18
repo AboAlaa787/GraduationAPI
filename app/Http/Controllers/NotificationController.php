@@ -150,7 +150,8 @@ class NotificationController extends Controller
             // if ($b) {
             //     $b=$b[0];
             // }
-            return $this->apiResponse(NotificationResource::collection(DatabaseNotification::all()));
+            $data=NotificationResource::collection(DatabaseNotification::get())[0];
+            return $this->apiResponse($data);
         }
         return $this->apiResponse(null, 403, 'Unauthorized');
     }
