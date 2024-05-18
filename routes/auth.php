@@ -11,4 +11,4 @@ Route::post('password/reset/confirm', [ResetPasswordController::class,'resetPass
 
 Route::get('email/verify/request',[EmailVerificationController::class,'sendEmailVerificationNotification'])->middleware('auth:sanctum');
 
-Route::get('gi/{token}',[EmailVerificationController::class,'emailVerify']);
+Route::get('email/verify/confirm/{token}',[EmailVerificationController::class,'emailVerify']);
