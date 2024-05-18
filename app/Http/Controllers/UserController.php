@@ -75,7 +75,9 @@ class UserController extends Controller
             $this->authorize('create', User::class);
             $request['password'] = Hash::make($request['password']);
             $response['user'] = User::create($request->all());
-            $response['token'] = $response['user']->createToken('register')->plainTextToken;
+            $expiration = config('sanctum.expiration');
+            $expires_at = now()->addMinutes($expiration);
+            $response['token'] = $response['user']->createToken('register', ['*'], $expires_at)->plainTextToken;
             $response['user']->notify(new EmailVerificationNotification());
             return $this->apiResponse($response, 200, 'Successful and verification message has been sent');
         } catch (AuthorizationException $e) {

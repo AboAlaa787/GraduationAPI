@@ -57,7 +57,9 @@ class ClientController extends Controller
             // $this->authorize('create', new Client());
             $request['password'] = Hash::make($request['password']);
             $response['client'] = Client::create($request->all());
-            $response['token'] = $response['client']->createToken('register')->plainTextToken;
+            $expiration=config('sanctum.expiration');
+            $expires_at=now()->addMinutes($expiration);
+            $response['token'] = $response['client']->createToken('register',['*'],$expires_at)->plainTextToken;
             $response['client']->notify(new EmailVerificationNotification());
             return $this->apiResponse($response, 200, 'Successful and verification message has been sent');
         } catch (AuthorizationException $e) {

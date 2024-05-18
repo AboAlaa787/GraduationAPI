@@ -111,4 +111,3 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('dashboard_info',[DashboardController::class,'index']);
 });
 
-require __DIR__ . '/auth.php';

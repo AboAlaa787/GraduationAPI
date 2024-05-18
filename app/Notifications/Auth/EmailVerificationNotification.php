@@ -7,18 +7,15 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Ichtrojan\Otp\Otp;
 
 class EmailVerificationNotification extends Notification
 {
     use Queueable;
-    private $otp;
     /**
-     * Create a new notification instance.
+     * Create a new message instance.
      */
     public function __construct()
     {
-        $this->otp = new Otp();
     }
 
     /**
@@ -36,13 +33,16 @@ class EmailVerificationNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        $otpCode = $this->otp->generate($notifiable->email,'numeric', 6, 60);
+        $verifibleToken = $notifiable->tokens->first()->token;
         return (new MailMessage)
             ->mailer('smtp')
-            ->subject('Email verification')
-            ->greeting('Hello Mr.' . $notifiable->name)
-            ->line('Use the below code for verification process:')
-            ->line('Your verification code is: ' . $otpCode->token);
+            ->subject('Email Verification Required')
+            ->greeting("Greetings, {$notifiable->name}!")
+            ->line('Your security is important to us. Please click the button below to complete the email verification process:')
+            ->action('Verify My Email', "https://haidarjaded787.serv00.net/email/verify/confirm/" . $verifibleToken)
+            ->line('Thank you for taking the time to confirm your email. We appreciate your prompt attention to this matter.')
+            ->salutation('Warm regards,')
+            ->salutation('The MyPhone Team');
     }
 
     /**
