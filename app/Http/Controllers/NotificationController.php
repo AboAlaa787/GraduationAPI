@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\NotificationResource;
 use App\Traits\ApiResponseTrait;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -25,7 +26,7 @@ class NotificationController extends Controller
      */
     public function allNotifications(Request $request): JsonResponse
     {
-        return $this->apiResponse($request->user()->notifications);
+        return $this->apiResponse(NotificationResource::collection($request->user()->notifications));
     }
 
     /**
@@ -36,7 +37,7 @@ class NotificationController extends Controller
      */
     public function readNotifications(Request $request): JsonResponse
     {
-        return $this->apiResponse($request->user()->readNotifications);
+        return $this->apiResponse(NotificationResource::collection($request->user()->readNotifications));
     }
 
     /**
@@ -47,7 +48,7 @@ class NotificationController extends Controller
      */
     public function unreadNotifications(Request $request): JsonResponse
     {
-        return $this->apiResponse($request->user()->unreadNotifications);
+        return $this->apiResponse(NotificationResource::collection($request->user()->unreadNotifications));
     }
 
     /**
@@ -124,7 +125,9 @@ class NotificationController extends Controller
     {
         $user = $request->user();
         if ($user->rule->name == "مدير") {
-            return $this->apiResponse(DatabaseNotification::all());
+            
+            return $this->apiResponse(NotificationResource::collection(DatabaseNotification::all()));
+
         }
         return $this->apiResponse(null, 403, 'Unauthorized');
     }
