@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\DatabaseNotification;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -179,8 +178,15 @@ trait CRUDTrait
                 } else {
                     $missingColumns[] = $key;
                 }
+            } elseif ($operator === '>') {
+                $key = Str::substr($key, 0, -1);
+                if ($this->validateColumn($table, $key)) {
+                    $query->where($key, 'LIKE', '%' . $value . '%');
+                } else {
+                    $missingColumns[] = $key;
+                }
             } elseif ($this->validateColumn($table, $key)) {
-                $query->where($key, 'LIKE', '%' . $value . '%');
+                $query->where($key, $value);
             } else {
                 $missingColumns[] = $key;
             }
