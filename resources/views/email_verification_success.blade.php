@@ -28,7 +28,7 @@
 <body>
     <div class="verification-container">
         <div class="verification-icon">✅</div>
-        <h1>Email Verified!</h1>
+        <h1>{{$message}}</h1>
         <p>Thank you for verifying your email address. You can safely close this tab.</p>
     </div>
 </body>

@@ -37,27 +37,29 @@ class EmailVerificationController extends Controller
      * Mark email as verified
      *
      */
-    public function emailVerify(Request $request,string $token)
+    public function emailVerify(Request $request, string $token)
     {
         try {
-            $tokenInfo= PersonalAccessToken::where('token', $token)->firstOrFail();
-            $verifiable= $tokenInfo->tokenable;
-            if (!is_null($verifiable->email_verified_at)){
-                return $this->apiResponse(null, 403, 'The user has already been verified. Invalid process.');
+            $tokenInfo = PersonalAccessToken::where('token', $token)->firstOrFail();
+            $verifiable = $tokenInfo->tokenable;
+            if (is_null($verifiable)) {
+                abort(404, 'Not found');
+            }
+            if (!is_null($verifiable->email_verified_at)) {
+                return view('email_verification_success', ['message' => 'The email has already been verified!']);
             }
 
             $emailVerifySuccess = $verifiable->forceFill([
-                'email_verified_at' => now()    
+                'email_verified_at' => now()
             ])->save();
 
             if ($emailVerifySuccess) {
-                return view('email_verification_success');
-                // return $this->apiResponse($verifiable, 200, 'Verification successful');
+                return view('email_verification_success', ['message' => 'Email Verified!']);
             }
 
             return $this->apiResponse(null, 500, 'Failed to verify email. Please try again later.');
         } catch (ModelNotFoundException $e) {
-            return $this->apiResponse(null, 404, 'Not found');
+            abort(404);
         }
     }
 }
