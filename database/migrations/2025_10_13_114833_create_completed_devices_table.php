@@ -33,8 +33,8 @@ return new class extends Migration
             $table->date('date_receipt');
             $table->date('date_delivery_client')->default(now());
             $table->date('date_delivery_customer')->nullable();
-            $table->date('client_date_warranty')->default(now());
-            $table->date('customer_date_warranty')->default(now());
+            $table->date('client_date_warranty')->nullable();
+            $table->date('customer_date_warranty')->nullable();
             $table->boolean('repaired_in_center')->default(false);
             $table->timestamps();
         });
