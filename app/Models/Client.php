@@ -41,6 +41,7 @@ class Client extends Authenticatable
         'orders',
         'rule',
         'customers',
+        'rule.permissions'
     ];
 
     protected $hidden = [
