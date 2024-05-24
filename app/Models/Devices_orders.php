@@ -28,9 +28,10 @@ class Devices_orders extends Model
         parent::boot();
         static::updated(function ($devices_orders) {
             if ($devices_orders->isDirty('deliver_to_client')) {
-                $order = $devices_orders->order;
-
-                $undeliveredDevicesCount = $order->devices->where('deliver_to_client', false)->count();
+                $orderId = $devices_orders->order_id;
+                $order=$devices_orders->order;
+                $undeliveredDevicesCount=self::where('order_id', $orderId)
+                ->where('deliver_to_client', false)->count();
                 if ($undeliveredDevicesCount === 0) {
                     $order->update(['done' => true]);
                 }
