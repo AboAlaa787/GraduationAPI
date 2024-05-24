@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
-use function PHPUnit\Framework\isEmpty;
 
 class ResetPasswordController extends Controller
 {
@@ -114,9 +113,7 @@ class ResetPasswordController extends Controller
             DB::table('password_reset_tokens')
                 ->where('email', $email)->delete();
             return view('reset_password_success');
-//            return $this->apiresponse($response, 200, 'password reset successfully');
         }
-
-        return $this->apiresponse(['error' => 'unable to reset password'], 422, 'failed');
+        abort(404, 'Not found');
     }
 }
