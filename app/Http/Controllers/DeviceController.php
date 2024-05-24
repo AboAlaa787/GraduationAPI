@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Events\AddDevice;
-use App\Events\DeleteDevice;
 use App\Http\Requests\Devices\CreateDeviceRequest;
 use App\Http\Requests\Devices\UpdateDeviceRequest;
 use App\Events\NotificationEvents\DeviceStateNotifications;
@@ -78,11 +77,7 @@ class DeviceController extends Controller
      */
     public function destroy($id): JsonResponse
     {
-        $response = $this->destroy_data($id, new Device());
-        if ($response->isSuccessful()) {
-            event(new DeleteDevice($id));
-        }
-        return $response;
+        return  $this->destroy_data($id, new Device());
     }
 
     /**

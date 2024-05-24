@@ -61,7 +61,8 @@ class Device extends Model
             $device->client_priority = $client_priority;
 
             //Automatic selection of maintenance technician
-            $usersWithDevicesCount = User::withCount('devices')->where('at_work', true)->whereHas('rule', function($query) { $query->where('name', RuleNames::Technician); })->get();
+            $usersWithDevicesCount = User::withCount('devices')->where('at_work', true)->whereHas('rule', function ($query) {
+                $query->where('name', RuleNames::Technician); })->get();
             if ($usersWithDevicesCount) {
                 $minDevicesCount = $usersWithDevicesCount->min('devices_count');
                 $userWithMinDevicesCount = $usersWithDevicesCount->where('devices_count', $minDevicesCount)->shuffle()->first();
@@ -71,6 +72,10 @@ class Device extends Model
 
         static::deleted(static function ($device) {
             $clientId = $device->client_id;
+            $client = Client::find($clientId);
+            if ($client) {
+                $client->decrement('devices_count');
+            }
 
             $devicesToUpdate = self::where('client_id', $clientId)->where('client_priority', '>', $device->client_priority)->get();
 
