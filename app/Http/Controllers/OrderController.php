@@ -68,7 +68,7 @@ class OrderController extends Controller
             $products_ids = $request->get('products_ids', []);
             $devices_ids = $request->get('devices_ids', []);
 
-            $delivery = $this->getDelivery();
+            $delivery = User::getDelivery();
 
             if (is_null($delivery)) {
                 return $this->apiResponse(null, 422, 'Sorry, there are no delivery customers at the moment!');
@@ -99,7 +99,7 @@ class OrderController extends Controller
                 if (!$oldOrder) {
                     $order->user_id = $delivery->id;
                     $order->save();
-                } 
+                }
                 $order->load(['devices', 'products']);
                 return $this->apiResponse($order);
             });
@@ -133,17 +133,6 @@ class OrderController extends Controller
             }
     }
 
-    protected function getDelivery(): ?User
-    {
-        $deliveriesWithDevicesCount = User::withCount('devices')->where('at_work', true)->whereHas('rule', function ($query) {
-            $query->where('name', RuleNames::Delivery);
-        })->get();
-        if ($deliveriesWithDevicesCount) {
-            $minDevicesCount = $deliveriesWithDevicesCount->min('devices_count');
-            return $deliveriesWithDevicesCount->where('devices_count', $minDevicesCount)->shuffle()->first();
-        }
-        return null;
-    }
 
     /**
      * @param UpdateOrderRequest $request

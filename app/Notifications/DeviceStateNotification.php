@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use App\Models\Device;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -54,24 +55,26 @@ class DeviceStateNotification extends Notification
         $status = $this->device->status;
         $hasOrderPermission = $notifiable->hasPermission($notifiable, 'اضافة طلب')
             && $notifiable->hasPermission($notifiable, 'اضافة طلب لجهاز');
+        $existsDelivery=User::getDelivery();
+        $canOrder=!is_null($existsDelivery)&&$hasOrderPermission;
         $message = [
             'تحية طيبة سيد ' . $notifiable->name,
             'الجهاز ذات نوع ' . $model,
             'والذي كوده هو ' . $code,
             'في حالة ' . $status,
             'وأصبح قابل للاستلام من قبل حضرتكم. ',
-            $hasOrderPermission ? 'هل تريد أن نوصله إليك؟' : ''
+            $canOrder ? 'هل تريد أن نوصله إليك؟' : ''
         ];
         return [
             'title' => 'اشعار بحالة جهاز',
             'body' => $message,
-            'Replyable' => $hasOrderPermission,
+            'Replyable' => $canOrder,
             'data' => [
                 'device_id' => [
                     $this->device->id => 'تسليم'
                 ],
             ],
-            'actions' => $hasOrderPermission ? [
+            'actions' => $canOrder ? [
                 [
                     'title' => 'نعم',
                     'url' => 'api/orders',

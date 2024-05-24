@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
+use function PHPUnit\Framework\isEmpty;
 
 
 class Device extends Model
@@ -63,7 +64,7 @@ class Device extends Model
             //Automatic selection of maintenance technician
             $usersWithDevicesCount = User::withCount('devices')->where('at_work', true)->whereHas('rule', function ($query) {
                 $query->where('name', RuleNames::Technician); })->get();
-            if ($usersWithDevicesCount) {
+            if (!isEmpty($usersWithDevicesCount)) {
                 $minDevicesCount = $usersWithDevicesCount->min('devices_count');
                 $userWithMinDevicesCount = $usersWithDevicesCount->where('devices_count', $minDevicesCount)->shuffle()->first();
                 $device->user_id = $userWithMinDevicesCount->id;
@@ -96,6 +97,14 @@ class Device extends Model
         });
         static::created(function ($device) {
             event(new AddDevice($device->client_id));
+        });
+
+        static::updating(function ($device) {
+            if ($device->isDirty('client_id')) {
+                $newClient = $device->client;
+                $maxPriority = $newClient->devices()->max('client_priority');
+                $device->client_priority = $maxPriority + 1;
+            }
         });
     }
 

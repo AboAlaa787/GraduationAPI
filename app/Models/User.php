@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\RuleNames;
 use App\Traits\FirebaseNotifiable;
 use App\Traits\PermissionCheckTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use function PHPUnit\Framework\isEmpty;
 
 class User extends Authenticatable
 {
@@ -61,6 +63,27 @@ class User extends Authenticatable
         'rule.permissions'
     ];
 
+    protected static function boot(): void
+    {
+        parent::boot();
+        static::deleting(static function ($user) {
+            $userDevices = $user->devices;
+            if ($userDevices->count() > 0) {
+                foreach ($userDevices as $userDevice) {
+                    $usersWithDevicesCount = self::withCount('devices')->where('at_work', true)->where('id','!=',$user->id)->whereHas('rule', function ($query) {
+                        $query->where('name', RuleNames::Technician);
+                    })->get();
+                    if (!isEmpty($usersWithDevicesCount)) {
+                        $minDevicesCount = $usersWithDevicesCount->min('devices_count');
+                        $userWithMinDevicesCount = $usersWithDevicesCount->where('devices_count', $minDevicesCount)->shuffle()->first();
+                        $userDevice->user_id = $userWithMinDevicesCount->id;
+                        $userDevice->save();
+                    }
+                }
+            }
+        });
+    }
+
     public function devices(): HasMany
     {
         return $this->hasMany(Device::class);
@@ -86,4 +109,15 @@ class User extends Authenticatable
         return $this->belongsTo(Rule::class);
     }
 
+    public static function getDelivery(): ?User
+    {
+        $deliveriesWithDevicesCount = self::withCount('devices')->where('at_work', true)->whereHas('rule', function ($query) {
+            $query->where('name', RuleNames::Delivery);
+        })->get();
+        if ($deliveriesWithDevicesCount) {
+            $minDevicesCount = $deliveriesWithDevicesCount->min('devices_count');
+            return $deliveriesWithDevicesCount->where('devices_count', $minDevicesCount)->shuffle()->first();
+        }
+        return null;
+    }
 }
