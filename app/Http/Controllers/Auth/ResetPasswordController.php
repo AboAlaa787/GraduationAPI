@@ -2,32 +2,43 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\User;
-use App\Models\Client;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use App\Mail\ResetPasswordMail;
-use App\Traits\ApiResponseTrait;
-use Illuminate\Validation\Rules;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Mail\ResetPasswordMail;
+use App\Models\Client;
+use App\Models\User;
+use App\Traits\ApiResponseTrait;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
-
-use function PHPUnit\Framework\isNull;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rules;
+use function PHPUnit\Framework\isEmpty;
 
 class ResetPasswordController extends Controller
 {
     use ApiResponseTrait;
 
+    public function resetPasswordPage(Request $request, $token)
+    {
+        $email = $request->get('email');
+        if (is_null($email) || is_null($token)) {
+            abort(404, 'Not found');
+        }
+        $storedToken = DB::table('password_reset_tokens')
+            ->where('email', $email)->get();
+        if (count($storedToken) > 0 && Hash::check($token, $storedToken->value('token'))) {
+            return view('reset_password_page', ['email' => $email, 'token' => $token]);
+        }
+        abort(404, 'Not found');
+    }
     public function resetPasswordRequest(Request $request): JsonResponse
     {
         $request->validate([
             'email' => 'required|email',
-            'front_url' => 'required|url'
         ]);
 
         $user = User::where('email', $request->email)->first();
@@ -42,7 +53,7 @@ class ResetPasswordController extends Controller
         try {
             $token = Password::broker()->createToken($user);
 
-            $resetLink = url($request->front_url . '/' . $token . '?email=' . $user->email);
+            $resetLink = url('https://haidarjaded787.serv00.net/password/reset/confirm/' . $token . '?email=' . $user->email);
 
             Mail::to($user)->send(new
                 ResetPasswordMail($resetLink));
@@ -74,19 +85,21 @@ class ResetPasswordController extends Controller
         return $request->only(['email', 'password', 'password_confirmation', 'token']);
     }
 
-    protected function resetPasswordConfirm(Request $request): JsonResponse
+    protected function resetPasswordConfirm(Request $request)
     {
         $validation =   validator::make($this->credentials($request), $this->rules());
-
+        $token = $request->get('token');
+        $email = $request->get('email');
         if ($validation->fails()) {
-            return $this->apiresponse($validation->errors(), 400, 'validation failed');
+            return view('reset_password_page', [
+                'email' => $email,
+                'token' => $token,
+                'errors' => $validation->errors()]);
         }
-        $token = $request->input('token');
-        $email = $request->input('email');
         $password = $request->input('password');
         $storedToken = DB::table('password_reset_tokens')
             ->where('email', $email)->get();
-        if (!isNull($storedToken) && Hash::check($token, $storedToken->value('token'))) {
+        if (count($storedToken) > 0 && Hash::check($token, $storedToken->value('token'))) {
             $user = User::where('email', $email)->first();
             $client = Client::where('email', $email)->first();
             $auth = $user ?: $client;
@@ -100,7 +113,8 @@ class ResetPasswordController extends Controller
             ];
             DB::table('password_reset_tokens')
                 ->where('email', $email)->delete();
-            return $this->apiresponse($response, 200, 'password reset successfully');
+            return view('reset_password_success');
+//            return $this->apiresponse($response, 200, 'password reset successfully');
         }
 
         return $this->apiresponse(['error' => 'unable to reset password'], 422, 'failed');

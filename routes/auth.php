@@ -9,6 +9,8 @@ Route::post('password/reset/request',[ResetPasswordController::class,'resetPassw
 
 Route::post('password/reset/confirm', [ResetPasswordController::class,'resetPasswordConfirm'])->name('password.reset');
 
+Route::get('password/reset/confirm/{token}', [ResetPasswordController::class,'resetPasswordPage']);
+
 Route::get('email/verify/request',[EmailVerificationController::class,'sendEmailVerificationNotification'])->middleware('auth:sanctum');
 
 Route::get('email/verify/confirm/{token}',[EmailVerificationController::class,'emailVerify']);
