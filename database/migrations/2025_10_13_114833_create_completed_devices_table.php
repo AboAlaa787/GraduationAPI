@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('user_name');
             $table->foreignId('customer_id')->nullable()->constrained()->nullOnDelete();
             $table->text('info')->nullable();
-            $table->string('problem');
+            $table->string('problem')->nullable();
             $table->double('cost_to_client')->nullable();
             $table->double('cost_to_customer')->nullable();
             $table->enum('status',DeviceStatus::values());
