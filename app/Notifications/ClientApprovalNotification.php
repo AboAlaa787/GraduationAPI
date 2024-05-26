@@ -58,7 +58,7 @@ class ClientApprovalNotification extends Notification
             'الجهاز ذات نوع ' . $model,
             'والذي كوده هو ' . $code,
             $status==DeviceStatus::NotAgree->value?
-            'تم رفض العمل به من قبل السيد '.$clientName:'تم الموافقة العمل به من قبل السيد '.$clientName
+            'تم رفض العمل به من قبل السيد '.$clientName:'تم الموافقة على العمل به من قبل السيد '.$clientName
         ];
         return [
             'title' => 'اشعار بحالة جهاز',

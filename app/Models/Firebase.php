@@ -11,7 +11,7 @@ class Firebase
 {
     use ApiResponseTrait;
 
-    public function pushNotification(array $devicesTokens, string $notificationId, $notificationData): JsonResponse
+    public function pushNotification(array $devicesTokens, int $notifiableId, $notificationData): JsonResponse
     {
         if (!is_array($notificationData) || !$notificationData) {
             return response()->json(['error' => 'Invalid data'], 422);
@@ -23,18 +23,17 @@ class Firebase
             'devicesTokens' => $devicesTokens,
             'title' => $notificationTitle,
             'body' => $notificationBody,
-            'notificationId' => $notificationId,
+            'notifiableId' => $notifiableId,
             'actions' => $notificationActions,
         ];
         $rules = [
             'devicesTokens' => 'required|array',
             'title' => 'required|string',
             'body' => 'required|string',
-            'notificationId' => 'required|string|exists:notifications,id',
+            'notifiableId' => 'required|int',
             'actions' => 'array',
         ];
         $validator = Validator::make($data, $rules);
-
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 400);
         }
@@ -49,7 +48,7 @@ class Firebase
                     'body' => $notificationBody,
                     'sound' => 'default',
                 ],
-                "notification_id" => $notificationId,
+                "notifiable_id" => $notifiableId,
             ] + ($notificationData['data'] ?? [])
         ];
         $dataString = json_encode($data);
