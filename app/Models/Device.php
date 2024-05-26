@@ -64,7 +64,6 @@ class Device extends Model
             //Automatic selection of maintenance technician
             $usersWithDevicesCount = User::withCount('devices')->where('at_work', true)->whereHas('rule', function ($query) {
                 $query->where('name', RuleNames::Technician);
-                $query->where('name', RuleNames::Delivery);
              })->get();
                 if ($usersWithDevicesCount->count() > 0) {
                 $minDevicesCount = $usersWithDevicesCount->min('devices_count');
