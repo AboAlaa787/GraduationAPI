@@ -22,8 +22,8 @@ class CreateCustomerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|alpha|max:20|min2',
-            'last_name' => 'required|string|alpha|max:20|min2',
+            'name' => 'required|string|alpha|max:20|min:2',
+            'last_name' => 'required|string|alpha|max:20|min:2',
             'national_id' => 'required|string|size:11|unique:customers,national_id,NULL,id,client_id,' . $this->input('client_id'),
             'client_id' => 'integer|required|exists:clients,id',
             'phone' => 'required|string|size:10',
