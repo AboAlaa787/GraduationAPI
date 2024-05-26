@@ -18,6 +18,7 @@ class Order extends Model
         'client_id',
         'user_id',
         'done',
+        'deliver_to_user',
     ];
     protected $relations = [
         'client',

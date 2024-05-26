@@ -101,9 +101,13 @@ class Device extends Model
 
         static::updating(function ($device) {
             if ($device->isDirty('client_id')) {
+                $oldClientId = $device->getOriginal('client_id');
+                $oldClient = Client::find($oldClientId);
                 $newClient = $device->client;
                 $maxPriority = $newClient->devices()->max('client_priority');
                 $device->client_priority = $maxPriority + 1;
+                $oldClient->decrement('devices_count');
+                $newClient->increment('devices_count');
             }
         });
     }

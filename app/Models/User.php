@@ -67,17 +67,33 @@ class User extends Authenticatable
     {
         parent::boot();
         static::deleting(static function ($user) {
-            $userDevices = $user->devices;
-            if ($userDevices->count() > 0) {
-                foreach ($userDevices as $userDevice) {
-                    $usersWithDevicesCount = self::withCount('devices')->where('at_work', true)->where('id','!=',$user->id)->whereHas('rule', function ($query) {
-                        $query->where('name', RuleNames::Technician);
-                    })->get();
-                    if (!isEmpty($usersWithDevicesCount)) {
-                        $minDevicesCount = $usersWithDevicesCount->min('devices_count');
-                        $userWithMinDevicesCount = $usersWithDevicesCount->where('devices_count', $minDevicesCount)->shuffle()->first();
-                        $userDevice->user_id = $userWithMinDevicesCount->id;
-                        $userDevice->save();
+            $userRule=$user->rule->name;
+            //If technician has been deleted put his devices to another technician
+            if (RuleNames::Technician->value==$userRule) {
+                $userDevices = $user->devices;
+                if ($userDevices->count() > 0) {
+                    foreach ($userDevices as $userDevice) {
+                        $usersWithDevicesCount = self::withCount('devices')->where('at_work', true)->where('id','!=',$user->id)->whereHas('rule', function ($query) {
+                            $query->where('name', RuleNames::Technician);
+                        })->get();
+                        if (!isEmpty($usersWithDevicesCount)) {
+                            $minDevicesCount = $usersWithDevicesCount->min('devices_count');
+                            $userWithMinDevicesCount = $usersWithDevicesCount->where('devices_count', $minDevicesCount)->shuffle()->first();
+                            $userDevice->user_id = $userWithMinDevicesCount->id;
+                            $userDevice->save();
+                        }
+                    }
+                }
+            }elseif (RuleNames::Delivery->value==$userRule) {
+                //If delivery has been deleted put his orders to another technician
+                $userOrders = $user->orders()->where('deliver_to_user',false)->get();
+                if ($userOrders->count() > 0) {
+                    foreach ($userOrders as $userOrder) {
+                        $newDelivery=self::getDelivery();
+                        if (!is_null($newDelivery)) {
+                            $userOrder->user_id = $newDelivery->id;
+                            $userOrder->save();
+                        }
                     }
                 }
             }
