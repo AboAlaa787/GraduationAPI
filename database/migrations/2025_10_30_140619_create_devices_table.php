@@ -31,7 +31,7 @@ return new class extends Migration
             $table->text('fix_steps')->nullable();
             $table->enum('status',DeviceStatus::values())->default(DeviceStatus::NotStarted);
             $table->boolean('client_approval')->nullable();
-            $table->date('date_receipt')->default(now());
+            $table->dateTime('date_receipt')->default(now());
             $table->date('Expected_date_of_delivery')->nullable();
             $table->date('client_date_warranty')->nullable();
             $table->boolean('deliver_to_client')->default(false);

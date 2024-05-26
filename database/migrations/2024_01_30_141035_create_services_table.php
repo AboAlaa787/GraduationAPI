@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('services', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
+            $table->string('name');
+            $table->string('device_model');
+            $table->unique(['device_model','name']);
             $table->double('price');
             $table->time('time_required')->default(10000);
             $table->timestamps();
