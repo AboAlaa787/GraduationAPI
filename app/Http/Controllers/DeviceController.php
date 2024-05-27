@@ -82,17 +82,21 @@ class DeviceController extends Controller
                         foreach ($devicesToUpdate as $deviceToUpdate) {
                             $deviceToUpdate->update(['client_priority' => $deviceToUpdate->client_priority + 1]);
                         }
-                        $device->client_priority = $newPriority;
                     }
                 } else {
+                    $maxPriority = $client->devices()->max('client_priority');
+
+                    if ($newPriority > $maxPriority) {
+                        $newPriority = $maxPriority + 1;
+                    }
                     $devicesToUpdate = $client->devices()->where('client_priority', '<=', $newPriority)
                         ->where('client_priority', '>', $oldPriority)
                         ->get()->sortBy('client_priority');
                     foreach ($devicesToUpdate as $deviceToUpdate) {
                         $deviceToUpdate->update(['client_priority' => $deviceToUpdate->client_priority - 1]);
                     }
-                    $device->client_priority = $newPriority;
                 }
+                $device->client_priority = $newPriority;
                 $device->save();
             }
 

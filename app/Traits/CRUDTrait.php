@@ -360,7 +360,7 @@ trait CRUDTrait
             $object = $model->findOrFail($id);
             $columns = $request->keys();
             foreach ($columns as $column) {
-                if ($column !== 'password' && $this->validateColumn($model->getTable(), $column)) {
+                if ($column !== 'password'&&$column !== 'client_priority' && $this->validateColumn($model->getTable(), $column)) {
                     $object->$column = $request[$column];
                 }
             }
