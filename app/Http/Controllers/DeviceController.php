@@ -87,7 +87,11 @@ class DeviceController extends Controller
                     $maxPriority = $client->devices()->max('client_priority');
 
                     if ($newPriority > $maxPriority) {
-                        $newPriority = $maxPriority + 1;
+                        if ($oldPriority>$maxPriority){
+                            $newPriority = $maxPriority + 1;
+                        }else{
+                            $newPriority=$maxPriority;
+                        }
                     }
                     $devicesToUpdate = $client->devices()->where('client_priority', '<=', $newPriority)
                         ->where('client_priority', '>', $oldPriority)
