@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\AddDevice;
+use App\Http\Requests\Devices\CreateDeviceAndCustomerRequest;
 use App\Http\Requests\Devices\CreateDeviceRequest;
 use App\Http\Requests\Devices\UpdateDeviceRequest;
-use App\Events\NotificationEvents\DeviceStateNotifications;
-use App\Http\Requests\Devices\CreateDeviceAndCustomerRequest;
 use App\Models\Customer;
 use App\Models\Device;
 use App\Traits\CRUDTrait;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -67,6 +65,45 @@ class DeviceController extends Controller
      */
     public function update(UpdateDeviceRequest $request, $id): JsonResponse
     {
+        try {
+            if ($request->exists('client_priority')) {
+                $device = Device::findOrFail($id);
+                $client = $device->client;
+                $oldPriority = $device->client_priority;
+                $newPriority = $request->get('client_priority');
+                $device->client_priority = null;
+                $device->save();
+                if ($oldPriority > $newPriority) {
+                    if ($client->devices()->where('client_priority', $newPriority)->exists()) {
+                        $devicesToUpdate = $client->devices()->where('client_priority', '>=', $newPriority)
+                            ->where('client_priority', '<', $oldPriority)
+                            ->get();
+                        foreach ($devicesToUpdate as $deviceToUpdate) {
+                            $deviceToUpdate->update(['client_priority' => $deviceToUpdate->client_priority + 1]);
+                        }
+                        $device->client_priority = $newPriority;
+                    }
+                } else {
+                    $devicesToUpdate = $client->devices()->where('client_priority', '<=', $newPriority)
+                        ->where('client_priority', '>', $oldPriority)
+                        ->get()->sortBy('client_priority');
+                    foreach ($devicesToUpdate as $deviceToUpdate) {
+                        $deviceToUpdate->update(['client_priority' => $deviceToUpdate->client_priority - 1]);
+                    }
+                    $device->client_priority = $newPriority;
+                }
+                $device->save();
+            }
+
+        } catch (ModelNotFoundException  $exception) {
+            $model = explode('\\', $exception->getModel());
+            $model = end($model);
+            $id = $exception->getIds()[0];
+            return $this->apiResponse(null, 404, "Error: $model with ID $id not found.");
+        }
+        catch (Exception $exception){
+            return $this->apiResponse(null, 500, $exception->getMessage());
+        }
         return $this->update_data($request, $id, new Device());
     }
 
