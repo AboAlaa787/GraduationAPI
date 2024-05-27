@@ -77,7 +77,8 @@ class DeviceController extends Controller
                     if ($client->devices()->where('client_priority', $newPriority)->exists()) {
                         $devicesToUpdate = $client->devices()->where('client_priority', '>=', $newPriority)
                             ->where('client_priority', '<', $oldPriority)
-                            ->get();
+                            ->get()
+                            ->sortByDesc('client_priority');
                         foreach ($devicesToUpdate as $deviceToUpdate) {
                             $deviceToUpdate->update(['client_priority' => $deviceToUpdate->client_priority + 1]);
                         }
