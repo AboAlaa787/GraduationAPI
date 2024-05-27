@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Permission;
 use App\Models\Permission_rule;
+use App\Models\Rule;
 use App\Traits\ApiResponseTrait;
 use App\Traits\CRUDTrait;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use InvalidArgumentException;
 
 /**
  * @group Permissions_Rules management
@@ -46,15 +52,58 @@ class PermissionRuleController extends Controller
 
     /**
      * @param Request $request
+     * @bodyParam permissions_ids integer[] permissions numbers to be added to the rule.
      * @return JsonResponse
+     * @throws AuthorizationException
      */
     public function store(Request $request): JsonResponse
     {
-        $validation = Validator::make($request->all(), ['permission_id' => 'required|exists:permissions,id|unique:permission_rules,permission_id,NULL,id,rule_id,' . $request->input('rule_id'), 'rule_id' => 'required|exists:rules,id|unique:permission_rules,rule_id,NULL,id,permission_id,' . $request->input('permission_id')]);
+        $validation = Validator::make($request->all(), ['permissions_ids' => 'required|array'
+            , 'rule_id' => 'required|exists:rules,id'
+        ]);
         if ($validation->fails()) {
-            return $this->apiResponse($validation->messages(), 404, 'Failed');
+            return $this->apiResponse($validation->messages(), 422, 'Failed');
         }
-        return $this->store_data($request, new Permission_rule());
+        try {
+            $this->authorize('create', Permission_rule::class);
+            $permissionsIds = $request->get('permissions_ids', []);
+            $ruleId = $request->get('rule_id');
+            if (empty($permissionsIds)) {
+                return $this->apiResponse(null, 422, 'Error: At least one of permissions_ids is required.');
+            }
+
+            return DB::transaction(function () use ($permissionsIds, $ruleId) {
+                $rule = Rule::findOrFail($ruleId);
+                $this->attachPermissionsToClient($permissionsIds, $rule);
+                $rule->load(['permissions']);
+                return $this->apiResponse($rule);
+            });
+        } catch (InvalidArgumentException $exception) {
+            return $this->apiResponse(null, 400, 'Error: ' . $exception->getMessage());
+
+        } catch (ModelNotFoundException $exception) {
+            $model = explode('\\', $exception->getModel());
+            $model = end($model);
+            $id = $exception->getIds()[0];
+            return $this->apiResponse(null, 404, "Error: $model with ID $id not found.");
+
+        } catch (AuthorizationException $exception) {
+            return $this->apiResponse(null, 403, 'Error: ' . $exception->getMessage());
+        }
+    }
+
+    protected function attachPermissionsToClient($permissionsIds, $rule): void
+    {
+        if (!is_array($permissionsIds)) {
+            throw new InvalidArgumentException('permissions_ids must be an array.');
+        }
+        foreach ($permissionsIds as $permissionId) {
+            $permission = Permission::findOrFail($permissionId);
+            if ($rule->Permissions->contains($permission->id)) {
+                throw new InvalidArgumentException('Error: id ' . $permissionId . ' in permissions_ids is already attached to the rule.');
+            }
+            $rule->Permissions()->attach($permissionId);
+        }
     }
 
     /**
