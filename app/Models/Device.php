@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
-use function PHPUnit\Framework\isEmpty;
 
 
 class Device extends Model
@@ -45,6 +44,14 @@ class Device extends Model
         'customer_date_warranty',
     ];
     protected $relations = ['client', 'user', 'customer', 'orders',];
+
+    protected array $searchAbleColumns = [
+        'model',
+        'imei',
+        'code',
+        'problem',
+        'status',
+    ];
 
     protected static function boot(): void
     {
@@ -131,5 +138,10 @@ class Device extends Model
     public function orders(): BelongsToMany
     {
         return $this->belongsToMany(Order::class, 'devices_orders');
+    }
+
+    public function getSearchAbleColumns(): array
+    {
+        return $this->searchAbleColumns;
     }
 }

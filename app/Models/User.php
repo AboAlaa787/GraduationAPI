@@ -63,6 +63,11 @@ class User extends Authenticatable
         'rule.permissions'
     ];
 
+    protected array $searchAbleColumns = [
+        'name',
+        'last_name',
+    ];
+
     protected static function boot(): void
     {
         parent::boot();
@@ -135,5 +140,10 @@ class User extends Authenticatable
             return $deliveriesWithDevicesCount->where('devices_count', $minDevicesCount)->shuffle()->first();
         }
         return null;
+    }
+
+    public function getSearchAbleColumns(): array
+    {
+        return $this->searchAbleColumns;
     }
 }

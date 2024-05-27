@@ -63,10 +63,10 @@ trait CRUDTrait
             $page = $request->get('page', 1) ?: 1;
             $perPage = $request->get('per_page', 20) ?: 20;
             $allData = $request->get('all_data', 0);
-
+            $search = $request->get('search');
             $query = $model->newQuery();
 
-            return $this->filterAndOrder($query, $table, $keys, $orderBy, $orderDirection, $relations, $customKeys, $withCount, $page, $perPage, $allData);
+            return $this->filterAndOrder($query, $table, $keys, $orderBy, $orderDirection, $relations, $customKeys, $withCount, $page, $perPage, $allData, $search);
         } catch (AuthorizationException $e) {
             return $this->apiResponse(null, 403, 'Error: ' . $e->getMessage());
         } catch (InvalidArgumentException|Exception $e) {
@@ -125,7 +125,7 @@ trait CRUDTrait
      */
     protected function extractKeys(Request $request): array
     {
-        $keys = $request->except(['orderBy', 'dir', 'with', 'withCount', 'page', 'per_page', 'all_data']);
+        $keys = $request->except(['orderBy', 'dir', 'with', 'withCount', 'page', 'per_page', 'all_data', 'search']);
         $customKeys = [];
 
         foreach ($keys as $key => $value) {
@@ -165,7 +165,7 @@ trait CRUDTrait
      * @param int $allData
      * @return JsonResponse
      */
-    protected function filterAndOrder(Builder $query, string $table, array $keys, ?string $orderBy, string $orderDirection, array $relations, array $customKeys, array $withCount, int $page, int $perPage, int $allData): JsonResponse
+    protected function filterAndOrder(Builder $query, string $table, array $keys, ?string $orderBy, string $orderDirection, array $relations, array $customKeys, array $withCount, int $page, int $perPage, int $allData, string|null $search): JsonResponse
     {
         $missingColumns = [];
 
@@ -196,7 +196,7 @@ trait CRUDTrait
             return $this->apiResponse(null, 422, 'Missing columns: ' . implode(', ', $missingColumns));
         }
 
-        return $this->handleOrdering($query, $table, $orderBy, $orderDirection, $relations, $customKeys, $withCount,$page,$perPage,$allData);
+        return $this->handleOrdering($query, $table, $orderBy, $orderDirection, $relations, $customKeys, $withCount, $page, $perPage, $allData, $search);
     }
 
     /**
@@ -229,7 +229,7 @@ trait CRUDTrait
      * @param int $allData
      * @return JsonResponse
      */
-    protected function handleOrdering(Builder $query, string $table, ?string $orderBy, string $orderDirection, array $relations, array $customKeys, array $withCount, int $page, int $perPage, int $allData): JsonResponse
+    protected function handleOrdering(Builder $query, string $table, ?string $orderBy, string $orderDirection, array $relations, array $customKeys, array $withCount, int $page, int $perPage, int $allData, ?string $search): JsonResponse
     {
         if ($orderBy && $this->validateColumn($table, $orderBy)) {
             $query->orderBy($orderBy, $orderDirection);
@@ -251,6 +251,12 @@ trait CRUDTrait
         }
 
         $query->with($relations);
+        if ($search) {
+            if (method_exists($query->getModel(), 'getSearchAbleColumns')) {
+                $searchColumns = $query->getModel()->getSearchAbleColumns();
+                    $query->whereAny($searchColumns,'LIKE', '%' . $search . '%');
+            }
+        }
         if ($allData==1){
             $data=$query->withCount($withCount)->get();
             return $this->apiResponse($data);

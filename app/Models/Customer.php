@@ -25,6 +25,13 @@ class Customer extends Model
         'devices',
         'client',
     ];
+
+    protected array $searchAbleColumns = [
+        'name',
+        'last_name',
+        'national_id',
+    ];
+
     /**
      * Get the client that owns the customer.
      */
@@ -41,5 +48,10 @@ class Customer extends Model
     public function completed_devices(): HasMany
     {
         return $this->hasMany(CompletedDevice::class);
+    }
+
+    public function getSearchAbleColumns(): array
+    {
+        return $this->searchAbleColumns;
     }
 }

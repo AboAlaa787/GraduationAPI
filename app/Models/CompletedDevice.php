@@ -41,6 +41,15 @@ class CompletedDevice extends Model
         'customer',
         'orders',
     ];
+    protected array $searchAbleColumns = [
+        'model',
+        'imei',
+        'code',
+        'problem',
+        'status',
+        'client_name',
+        'user_name',
+    ];
 
     public function client(): BelongsTo
     {
@@ -60,5 +69,10 @@ class CompletedDevice extends Model
     public function orders(): BelongsToMany
     {
         return $this->belongsToMany(Order::class, 'devices_orders');
+    }
+
+    public function getSearchAbleColumns(): array
+    {
+        return $this->searchAbleColumns;
     }
 }

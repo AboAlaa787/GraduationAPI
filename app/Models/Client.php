@@ -5,15 +5,14 @@ namespace App\Models;
 use App\Enums\RuleNames;
 use App\Traits\FirebaseNotifiable;
 use App\Traits\PermissionCheckTrait;
-use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Laravel\Sanctum\HasApiTokens;
 
 class Client extends Authenticatable
 {
@@ -53,6 +52,12 @@ class Client extends Authenticatable
         'password' => 'hashed',
     ];
 
+    protected array $searchAbleColumns = [
+        'center_name',
+        'name',
+        'last_name',
+        'national_id',
+    ];
     protected static function boot(): void
     {
         parent::boot();
@@ -103,5 +108,9 @@ class Client extends Authenticatable
     public function routeNotificationForMail(Notification $notification): array|string
     {
         return $this->email;
+    }
+    public function getSearchAbleColumns(): array
+    {
+        return $this->searchAbleColumns;
     }
 }
