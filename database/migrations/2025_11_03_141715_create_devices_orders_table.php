@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('order_id')->constrained()->cascadeOnDelete();
             $table->unique(['device_id', 'order_type']);
             $table->text('info')->nullable();
-            $table->enum('order_type',['تسليم','استلام']);
+            $table->enum('order_type',['تسليم للعميل','تسليم للمركز']);
             $table->boolean('deliver_to_client')->default(false);
             $table->boolean('deliver_to_user')->default(false);
             $table->dateTime('deliver_time')->nullable();

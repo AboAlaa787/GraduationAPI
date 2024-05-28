@@ -71,7 +71,7 @@ class DeviceStateNotification extends Notification
             'Replyable' => $canOrder,
             'data' => [
                 'device_id' => [
-                    $this->device->id => 'تسليم'
+                    $this->device->id => 'تسليم للعميل'
                 ],
             ],
             'actions' => $canOrder ? [
@@ -81,7 +81,7 @@ class DeviceStateNotification extends Notification
                     'method' => 'POST',
                     'request_body' => [
                         'devices_ids' => [
-                            $this->device->id => 'تسليم'
+                            $this->device->id => 'تسليم للعميل'
                         ],
                         'client_id' => $this->device->client_id,
                         'description' => 'توصيل جهاز الى العميل'
