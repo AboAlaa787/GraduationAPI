@@ -122,15 +122,18 @@ class OrderController extends Controller
         if (!is_array($items)) {
             throw new InvalidArgumentException($relation . '_ids must be an array.');
         }
-            foreach ($items as $item_id => $type) {
-                $item = $modelClass::findOrFail($item_id);
+        foreach ($items as $item_id => $type) {
+            $item = $modelClass::findOrFail($item_id);
 
-                if ($order->{$relation}->contains($item->id)) {
-                    throw new InvalidArgumentException('Error: id ' . $item_id . ' in ' . $relation . '_id is already attached to the order.');
-                }
-                $attributes = $type ? ['order_type' => $type] : [];
-                $order->{$relation}()->attach($item_id, $attributes);
+            if ($order->{$relation}->contains($item->id)) {
+                throw new InvalidArgumentException('Error: id ' . $item_id . ' in ' . $relation . '_id is already attached to the order.');
             }
+            $attributes = $type ? ['order_type' => $type] : [];
+            if (!in_array($type, ['تسليم للعميل', 'تسليم للمركز'])) {
+                throw new InvalidArgumentException('Error:Invalid order type');
+            }
+            $order->{$relation}()->attach($item_id, $attributes);
+        }
     }
 
 
