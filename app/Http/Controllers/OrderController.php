@@ -129,7 +129,7 @@ class OrderController extends Controller
                 throw new InvalidArgumentException('Error: id ' . $item_id . ' in ' . $relation . '_id is already attached to the order.');
             }
             $attributes = $type ? ['order_type' => $type] : [];
-            if (!in_array($type, ['تسليم للعميل', 'تسليم للمركز'])) {
+            if ($attributes && !in_array($type, ['تسليم للعميل', 'تسليم للمركز'])) {
                 throw new InvalidArgumentException('Error:Invalid order type');
             }
             $order->{$relation}()->attach($item_id, $attributes);
