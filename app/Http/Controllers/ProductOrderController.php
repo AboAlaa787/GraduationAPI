@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Permission_rule;
+use App\Models\Product_order;
 use App\Traits\ApiResponseTrait;
 use App\Traits\CRUDTrait;
 use Illuminate\Http\JsonResponse;
@@ -67,5 +68,16 @@ class ProductOrderController extends Controller
     public function destroy($id): JsonResponse
     {
         return $this->destroy_data($id, new Permission_rule());
+    }
+
+    /**
+     * @param Request $request
+     * @param int $id
+     * @urlParam  id  integer required The ID of the Products_Orders.
+     * @return JsonResponse
+     */
+    public function update(Request $request, int $id): JsonResponse
+    {
+        return $this->update_data($request, $id, new Product_order());
     }
 }
