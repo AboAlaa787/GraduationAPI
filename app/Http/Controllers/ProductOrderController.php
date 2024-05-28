@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Permission_rule;
 use App\Models\Product_order;
 use App\Traits\ApiResponseTrait;
 use App\Traits\CRUDTrait;
@@ -30,7 +29,7 @@ class ProductOrderController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        return $this->index_data(new Permission_rule(), $request, str($request->with));
+        return $this->index_data(new Product_order(), $request, str($request->with));
     }
 
     /**
@@ -42,7 +41,7 @@ class ProductOrderController extends Controller
      */
     public function show($id, Request $request): JsonResponse
     {
-        return $this->show_data(new Permission_rule(), $id, str($request->with));
+        return $this->show_data(new Product_order(), $id, str($request->with));
     }
 
     /**
@@ -57,7 +56,7 @@ class ProductOrderController extends Controller
         if ($validation->fails()) {
             return $this->apiResponse($validation->messages(), 400, 'Failed');
         }
-        return $this->store_data($request, new Permission_rule());
+        return $this->store_data($request, new Product_order());
     }
 
     /**
@@ -67,7 +66,7 @@ class ProductOrderController extends Controller
      */
     public function destroy($id): JsonResponse
     {
-        return $this->destroy_data($id, new Permission_rule());
+        return $this->destroy_data($id, new Product_order());
     }
 
     /**
