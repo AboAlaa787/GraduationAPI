@@ -115,4 +115,20 @@ class PermissionRuleController extends Controller
     {
         return $this->destroy_data($id, new Permission_rule());
     }
+
+    public function delete($ruleId, $permissionId): JsonResponse
+    {
+        try {
+            $this->authorize('delete', Permission_rule::class);
+            $permissionRule = Permission_rule::where('rule_id', $ruleId)->where('permission_id', $permissionId)->firstOrFail();
+            $permissionRule->delete();
+            return $this->apiResponse(null, 200, 'Delete successfuly');
+        } catch (ModelNotFoundException $exception) {
+            return $this->apiResponse(null, 404, 'Not Found');
+        } catch (AuthorizationException $exception) {
+            return $this->apiResponse(null, 403, 'Error: ' . $exception->getMessage());
+        } catch (Exception $exception) {
+            return $this->apiResponse(null, 500, 'Server Error');
+        }
+    }
 }

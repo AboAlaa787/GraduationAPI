@@ -77,10 +77,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::resource('/completed_devices', CompletedDeviceController::class);
 
     Route::resource('/permission_users', PermissionUserController::class);
+    Route::delete('/permission_users/{userId}/{permissionId}', [PermissionUserController::class, 'delete']);
 
     Route::resource('/permission_clients', PermissionClientController::class);
+    Route::delete('/permission_clients/{clientId}/{permissionId}', [PermissionClientController::class, 'delete']);
 
     Route::resource('/permission_rules', PermissionRuleController::class);
+    Route::delete('/permission_rules/{ruleId}/{permissionId}', [PermissionRuleController::class, 'delete']);
 
     Route::resource('/devices_orders', DevicesOrdersController::class);
 

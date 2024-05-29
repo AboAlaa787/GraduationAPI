@@ -7,6 +7,7 @@ use App\Models\Permission;
 use App\Models\Permission_client;
 use App\Traits\ApiResponseTrait;
 use App\Traits\CRUDTrait;
+use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
@@ -112,5 +113,21 @@ class PermissionClientController extends Controller
     public function destroy($id): JsonResponse
     {
         return $this->destroy_data($id, new Permission_client());
+    }
+
+    public function delete($clientId, $permissionId): JsonResponse
+    {
+        try {
+            $this->authorize('delete', Permission_client::class);
+            $permissionClient = Permission_client::where('client_id', $clientId)->where('permission_id', $permissionId)->firstOrFail();
+            $permissionClient->delete();
+            return $this->apiResponse(null, 200, 'Delete successfuly');
+        } catch (ModelNotFoundException $exception) {
+            return $this->apiResponse(null, 404, 'Not Found');
+        } catch (AuthorizationException $exception) {
+            return $this->apiResponse(null, 403, 'Error: ' . $exception->getMessage());
+        } catch (Exception $exception) {
+            return $this->apiResponse(null, 500, 'Server Error');
+        }
     }
 }
