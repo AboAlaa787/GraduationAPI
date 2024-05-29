@@ -94,6 +94,9 @@ class Device extends Model
         });
         static::updated(function ($device) {
             if ($device->isDirty('client_approval')) {
+                event(new ClientApproval($device));
+            }
+            if ($device->isDirty('deliver_to_customer')) {
                 $ser = Service::where('name', $device->problem)->first();
 
                 if ($ser === null) {
@@ -109,9 +112,6 @@ class Device extends Model
                     ]);
                 }
 
-                event(new ClientApproval($device));
-            }
-            if ($device->isDirty('deliver_to_customer')) {
                 event(new DeleteDevice($device));
             }
             if ($device->isDirty('status')) {
