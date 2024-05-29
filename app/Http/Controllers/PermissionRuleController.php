@@ -7,6 +7,7 @@ use App\Models\Permission_rule;
 use App\Models\Rule;
 use App\Traits\ApiResponseTrait;
 use App\Traits\CRUDTrait;
+use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
