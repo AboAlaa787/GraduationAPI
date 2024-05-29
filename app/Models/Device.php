@@ -71,8 +71,8 @@ class Device extends Model
             //Automatic selection of maintenance technician
             $usersWithDevicesCount = User::withCount('devices')->where('at_work', true)->whereHas('rule', function ($query) {
                 $query->where('name', RuleNames::Technician);
-             })->get();
-                if ($usersWithDevicesCount->count() > 0) {
+            })->get();
+            if ($usersWithDevicesCount->count() > 0) {
                 $minDevicesCount = $usersWithDevicesCount->min('devices_count');
                 $userWithMinDevicesCount = $usersWithDevicesCount->where('devices_count', $minDevicesCount)->shuffle()->first();
                 $device->user_id = $userWithMinDevicesCount->id;
@@ -94,6 +94,21 @@ class Device extends Model
         });
         static::updated(function ($device) {
             if ($device->isDirty('client_approval')) {
+                $ser = Service::where('name', $device->problem)->first();
+
+                if ($ser === null) {
+                    Service::create([
+                        'name' => $device->problem,
+                        'price' => $device->cost_to_client,
+                        'time_required' => $device->Expected_date_of_delivery - $device->date_receipt,
+                    ]);
+                } else {
+                    $ser->update([
+                        'price' => $device->cost_to_client,
+                        'time_required' => $device->Expected_date_of_delivery - $device->date_receipt,
+                    ]);
+                }
+
                 event(new ClientApproval($device));
             }
             if ($device->isDirty('deliver_to_customer')) {
