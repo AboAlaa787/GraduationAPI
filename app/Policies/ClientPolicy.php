@@ -13,9 +13,10 @@ class ClientPolicy
         return $this->hasPermission($user, 'الاسنعلام عن العملاء');
     }
 
-    public function view($user): bool
+    public function view($user, $targetData): bool
     {
-        return $this->hasPermission($user, 'الاسنعلام عن عميل');
+        $isDataOwner = get_class($user) == get_class($targetData) && $targetData->id == $user->id;
+        return $isDataOwner || $this->hasPermission($user, 'الاسنعلام عن عميل');
     }
 
     public function create($user): bool

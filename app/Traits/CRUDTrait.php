@@ -308,8 +308,8 @@ trait CRUDTrait
     public function show_data(Model $model, int $id, string $with = ''): JsonResponse
     {
         try {
-            $this->authorizeForModel($model, 'view');
             $object = $model->findOrFail($id);
+            $this->authorizeForModel($model->find($id), 'view');
             $relations = $this->parseRelations($with);
             $this->validateRelations($object, $relations);
 
