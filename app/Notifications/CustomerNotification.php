@@ -44,6 +44,7 @@ class CustomerNotification extends Notification
             ->line($customer->name . ' ' . $customer->last_name)
             ->line($this->device->model . ' الجهاز ذات نوع')
             ->line( ' تم استلامه من قبل حضرتكم بتاريخ '.now()->format('Y-m-d H:i:s'))
+            ->lineIf($this->device->cost_to_customer != null, ' بتكلفة '.$this->device->cost_to_customer)
             ->lineIf($this->device->customer_date_warranty != null,' تنتهي كفالة هذا الجهاز بتاريخ '. $this->device->customer_date_warranty  )
             ->line(' شكراً لزيارتكم مركز ')
             ->line($client->center_name);
