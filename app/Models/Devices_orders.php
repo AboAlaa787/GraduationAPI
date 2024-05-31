@@ -39,8 +39,8 @@ class Devices_orders extends Model
         static::updating(function ($devices_orders) {
             if ($devices_orders->isDirty('deliver_to_client')) {
                 if ($devices_orders->deliver_to_client) {
-                    $device=$devices_orders->device;
-                    $device->deliver_to_client=true;
+                    $device = $devices_orders->device;
+                    $device->deliver_to_client = true;
                     $device->save();
                     $devices_orders->deliver_time = now();
                 }

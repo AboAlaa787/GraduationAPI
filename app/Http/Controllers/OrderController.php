@@ -128,7 +128,10 @@ class OrderController extends Controller
             if ($order->{$relation}->contains($item->id)) {
                 throw new InvalidArgumentException('Error: id ' . $item_id . ' in ' . $relation . '_id is already attached to the order.');
             }
-            $attributes = $type ? ['order_type' => $type] : [];
+            $attributes = $type ? [
+                'order_type' => $type,
+                'deliver_to_client' => $type == 'تسليم للمركز'
+            ] : [];
             if ($attributes && !in_array($type, ['تسليم للعميل', 'تسليم للمركز'])) {
                 throw new InvalidArgumentException('Error:Invalid order type');
             }
