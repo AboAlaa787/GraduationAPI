@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('device_model');
             $table->unique(['device_model','name']);
             $table->double('price');
-            $table->time('time_required')->default(10000);
+            $table->string('time_required')->default('1 hours');
             $table->timestamps();
         });
     }

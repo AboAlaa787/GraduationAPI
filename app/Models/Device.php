@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
 
@@ -96,22 +97,29 @@ class Device extends Model
             if ($device->isDirty('client_approval')) {
                 event(new ClientApproval($device));
             }
-            if ($device->isDirty('deliver_to_clinet')) {
+            if ($device->isDirty('deliver_to_client')) {
+                $dateReceipt = Carbon::parse($device->date_receipt);
+                $difference = now()->diff($dateReceipt);
+                $diffString = ($difference->days > 0 ? $difference->days . ' days and ' : '') . $difference->h . ' hours';
                 $ser = Service::where('name', $device->problem)->first();
-
                 if ($ser === null) {
-                    Service::create([
-                        'name' => $device->problem,
-                        'price' => $device->cost_to_client,
-                        'time_required' => $device->Expected_date_of_delivery - $device->date_receipt,
-                    ]);
+                    if ($device->problem != null && $device->cost_to_client != null) {
+                        $ser = Service::create([
+                            'name' => $device->problem,
+                            'price' => $device->cost_to_client,
+                            'time_required' => $diffString,
+                        ]);
+                    }
                 } else {
-                    $ser->update([
-                        'price' => $device->cost_to_client,
-                        'time_required' => $device->Expected_date_of_delivery - $device->date_receipt,
-                    ]);
+                    if ($device->cost_to_client != null) {
+                        $ser->update([
+                            'price' => $device->cost_to_client,
+                            'time_required' => $diffString,
+                        ]);
+                    }
                 }
-
+            }
+            if ($device->isDirty('deliver_to_customer')) {
                 event(new DeleteDevice($device));
             }
             if ($device->isDirty('status')) {
