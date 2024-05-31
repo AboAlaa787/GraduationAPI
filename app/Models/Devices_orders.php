@@ -28,11 +28,10 @@ class Devices_orders extends Model
         parent::boot();
         static::updated(function ($devices_orders) {
             if ($devices_orders->isDirty('deliver_to_client')) {
-                $orderId = $devices_orders->order_id;
-                $order=$devices_orders->order;
-                $undeliveredDevicesCount=self::where('order_id', $orderId)
-                ->where('deliver_to_client', false)->count();
-                if ($undeliveredDevicesCount === 0) {
+                $order = $devices_orders->order;
+                $undeliveredDevicesCount = $order->devices_orders()->where('deliver_to_client', false)->count();
+                $undeliveredProductsCount = $order->products_orders()->where('deliver_to_client', false)->count();
+                if ($undeliveredDevicesCount === 0 && $undeliveredProductsCount === 0) {
                     $order->update(['done' => true]);
                 }
             }
@@ -40,6 +39,9 @@ class Devices_orders extends Model
         static::updating(function ($devices_orders) {
             if ($devices_orders->isDirty('deliver_to_client')) {
                 if ($devices_orders->deliver_to_client) {
+                    $device=$devices_orders->device;
+                    $device->deliver_to_client=true;
+                    $device->save();
                     $devices_orders->deliver_time = now();
                 }
             }
