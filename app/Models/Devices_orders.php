@@ -35,6 +35,14 @@ class Devices_orders extends Model
                     $order->update(['done' => true]);
                 }
             }
+            if ($devices_orders->isDirty('deliver_to_user')) {
+                $order = $devices_orders->order;
+                $undeliveredDevicesCount = $order->devices_orders()->where('deliver_to_user', false)->count();
+                $undeliveredProductsCount = $order->products_orders()->where('deliver_to_user', false)->count();
+                if ($undeliveredDevicesCount === 0 && $undeliveredProductsCount === 0) {
+                    $order->update(['deliver_to_user' => true]);
+                }
+            }
         });
         static::updating(function ($devices_orders) {
             if ($devices_orders->isDirty('deliver_to_client')) {

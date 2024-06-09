@@ -33,6 +33,14 @@ class Product_order extends Model
                     $order->update(['done' => true]);
                 }
             }
+            if ($product_order->isDirty('deliver_to_user')) {
+                $order = $product_order->order;
+                $undeliveredDevicesCount = $order->devices_orders()->where('deliver_to_user', false)->count();
+                $undeliveredProductsCount = $order->products_orders()->where('deliver_to_user', false)->count();
+                if ($undeliveredDevicesCount === 0 && $undeliveredProductsCount === 0) {
+                    $order->update(['deliver_to_user' => true]);
+                }
+            }
         });
         static::updating(function ($product_order) {
             if ($product_order->isDirty('deliver_to_client')) {
