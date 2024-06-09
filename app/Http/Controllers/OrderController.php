@@ -12,6 +12,7 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\Product_order;
 use App\Models\User;
+use App\Notifications\DeliveryNotification;
 use App\Traits\CRUDTrait;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -84,6 +85,7 @@ class OrderController extends Controller
                 $order = $oldOrder ?: $client->orders()->create([
                     'client_id' => $request->client_id,
                     'description' => $request->description,
+                    'user_id' => $delivery->id
                 ]);
 
                 if (!empty ($devices_ids)) {
@@ -96,11 +98,8 @@ class OrderController extends Controller
                     $this->attachItemsToOrder($products_ids, Product::class, $order, 'products');
                 }
 
-                if (!$oldOrder) {
-                    $order->user_id = $delivery->id;
-                    $order->save();
-                }
                 $order->load(['devices', 'products']);
+                $delivery->pushNotification(new DeliveryNotification($order));
                 return $this->apiResponse($order);
             });
         } catch (InvalidArgumentException $exception) {
