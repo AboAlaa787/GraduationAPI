@@ -63,7 +63,10 @@ class ClientApprovalNotification extends Notification
         return [
             'title' => 'اشعار بحالة جهاز',
             'body' => $message,
-            'Replyable' => false
+            'Replyable' => false,
+            'data'=>[
+                'device_id' => $this->device->id,
+            ]
         ];
     }
 }

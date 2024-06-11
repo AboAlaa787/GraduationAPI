@@ -70,9 +70,8 @@ class DeviceStateNotification extends Notification
             'body' => $message,
             'Replyable' => $canOrder,
             'data' => [
-                'device_id' => [
-                    $this->device->id => 'تسليم للعميل'
-                ],
+                'device_id' => $this->device->id
+                ,
             ],
             'actions' => $canOrder ? [
                 [
