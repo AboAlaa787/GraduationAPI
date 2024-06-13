@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('national_id',11)->nullable();
             $table->foreignId('client_id')->constrained()->cascadeOnDelete();
-            $table->unique(['client_id','national_id']);
+            $table->unique(['client_id','phone']);
             $table->string('phone',10);
             $table->string('email')->nullable();
             $table->integer('devices_count')->default(0);
