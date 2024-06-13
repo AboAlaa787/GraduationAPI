@@ -29,13 +29,13 @@ class CreateUserRequest extends FormRequest
                 'required',
                 'max:20',
                 'min:2',
-                'alpha',
+                'string',
             ],
             'last_name' => [
                 'required',
                 'max:20',
                 'min:2',
-                'alpha',
+                'string',
             ],
             'password' => [
                 'required',
