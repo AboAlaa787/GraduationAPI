@@ -30,14 +30,14 @@ class UpdateUserRequest extends FormRequest
             'name' => [
                 'max:20',
                 'min:2',
-                'string',
+                'alpha',
                 'filled',
             ],
             'last_name' => [
                 'max:20',
                 'min:2',
                 'filled',
-                'string',
+                'alpha',
             ],
             'password' => [
                 'confirmed',
