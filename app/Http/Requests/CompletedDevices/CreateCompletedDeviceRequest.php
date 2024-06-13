@@ -37,6 +37,7 @@ class CreateCompletedDeviceRequest extends FormRequest
             'status' => 'required|in:' . implode(',', DeviceStatus::values()),
             'fix_steps' => 'nullable|string',
             'date_receipt' => 'required|date',
+            'date_receipt_from_customer' => 'date',
             'date_delivery' => 'date',
             'date_warranty' => 'date',
             'deliver_to_client'=>'boolean',

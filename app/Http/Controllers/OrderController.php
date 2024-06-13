@@ -125,7 +125,7 @@ class OrderController extends Controller
             $item = $modelClass::findOrFail($item_id);
 
             if ($order->{$relation}->contains($item->id)) {
-                throw new InvalidArgumentException('Error: id ' . $item_id . ' in ' . $relation . '_id is already attached to the order.');
+                throw new InvalidArgumentException('id ' . $item_id . ' in ' . $relation . '_id is already attached to the order.');
             }
             $attributes = $type ? [
                 'order_type' => $type,

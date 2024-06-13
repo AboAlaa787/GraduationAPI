@@ -35,6 +35,7 @@ class Device extends Model
         'status',
         'client_approval',
         'date_receipt',
+        'date_receipt_from_customer',
         'customer_id',
         'Expected_date_of_delivery',
         'deliver_to_client',

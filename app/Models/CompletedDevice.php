@@ -29,6 +29,7 @@ class CompletedDevice extends Model
         'deliver_to_client',
         'deliver_to_customer',
         'date_receipt',
+        'date_receipt_from_customer',
         'date_delivery_client',
         'date_delivery_customer',
         'client_date_warranty',

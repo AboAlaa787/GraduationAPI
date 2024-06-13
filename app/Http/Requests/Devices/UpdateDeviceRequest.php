@@ -37,6 +37,7 @@ class UpdateDeviceRequest extends FormRequest
             'status' => 'filled|in:' . implode(',', DeviceStatus::values()),
             'client_approval' => 'filled|boolean',
             'date_receipt' => 'filled|date',
+            'date_receipt_from_customer' => 'filled|date',
             'deliver_to_client' => 'filled|boolean',
             'deliver_to_customer' => 'filled|boolean',
             'required_period' => 'filled|integer',

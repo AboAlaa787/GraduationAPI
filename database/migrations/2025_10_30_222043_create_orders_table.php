@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->text('description')->nullable();
             $table->foreignId('client_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
-            $table->date('date')->default(now());
+            $table->dateTime('date')->default(now());
             $table->boolean('done')->default(false);
             $table->boolean('deliver_to_user')->default(false);
             $table->timestamps();

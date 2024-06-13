@@ -31,6 +31,7 @@ return new class extends Migration
             $table->boolean('deliver_to_client')->default(true);
             $table->boolean('deliver_to_customer')->default(false);
             $table->date('date_receipt');
+            $table->date('date_receipt_from_customer');
             $table->date('date_delivery_client')->default(now());
             $table->date('date_delivery_customer')->nullable();
             $table->date('client_date_warranty')->nullable();

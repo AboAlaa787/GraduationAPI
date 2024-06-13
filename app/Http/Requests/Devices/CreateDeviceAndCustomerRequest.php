@@ -34,6 +34,7 @@ class CreateDeviceAndCustomerRequest extends FormRequest
             'status' => 'in:' . implode(',', DeviceStatus::values()),
             'client_approval' => 'nullable|boolean',
             'date_receipt' => 'nullable|date',
+            'date_receipt_from_customer' => 'nullable|date',
             'deliver_to_client' => 'nullable|boolean',
             'deliver_to_customer' => 'nullable|boolean',
             'imei' => 'nullable|string',
