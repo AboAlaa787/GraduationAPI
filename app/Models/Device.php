@@ -102,13 +102,14 @@ class Device extends Model
                 $dateReceipt = Carbon::parse($device->date_receipt);
                 $difference = now()->diff($dateReceipt);
                 $diffString = ($difference->days > 0 ? $difference->days . ' days and ' : '') . $difference->h . ' hours';
-                $ser = Service::where('name', $device->problem)->first();
+                $ser = Service::where('name', $device->problem)->where('device_model', $device->model)->first();
                 if ($ser === null) {
                     if ($device->problem != null && $device->cost_to_client != null) {
                         $ser = Service::create([
                             'name' => $device->problem,
                             'price' => $device->cost_to_client,
                             'time_required' => $diffString,
+                            'device_model' => $device->model
                         ]);
                     }
                 } else {
