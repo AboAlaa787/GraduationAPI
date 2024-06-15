@@ -14,6 +14,7 @@ class Service extends Model
         'name',
         'price',
         'time_required',
+        'device_model'
     ];
     protected $relations=[
         'orders',
