@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Validator;
  */
 class NotificationController extends Controller
 {
-    use ApiResponseTrait,CRUDTrait;
+    use ApiResponseTrait, CRUDTrait;
 
     /**
      * Get all notifications for authenticated user
@@ -28,7 +28,27 @@ class NotificationController extends Controller
      */
     public function allNotifications(Request $request): JsonResponse
     {
-        return $this->apiResponse(NotificationResource::collection($request->user()->notifications));
+        $user = $request->user();
+        $notifiableType = get_class($user);
+        $notifiableId = $user->id;
+        $queryParams = $request->query();
+        $queryParams['notifiable_type'] = $notifiableType;
+        $queryParams['notifiable_id'] = $notifiableId;
+        $request->merge($queryParams);
+        $response = $this->index_data(new DatabaseNotification(), $request, '');
+        if (!$response->isSuccessful()) {
+            return $response;
+        }
+        $responseDecoded = json_decode($response->getContent(), true);
+        $responseData = $responseDecoded['body'];
+        $data = collect($responseData);
+        $resourceData = NotificationResource::collection($data);
+        $finalResponse['message'] = $responseDecoded['message'];
+        $finalResponse['body'] = $resourceData;
+        if (array_key_exists('pagination', $responseDecoded))
+            $finalResponse['pagination'] = $responseDecoded['pagination'];
+        $response->setContent(json_encode($finalResponse));
+        return $response;
     }
 
     /**
@@ -39,7 +59,28 @@ class NotificationController extends Controller
      */
     public function readNotifications(Request $request): JsonResponse
     {
-        return $this->apiResponse(NotificationResource::collection($request->user()->readNotifications));
+        $user = $request->user();
+        $notifiableType = get_class($user);
+        $notifiableId = $user->id;
+        $queryParams = $request->query();
+        $queryParams['read_at!'] = null;
+        $queryParams['notifiable_type'] = $notifiableType;
+        $queryParams['notifiable_id'] = $notifiableId;
+        $request->merge($queryParams);
+        $response = $this->index_data(new DatabaseNotification(), $request, '');
+        if (!$response->isSuccessful()) {
+            return $response;
+        }
+        $responseDecoded = json_decode($response->getContent(), true);
+        $responseData = $responseDecoded['body'];
+        $data = collect($responseData);
+        $resourceData = NotificationResource::collection($data);
+        $finalResponse['message'] = $responseDecoded['message'];
+        $finalResponse['body'] = $resourceData;
+        if (array_key_exists('pagination', $responseDecoded))
+            $finalResponse['pagination'] = $responseDecoded['pagination'];
+        $response->setContent(json_encode($finalResponse));
+        return $response;
     }
 
     /**
@@ -50,7 +91,28 @@ class NotificationController extends Controller
      */
     public function unreadNotifications(Request $request): JsonResponse
     {
-        return $this->apiResponse(NotificationResource::collection($request->user()->unreadNotifications));
+        $user = $request->user();
+        $notifiableType = get_class($user);
+        $notifiableId = $user->id;
+        $queryParams = $request->query();
+        $queryParams['read_at'] = null;
+        $queryParams['notifiable_type'] = $notifiableType;
+        $queryParams['notifiable_id'] = $notifiableId;
+        $request->merge($queryParams);
+        $response = $this->index_data(new DatabaseNotification(), $request, '');
+        if (!$response->isSuccessful()) {
+            return $response;
+        }
+        $responseDecoded = json_decode($response->getContent(), true);
+        $responseData = $responseDecoded['body'];
+        $data = collect($responseData);
+        $resourceData = NotificationResource::collection($data);
+        $finalResponse['message'] = $responseDecoded['message'];
+        $finalResponse['body'] = $resourceData;
+        if (array_key_exists('pagination', $responseDecoded))
+            $finalResponse['pagination'] = $responseDecoded['pagination'];
+        $response->setContent(json_encode($finalResponse));
+        return $response;
     }
 
     /**
@@ -126,33 +188,22 @@ class NotificationController extends Controller
     public function adminNotification(Request $request): JsonResponse
     {
         $user = $request->user();
-        if ($user->rule->name == "مدير") {
-            // $rules = [
-            //     'page' => 'integer|min:1',
-            //     'per_page' => 'integer|min:1',
-            //     'all_data' => 'integer|in:1,0'
-            // ];
-            // $data = [
-            //     'page' => $request->get('page', 1),
-            //     'per_page' => $request->get('per_page', 20),
-            //     'all_data' => $request->get('all_data', 0)
-            // ];
-            // $validator = Validator::make($data, $rules);
-
-            // if ($validator->fails()) {
-            //     return response()->json(['error' => $validator->errors()], 400);
-            // }
-            // $data=$this->index_data(new DatabaseNotification(),$request,'');
-            // $hh=$data->getData();
-            // $d=DatabaseNotification::hydrate($hh->body);
-            // $r=NotificationResource::collection($d);
-            // $b=$r->jsonSerialize();
-            // if ($b) {
-            //     $b=$b[0];
-            // }
-            $data=NotificationResource::collection(DatabaseNotification::get())[0];
-            return $this->apiResponse($data);
+        if (!$user->rule->name == "مدير") {
+            return $this->apiResponse(null, 403, 'Unauthorized');
         }
-        return $this->apiResponse(null, 403, 'Unauthorized');
+        $response = $this->index_data(new DatabaseNotification(), $request, '');
+        if (!$response->isSuccessful()) {
+            return $response;
+        }
+        $responseDecoded = json_decode($response->getContent(), true);
+        $responseData = $responseDecoded['body'];
+        $data = collect($responseData);
+        $resourceData = NotificationResource::collection($data);
+        $finalResponse['message'] = $responseDecoded['message'];
+        $finalResponse['body'] = $resourceData;
+        if (array_key_exists('pagination', $responseDecoded))
+            $finalResponse['pagination'] = $responseDecoded['pagination'];
+        $response->setContent(json_encode($finalResponse));
+        return $response;
     }
 }
