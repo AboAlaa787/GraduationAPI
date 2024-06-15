@@ -305,7 +305,7 @@ trait CRUDTrait
      * @param string $with
      * @return JsonResponse
      */
-    public function show_data(Model $model, int $id, string $with = ''): JsonResponse
+    public function show_data(Model $model, $id, string $with = ''): JsonResponse
     {
         try {
             $object = $model->findOrFail($id);
@@ -353,7 +353,7 @@ trait CRUDTrait
      * @param Model $model
      * @return JsonResponse
      */
-    public function update_data(Request $request, int $id, Model $model): JsonResponse
+    public function update_data(Request $request, $id, Model $model): JsonResponse
     {
         try {
             $this->authorizeForModel($model, 'update');
