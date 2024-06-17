@@ -14,9 +14,10 @@ class UserPolicy
     }
 
 
-    public function view($user): bool
+    public function view($user, $targetData): bool
     {
-        return $this->hasPermission($user, 'الاسنعلام عن مستخدم');
+        $isDataOwner = get_class($user) == get_class($targetData) && $targetData->id == $user->id;
+        return $isDataOwner || $this->hasPermission($user, 'الاسنعلام عن مستخدم');
     }
 
     public function create($user): bool
