@@ -99,12 +99,14 @@ class Device extends Model
                 event(new ClientApproval($device));
             }
             if ($device->isDirty('deliver_to_client')) {
-                $completedDevice = $device->toArray();
-                $completedDevice['client_name'] = $device->client?->name;
-                $completedDevice['user_name'] = $device->user?->name;
-                $completedDevice = CompletedDevice::create($completedDevice);
-                if ($completedDevice) {
-                    $device->client->decrement('devices_count');
+                if (CompletedDevice::whereNotExistssts('code', $device->code)) {
+                    $completedDevice = $device->toArray();
+                    $completedDevice['client_name'] = $device->client?->name;
+                    $completedDevice['user_name'] = $device->user?->name ?? 'فني صيانة';
+                    $completedDevice = CompletedDevice::create($completedDevice);
+                    if ($completedDevice) {
+                        $device->client->decrement('devices_count');
+                    }
                 }
                 $dateReceipt = Carbon::parse($device->date_receipt);
                 $difference = now()->diff($dateReceipt);
