@@ -16,13 +16,13 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RuleSeeder::class,
             UserSeeder::class,
-            ClientSeeder::class,
+            // ClientSeeder::class,
             PermissionSeeder::class,
             Permission_RuleSeeder::class,
-            CustomerSeeder::class,
-            DeviceSeeder::class,
-            ServiceSeeder::class,
-            CompletedDeviceSeeder::class,
+            // CustomerSeeder::class,
+            // DeviceSeeder::class,
+            // ServiceSeeder::class,
+            // CompletedDeviceSeeder::class,
         ]);
     }
 }
