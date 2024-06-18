@@ -99,7 +99,7 @@ class Device extends Model
                 event(new ClientApproval($device));
             }
             if ($device->isDirty('deliver_to_client')) {
-                if (CompletedDevice::whereNotExists('code', $device->code)) {
+                if (!CompletedDevice::where('code', $device->code)->exists()) {
                     $completedDevice = $device->toArray();
                     $completedDevice['client_name'] = $device->client?->name;
                     $completedDevice['user_name'] = $device->user?->name ?? 'فني صيانة';
