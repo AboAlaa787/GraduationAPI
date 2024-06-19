@@ -42,6 +42,7 @@ class CreateUserRequest extends FormRequest
                 'confirmed',
                 Rules\Password::defaults()
             ],
+            'password_confirmation' => 'required',
             'rule_id' => [
                 'integer',
                 'required',
