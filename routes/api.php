@@ -51,6 +51,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy']);
+    Route::post('/change_password', [AuthenticatedSessionController::class, 'changePassword']);
 
     Route::resource('/users', UserController::class);
 
