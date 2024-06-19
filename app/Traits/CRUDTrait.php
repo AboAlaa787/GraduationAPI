@@ -356,7 +356,7 @@ trait CRUDTrait
     public function update_data(Request $request, $id, Model $model): JsonResponse
     {
         try {
-            $this->authorizeForModel($model, 'update');
+            $this->authorizeForModel($model->find($id), 'update');
             $object = $model->findOrFail($id);
             $columns = $request->keys();
             foreach ($columns as $column) {

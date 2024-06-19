@@ -25,9 +25,10 @@ class UserPolicy
         return $this->hasPermission($user, 'اضافة مستخدم');
     }
 
-    public function update($user): bool
+    public function update($user, $targetData): bool
     {
-        return $this->hasPermission($user, 'تعديل بيانات مستخدم');
+        $isDataOwner = get_class($user) == get_class($targetData) && $targetData->id == $user->id;
+        return $isDataOwner || $this->hasPermission($user, 'تعديل بيانات مستخدم');
     }
 
     public function delete($user): bool
