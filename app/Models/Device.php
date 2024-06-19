@@ -80,13 +80,16 @@ class Device extends Model
                 $device->user_id = $userWithMinDevicesCount->id;
             }
         });
-
-        static::deleted(static function ($device) {
+        static::deleting(static function ($device) {
             $clientId = $device->client_id;
             $client = Client::find($clientId);
-            if ($client) {
+            $alreadyExists = CompletedDevice::where('code', $device->code)->exists();
+            if (!$alreadyExists && $client) {
                 $client->decrement('devices_count');
             }
+        });
+        static::deleted(static function ($device) {
+            $clientId = $device->client_id;
 
             $devicesToUpdate = self::where('client_id', $clientId)->where('client_priority', '>', $device->client_priority)->get();
 
