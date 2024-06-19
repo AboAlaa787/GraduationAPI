@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Users\CreateUserRequest;
 use App\Http\Requests\Users\UpdateUserRequest;
+use App\Models\Order;
 use App\Models\User;
 use App\Notifications\Auth\EmailVerificationNotification;
 use App\Traits\CRUDTrait;
@@ -15,6 +16,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\UnauthorizedException;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -95,5 +97,20 @@ class UserController extends Controller
     public function destroy($id): JsonResponse
     {
         return $this->destroy_data($id, new User());
+    }
+    function areThereDelivery(): JsonResponse
+    {
+        try {
+            $this->authorize('create', new Order());
+
+            $delivery = User::getDelivery();
+
+            if (is_null($delivery)) {
+                return $this->apiResponse([]);
+            }
+            return $this->apiResponse(['There are delivery']);
+        } catch (AuthorizationException $e) {
+            return $this->apiResponse(null, 403, 'Error: ' . $e->getMessage());
+        }
     }
 }
