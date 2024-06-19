@@ -54,7 +54,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::resource('/users', UserController::class);
 
-    Route::get('users/are_there_deliveries',[UserController::class,'areThereDelivery']);
+    Route::get('are_there_deliveries',[UserController::class,'areThereDelivery']);
 
     Route::post('refresh_token', [AuthenticatedSessionController::class, 'refresh_token']);
 
