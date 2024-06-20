@@ -24,7 +24,6 @@ class CenterController extends Controller
     {
         try {
             $object = Center::findOrFail($id);
-            $this->authorizeForModel(Center::find($id), 'view');
             return $this->apiResponse($object);
         } catch (ModelNotFoundException $e) {
             $exceptionModel = explode('\\', $e->getModel());
