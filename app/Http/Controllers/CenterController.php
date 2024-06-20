@@ -44,7 +44,7 @@ class CenterController extends Controller
             $object = Center::findOrFail($id);
             $columns = $request->keys();
             foreach ($columns as $column) {
-                if ( $this->validateColumn($model->getTable(), $column)) {
+                if ( $this->validateColumn((new Center())->getTable(), $column)) {
                     $object->$column = $request[$column];
                 }
             }
