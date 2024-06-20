@@ -15,7 +15,8 @@ class CenterController extends Controller
 
     public function index(Request $request): JsonResponse
     {
-        return $this->index_data(new Center(),$request,str($request->with));
+        $centers=Center::all();
+        return $this->apiResponse($centers);
     }
 
     public function show($id): JsonResponse
