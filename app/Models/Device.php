@@ -98,9 +98,6 @@ class Device extends Model
             }
         });
         static::updated(function ($device) {
-            if ($device->isDirty('client_approval')) {
-                event(new ClientApproval($device));
-            }
             if ($device->isDirty('deliver_to_client')) {
                 if (!CompletedDevice::where('code', $device->code)->exists()) {
                     $completedDevice = $device->toArray();
