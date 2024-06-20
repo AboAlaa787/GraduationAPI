@@ -6,6 +6,7 @@ use App\Http\Requests\Centers\CreateCenterRequest;
 use App\Http\Requests\Centers\UpdateCenterRequest;
 use App\Models\Center;
 use App\Traits\CRUDTrait;
+use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -39,7 +40,23 @@ class CenterController extends Controller
 
     public function update(UpdateCenterRequest $request, $id): JsonResponse
     {
-        return $this->update_data($request, $id, new Center());
+        try {
+            $object = Center::findOrFail($id);
+            $columns = $request->keys();
+            foreach ($columns as $column) {
+                if ( $this->validateColumn($model->getTable(), $column)) {
+                    $object->$column = $request[$column];
+                }
+            }
+            $object->save();
+            return $this->apiResponse($object, 200, 'Update successful');
+        } catch (ModelNotFoundException $e) {
+            $exceptionModel = explode('\\', $e->getModel());
+            $exceptionModel = end($exceptionModel);
+            return $this->apiResponse(null, 404, "Error: $exceptionModel with ID $id not found.");
+        } catch (\InvalidArgumentException|Exception $e) {
+            return $this->apiResponse(null, 400, 'Error: ' . $e->getMessage());
+        }
     }
 
     public function destroy($id): JsonResponse
