@@ -6,6 +6,7 @@ use App\Http\Requests\Centers\CreateCenterRequest;
 use App\Http\Requests\Centers\UpdateCenterRequest;
 use App\Models\Center;
 use App\Traits\CRUDTrait;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -15,13 +16,21 @@ class CenterController extends Controller
 
     public function index(Request $request): JsonResponse
     {
-        $centers=Center::all();
+        $centers = Center::all();
         return $this->apiResponse($centers);
     }
 
     public function show($id): JsonResponse
     {
-        return $this->show_data(new Center(), $id);
+        try {
+            $object = Center::findOrFail($id);
+            $this->authorizeForModel(Center::find($id), 'view');
+            return $this->apiResponse($object);
+        } catch (ModelNotFoundException $e) {
+            $exceptionModel = explode('\\', $e->getModel());
+            $exceptionModel = end($exceptionModel);
+            return $this->apiResponse(null, 404, "Error: $exceptionModel with ID $id not found.");
+        }
     }
 
     public function store(CreateCenterRequest $request): JsonResponse
