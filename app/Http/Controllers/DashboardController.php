@@ -26,6 +26,7 @@ class DashboardController extends Controller
             $devicesCount = Device::
             where('repaired_in_center', true)
                 ->where('deliver_to_client', false)
+                ->where('date_receipt','!=',null)
                 ->count();
             $response['devices_count'] = $devicesCount;
 
@@ -33,6 +34,7 @@ class DashboardController extends Controller
             $readyDevicesCount = Device::
             where('repaired_in_center', true)
                 ->where('deliver_to_client', false)
+                ->where('date_receipt','!=',null)
                 ->where('status',DeviceStatus::Ready->value)
                 ->count();
             $response['ready_devices_count'] = $readyDevicesCount;
@@ -40,6 +42,7 @@ class DashboardController extends Controller
             //Number of in progress devices in the center
             $inProgressDevicesCount = Device::
             where('repaired_in_center', true)
+                ->where('date_receipt','!=',null)
                 ->where('deliver_to_client', false)
                 ->where('status',DeviceStatus::InProgress->value)
                 ->count();
@@ -56,12 +59,14 @@ class DashboardController extends Controller
                         DeviceStatus::NotAgree,
                         DeviceStatus::NotMaintainable
                     ])
+                ->where('date_receipt','!=',null)
                 ->count();
             $response['deliverable_devices_count'] = $deliverableDevicesCount;
 
             //Number of ready delivered devices
             $readyCompletedDevicesCount = CompletedDevice::
             where('repaired_in_center', true)
+                ->where('date_receipt','!=',null)
                 ->where('status',DeviceStatus::Ready->value)
                 ->count();
             $response['ready_completed_devices_count'] = $readyCompletedDevicesCount;
@@ -69,6 +74,7 @@ class DashboardController extends Controller
             //Number of unready delivered devices
             $unreadyCompletedDevicesCount = CompletedDevice::
             where('repaired_in_center', true)
+                ->where('date_receipt','!=',null)
                 ->where('status',DeviceStatus::NotReady->value)
                 ->count();
             $response['unready_completed_devices_count'] = $unreadyCompletedDevicesCount;
@@ -76,6 +82,7 @@ class DashboardController extends Controller
             //Number of delivered devices in this month
             $inMonthCompletedDevicesCount = CompletedDevice::
             where('repaired_in_center', true)
+                ->where('date_receipt','!=',null)
                 ->whereYear('date_delivery_client',now()->year)
                 ->whereMonth('date_delivery_client',now()->month)
                 ->count();
