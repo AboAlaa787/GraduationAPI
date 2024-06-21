@@ -74,6 +74,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::resource('/orders', OrderController::class);
 
     Route::resource('/devices', DeviceController::class);
+    Route::get('devices_grouped',[DeviceController::class,'getClientsFromGroupedDevices']);
 
     Route::resource('/customers', CustomerController::class);
 

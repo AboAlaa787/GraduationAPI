@@ -87,10 +87,10 @@ class DeviceController extends Controller
                     $maxPriority = $client->devices()->max('client_priority');
 
                     if ($newPriority > $maxPriority) {
-                        if ($oldPriority>$maxPriority){
+                        if ($oldPriority > $maxPriority) {
                             $newPriority = $maxPriority + 1;
-                        }else{
-                            $newPriority=$maxPriority;
+                        } else {
+                            $newPriority = $maxPriority;
                         }
                     }
                     $devicesToUpdate = $client->devices()->where('client_priority', '<=', $newPriority)
@@ -104,13 +104,12 @@ class DeviceController extends Controller
                 $device->save();
             }
 
-        } catch (ModelNotFoundException  $exception) {
+        } catch (ModelNotFoundException $exception) {
             $model = explode('\\', $exception->getModel());
             $model = end($model);
             $id = $exception->getIds()[0];
             return $this->apiResponse(null, 404, "Error: $model with ID $id not found.");
-        }
-        catch (Exception $exception){
+        } catch (Exception $exception) {
             return $this->apiResponse(null, 500, $exception->getMessage());
         }
         return $this->update_data($request, $id, new Device());
@@ -123,7 +122,7 @@ class DeviceController extends Controller
      */
     public function destroy($id): JsonResponse
     {
-        return  $this->destroy_data($id, new Device());
+        return $this->destroy_data($id, new Device());
     }
 
     /**
@@ -137,7 +136,7 @@ class DeviceController extends Controller
             $this->authorize('create', Device::class);
             $this->authorize('create', Customer::class);
             $customer = Customer::firstOrCreate(['national_id' => $request->national_id], $request->all());
-            $request['customer_id']=$customer->id;
+            $request['customer_id'] = $customer->id;
             $device = Device::create($request->all());
             return $this->apiResponse([
                 'device' => $device,
@@ -145,9 +144,27 @@ class DeviceController extends Controller
             ]);
         } catch (AuthorizationException $e) {
             return $this->apiResponse(null, 403, 'Error: ' . $e->getMessage());
-        }
-        catch (Exception $e){
+        } catch (Exception $e) {
             return $this->apiResponse(null, 500, 'Error: ' . $e->getMessage());
+        }
+    }
+    public function getClientsFromGroupedDevices(Request $request): JsonResponse
+    {
+        try {
+            $this->authorize('viewAny', new Device());
+            $user = $request->user();
+            $ruleName = $user->rule->name;
+            if ($ruleName != 'فني') {
+                throw new AuthorizationException();
+            }
+            $devices = $user->devices()->with('client')->get();
+            $groupedDevices = $devices->groupBy('client.id');
+            $clients = $groupedDevices->map(function ($devices) {
+                return $devices->pluck('client')->unique('id')->first();
+            });
+            return $this->apiResponse($clients);
+        } catch (AuthorizationException $e) {
+            return $this->apiResponse(null, 403, 'Error: ' . $e->getMessage());
         }
     }
 }
