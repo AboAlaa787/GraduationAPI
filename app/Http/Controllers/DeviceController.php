@@ -13,6 +13,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 /**
  * @group Devices management
@@ -151,14 +152,18 @@ class DeviceController extends Controller
     public function getClientsFromGroupedDevices(Request $request): JsonResponse
     {
         try {
-            $this->authorize('viewAny', new Device());
             $user = $request->user();
             $ruleName = $user->rule->name;
             if ($ruleName != 'فني') {
                 throw new AuthorizationException();
             }
-            $devices = $user->devices()->with('client')->get();
-            $groupedDevices = $devices->groupBy('client.id');
+            $queryParams = $request->query();
+            $queryParams['with'] = 'client';
+            $queryParams['user_id'] = $user->id;
+            $request->merge($queryParams);
+            $devices = $this->index($request)->getData()->body;
+            $devicesCollection = new Collection($devices);
+            $groupedDevices = $devicesCollection->groupBy('client.id');
             $clients = $groupedDevices->map(function ($devices) {
                 return $devices->pluck('client')->unique('id')->first();
             });
