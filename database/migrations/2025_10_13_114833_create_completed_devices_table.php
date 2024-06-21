@@ -30,10 +30,10 @@ return new class extends Migration
             $table->text('fix_steps')->nullable();
             $table->boolean('deliver_to_client')->default(true);
             $table->boolean('deliver_to_customer')->default(false);
-            $table->date('date_receipt')->nullable();
-            $table->date('date_receipt_from_customer');
-            $table->date('date_delivery_client')->default(now());
-            $table->date('date_delivery_customer')->nullable();
+            $table->dateTime('date_receipt')->nullable();
+            $table->dateTime('date_receipt_from_customer');
+            $table->dateTime('date_delivery_client')->default(now());
+            $table->dateTime('date_delivery_customer')->nullable();
             $table->date('client_date_warranty')->nullable();
             $table->date('customer_date_warranty')->nullable();
             $table->boolean('repaired_in_center')->default(false);

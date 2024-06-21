@@ -59,6 +59,7 @@ class Device extends Model
     {
         parent::boot();
         static::creating(static function ($device) {
+            $device->date_receipt_from_customer=now();
             //Automatic code generation
             do {
                 $code = Str::random(6);

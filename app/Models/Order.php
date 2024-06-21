@@ -29,7 +29,13 @@ class Order extends Model
         'devices_orders',
         'products_orders',
     ];
-
+    protected static function boot(): void
+    {
+        parent::boot();
+        static::creating(static function ($order) {
+            $order->date = now();
+        });
+    }
     public function devices(): BelongsToMany
     {
         return $this->belongsToMany(Device::class, 'devices_orders');

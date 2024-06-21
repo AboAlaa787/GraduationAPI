@@ -51,6 +51,13 @@ class CompletedDevice extends Model
         'client_name',
         'user_name',
     ];
+    protected static function boot(): void
+    {
+        parent::boot();
+        static::creating(static function ($completedDevice) {
+            $completedDevice->date_delivery_client = now();
+        });
+    }
 
     public function client(): BelongsTo
     {
