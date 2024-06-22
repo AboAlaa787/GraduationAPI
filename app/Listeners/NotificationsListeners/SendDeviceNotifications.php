@@ -32,11 +32,14 @@ class SendDeviceNotifications
             $user->pushNotification(new ClientApprovalNotification($device));
         }
         //Notify the client
-        if (in_array($device->status, [
-            DeviceStatus::NotAgree->value,
-            DeviceStatus::NotReady->value,
-            DeviceStatus::Ready->value,
-            DeviceStatus::NotMaintainable->value])) {
+        if (
+            in_array($device->status, [
+                DeviceStatus::NotAgree->value,
+                DeviceStatus::NotReady->value,
+                DeviceStatus::Ready->value,
+                DeviceStatus::NotMaintainable->value
+            ]) && $device->repaired_in_center
+        ) {
             $client->pushNotification(new DeviceStateNotification($device));
         }
 
@@ -44,14 +47,14 @@ class SendDeviceNotifications
             $client->pushNotification(new DeviceIsCheckedNotification($device));
         }
 
-        if ($device->status == DeviceStatus::Ready->value && $client && $user) {
-                $completedDevice = $device->toArray();
-                $completedDevice['client_name'] = $client->name;
-                $completedDevice['user_name'] = $user->name;
-                $completedDevice = CompletedDevice::create($completedDevice);
-                if ($completedDevice) {
-                    $client->decrement('devices_count');
-                }
+        if ($device->status == DeviceStatus::Ready->value && $client && $user&& $device->repaired_in_center) {
+            $completedDevice = $device->toArray();
+            $completedDevice['client_name'] = $client->name;
+            $completedDevice['user_name'] = $user->name;
+            $completedDevice = CompletedDevice::create($completedDevice);
+            if ($completedDevice) {
+                $client->decrement('devices_count');
+            }
         }
     }
 }
