@@ -29,8 +29,8 @@ class Devices_orders extends Model
         static::updated(function ($devices_orders) {
             if ($devices_orders->isDirty('deliver_to_client')) {
                 $order = $devices_orders->order;
-                $undeliveredDevicesCount = $order->devices_orders()->where('deliver_to_client', false)->count();
-                $undeliveredProductsCount = $order->products_orders()->where('deliver_to_client', false)->count();
+                $undeliveredDevicesCount = $order->devices_orders()->where('deliver_to_client', false)->orWhere('deliver_to_user', false)->count();
+                $undeliveredProductsCount = $order->products_orders()->where('deliver_to_client', false)->orWhere('deliver_to_user', false)->count();
                 if ($undeliveredDevicesCount === 0 && $undeliveredProductsCount === 0) {
                     $order->update(['done' => true]);
                 }
@@ -45,6 +45,7 @@ class Devices_orders extends Model
                 $undeliveredDevicesCount = $order->devices_orders()->where('deliver_to_client', false)->orWhere('deliver_to_user', false)->count();
                 $undeliveredProductsCount = $order->products_orders()->where('deliver_to_client', false)->orWhere('deliver_to_user', false)->count();
                 if ($undeliveredDevicesCount === 0 && $undeliveredProductsCount === 0) {
+                    dd($undeliveredProductsCount);
                     $order->update(['done' => true]);
                 }
                 $undeliveredDevicesCount = $order->devices_orders()->where('deliver_to_user', false)->count();
