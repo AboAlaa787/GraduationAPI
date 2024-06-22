@@ -48,5 +48,42 @@ class Permission_RuleSeeder extends Seeder
             }
             $rule->permissions()->attach($permission->id);
         }
+
+        $rule = Rule::where('name', 'فني')->firstOrFail();
+        $permissions = [
+            'تعديل بيانات جهاز',
+            'الاسنعلام عن جهاز',
+            'الاسنعلام عن الاجهزة',
+            'الاسنعلام عن الاجهزة التي تم تسليمها',
+            'الاسنعلام عن جهاز تم تسليمه',
+        ];
+        foreach ($permissions as $permissionName) {
+
+            $permission = Permission::where('name', $permissionName)->firstOrFail();
+            if ($rule->permissions->contains($permission->id)) {
+                continue;
+            }
+            $rule->permissions()->attach($permission->id);
+        }
+
+        $rule = Rule::where('name', 'عامل التوصيل')->firstOrFail();
+        $permissions = [
+            'الاسنعلام عن الطلبات',
+            'الاسنعلام عن طلب',
+            'استعلام عن طلبات الاجهزة',
+            'استعلام عن طلب جهاز',
+            'استعلام عن طلبات المنتجات',
+            'استعلام عن طلب منتج',
+            'تعديل بيانات طلب لجهاز',
+            'تعديل بيانات طلب لمنتج',
+        ];
+        foreach ($permissions as $permissionName) {
+
+            $permission = Permission::where('name', $permissionName)->firstOrFail();
+            if ($rule->permissions->contains($permission->id)) {
+                continue;
+            }
+            $rule->permissions()->attach($permission->id);
+        }
     }
 }

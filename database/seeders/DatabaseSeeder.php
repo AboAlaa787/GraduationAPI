@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             // DeviceSeeder::class,
             // ServiceSeeder::class,
             // CompletedDeviceSeeder::class,
+            CenterSeeder::class
         ]);
     }
 }
