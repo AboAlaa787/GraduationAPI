@@ -45,7 +45,6 @@ class Devices_orders extends Model
                 $undeliveredDevicesCount = $order->devices_orders()->where('deliver_to_client', false)->orWhere('deliver_to_user', false)->count();
                 $undeliveredProductsCount = $order->products_orders()->where('deliver_to_client', false)->orWhere('deliver_to_user', false)->count();
                 if ($undeliveredDevicesCount === 0 && $undeliveredProductsCount === 0) {
-                    dd($undeliveredProductsCount);
                     $order->update(['done' => true]);
                 }
                 $undeliveredDevicesCount = $order->devices_orders()->where('deliver_to_user', false)->count();
