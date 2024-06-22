@@ -59,7 +59,7 @@ class Device extends Model
     {
         parent::boot();
         static::creating(static function ($device) {
-            $device->date_receipt_from_customer=now();
+            $device->date_receipt_from_customer = now();
             //Automatic code generation
             do {
                 $code = Str::random(6);
@@ -72,13 +72,15 @@ class Device extends Model
             $device->client_priority = $client_priority;
 
             //Automatic selection of maintenance technician
-            $usersWithDevicesCount = User::withCount('devices')->where('at_work', true)->whereHas('rule', function ($query) {
-                $query->where('name', RuleNames::Technician);
-            })->get();
-            if ($usersWithDevicesCount->count() > 0) {
-                $minDevicesCount = $usersWithDevicesCount->min('devices_count');
-                $userWithMinDevicesCount = $usersWithDevicesCount->where('devices_count', $minDevicesCount)->shuffle()->first();
-                $device->user_id = $userWithMinDevicesCount->id;
+            if ($device->repaired_in_center) {
+                $usersWithDevicesCount = User::withCount('devices')->where('at_work', true)->whereHas('rule', function ($query) {
+                    $query->where('name', RuleNames::Technician);
+                })->get();
+                if ($usersWithDevicesCount->count() > 0) {
+                    $minDevicesCount = $usersWithDevicesCount->min('devices_count');
+                    $userWithMinDevicesCount = $usersWithDevicesCount->where('devices_count', $minDevicesCount)->shuffle()->first();
+                    $device->user_id = $userWithMinDevicesCount->id;
+                }
             }
         });
         static::deleting(static function ($device) {
