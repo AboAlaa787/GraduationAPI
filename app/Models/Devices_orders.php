@@ -42,12 +42,11 @@ class Devices_orders extends Model
                     $device->date_receipt = now();
                     $device->save();
                 }
-                $undeliveredDevicesCount = $order->devices_orders()->where('deliver_to_client', false)->where('deliver_to_user', false)->count();
-                $undeliveredProductsCount = $order->products_orders()->where('deliver_to_client', false)->where('deliver_to_user', false)->count();
+                $undeliveredDevicesCount = $order->devices_orders()->where('deliver_to_client', false)->orWhere('deliver_to_user', false)->count();
+                $undeliveredProductsCount = $order->products_orders()->where('deliver_to_client', false)->orWhere('deliver_to_user', false)->count();
                 if ($undeliveredDevicesCount === 0 && $undeliveredProductsCount === 0) {
                     $order->update(['done' => true]);
                 }
-                
                 $undeliveredDevicesCount = $order->devices_orders()->where('deliver_to_user', false)->count();
                 $undeliveredProductsCount = $order->products_orders()->where('deliver_to_user', false)->count();
                 if ($undeliveredDevicesCount === 0 && $undeliveredProductsCount === 0) {
