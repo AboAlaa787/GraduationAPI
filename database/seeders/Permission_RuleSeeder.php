@@ -39,6 +39,10 @@ class Permission_RuleSeeder extends Seeder
             'اضافة زبون',
             'الاسنعلام عن الزبائن',
             'الاسنعلام عن زبون',
+            'الاسنعلام عن المنتجات',
+            'الاسنعلام عن منتج',
+            'الاسنعلام عن الخدمات',
+            'الاسنعلام عن خدمة',
         ];
         foreach ($permissions as $permissionName) {
 
