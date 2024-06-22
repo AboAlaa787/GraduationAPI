@@ -66,7 +66,7 @@ class Permission_RuleSeeder extends Seeder
             $rule->permissions()->attach($permission->id);
         }
 
-        $rule = Rule::where('name', 'عامل التوصيل')->firstOrFail();
+        $rule = Rule::where('name', 'عامل توصيل')->firstOrFail();
         $permissions = [
             'الاسنعلام عن الطلبات',
             'الاسنعلام عن طلب',
