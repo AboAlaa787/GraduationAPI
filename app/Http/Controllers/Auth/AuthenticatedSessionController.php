@@ -84,12 +84,12 @@ class AuthenticatedSessionController extends Controller
     {
         $user = $request->user();
         if (!Hash::check($request->input('current_password'), $user->password)) {
-            return $this->apiResponse(['Error Current password does not match'],422,'Failed');
+            return $this->apiResponse(['Error Current password does not match'], 422, 'كلمة المرور الحالية غير صحيحة');
         }
 
         $user->password = Hash::make($request->input('new_password'));
         $user->save();
 
-        return $this->apiResponse([],200,'Password changed successfully');
+        return $this->apiResponse([], 200, 'Password changed successfully');
     }
 }
