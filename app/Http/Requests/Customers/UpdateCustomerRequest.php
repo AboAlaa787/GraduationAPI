@@ -22,8 +22,8 @@ class UpdateCustomerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'string|filled|alpha',
-            'last_name' => 'string|filled|alpha',
+            'name' => 'string|filled',
+            'last_name' => 'string|filled',
             'national_id' => 'nullable|string|size:11',
             'client_id' => 'integer|exists:clients,id',
             'phone' => 'filled|string|size:10|unique:customers,phone,NULL,id,client_id,' . $this->input('client_id'),
