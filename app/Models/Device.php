@@ -142,6 +142,9 @@ class Device extends Model
         });
         static::created(function ($device) {
             event(new AddDevice($device->client_id));
+            if($device->customer!=null){
+                $device->customer->increment('devices_count');
+            }
         });
 
         static::updating(function ($device) {
