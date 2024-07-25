@@ -28,13 +28,21 @@ class AddCompletedDevice
             if ($device->status === DeviceStatus::Ready->value) {
                 $customer->notify(new CustomerNotification($device));
             }
-            if (!CompletedDevice::where('code', $device->code)->exists()) {
+            $completedDevice = CompletedDevice::where('code', $device->code)->first();
+            if (!$completedDevice) {
                 $completedDevice = $device->toArray();
                 $completedDevice['client_name'] = $device->client?->name;
                 $completedDevice['user_name'] = $device->user?->name ?? 'فني صيانة';
                 $completedDevice = CompletedDevice::create($completedDevice);
+            } else {
+                $completedDevice->date_delivery_customer = now();
+                $completedDevice->cost_to_customer = $device->cost_to_customer;
+                if ($device->status == DeviceStatus::Ready->value) {
+                    $completedDevice->customer_date_warranty = $device->customer_date_warranty;
+                }
+                $completedDevice->save();
             }
-           $device->delete();
+            $device->delete();
         }
     }
 }

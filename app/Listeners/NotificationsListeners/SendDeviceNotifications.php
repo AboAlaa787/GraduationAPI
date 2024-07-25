@@ -46,15 +46,5 @@ class SendDeviceNotifications
         if ($device->status == DeviceStatus::WaitingResponse->value) {
             $client->pushNotification(new DeviceIsCheckedNotification($device));
         }
-
-        if ($device->status == DeviceStatus::Ready->value && $client && $user&& $device->repaired_in_center) {
-            $completedDevice = $device->toArray();
-            $completedDevice['client_name'] = $client->name;
-            $completedDevice['user_name'] = $user->name;
-            $completedDevice = CompletedDevice::create($completedDevice);
-            if ($completedDevice) {
-                $client->decrement('devices_count');
-            }
-        }
     }
 }
