@@ -44,6 +44,7 @@ class Device extends Model
         'at_work',
         'client_date_warranty',
         'customer_date_warranty',
+        'customer_complaint'
     ];
     protected $relations = ['client', 'user', 'customer', 'orders',];
 
