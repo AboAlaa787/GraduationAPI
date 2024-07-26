@@ -33,6 +33,7 @@ class AddCompletedDevice
                 $completedDevice = $device->toArray();
                 $completedDevice['client_name'] = $device->client?->name;
                 $completedDevice['user_name'] = $device->user?->name ?? 'فني صيانة';
+                $completedDevice['date_delivery_customer'] = now();
                 $completedDevice = CompletedDevice::create($completedDevice);
             } else {
                 $completedDevice->date_delivery_customer = now();
