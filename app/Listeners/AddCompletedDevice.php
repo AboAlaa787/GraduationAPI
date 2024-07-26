@@ -37,6 +37,7 @@ class AddCompletedDevice
             } else {
                 $completedDevice->date_delivery_customer = now();
                 $completedDevice->cost_to_customer = $device->cost_to_customer;
+                $completedDevice->deliver_to_customer = true;
                 if ($device->status == DeviceStatus::Ready->value) {
                     $completedDevice->customer_date_warranty = $device->customer_date_warranty;
                 }
