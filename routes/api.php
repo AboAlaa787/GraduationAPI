@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\RuleNames;
+use App\Http\Controllers\AppVersionController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CenterController;
 use App\Http\Controllers\ClientController;
@@ -116,5 +117,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('firebase/push',[FirebaseNotificationsController::class,'pushNotification']);
 
     Route::get('dashboard_info',[DashboardController::class,'index']);
+
+    Route::get('version',[AppVersionController::class,'getLatestVersion']);
 });
 
