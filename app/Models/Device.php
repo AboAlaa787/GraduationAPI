@@ -64,7 +64,7 @@ class Device extends Model
             //Automatic code generation
             do {
                 $code = Str::random(6);
-            } while (self::where('code', $code)->exists());
+            } while (self::where('code', $code)->exists() || CompletedDevice::where('code', $code)->exists());
             $device->code = $code;
 
             //Automatic determination of client priority
