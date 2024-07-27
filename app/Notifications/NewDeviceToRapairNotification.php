@@ -49,7 +49,7 @@ class NewDeviceToRapairNotification extends Notification
     public function toArray(object $notifiable): array
     {
         $message = [
-            'تم اضافة جهاز جديد بحاجة صيانة الرجاء مراجعةالاجهزة.',
+            'تم اضافة جهاز جديد بحاجة صيانة الرجاء مراجعة الاجهزة.',
         ];
         return [
             'title' => 'اشعار جهاز جديد',
