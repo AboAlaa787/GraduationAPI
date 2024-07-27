@@ -7,6 +7,8 @@ use App\Events\AddDevice;
 use App\Events\ClientApproval;
 use App\Events\DeleteDevice;
 use App\Events\NotificationEvents\DeviceStateNotifications;
+use App\Notifications\NewDeviceToRapairNotification;
+use App\Traits\FirebaseNotifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -62,9 +64,7 @@ class Device extends Model
         static::creating(static function ($device) {
             $device->date_receipt_from_customer = now();
             //Automatic code generation
-            do {
-                $code = Str::random(6);
-            } while (self::where('code', $code)->exists() || CompletedDevice::where('code', $code)->exists());
+            $code =static::generateUniqueCode();
             $device->code = $code;
 
             //Automatic determination of client priority
@@ -74,13 +74,9 @@ class Device extends Model
 
             //Automatic selection of maintenance technician
             if ($device->repaired_in_center) {
-                $usersWithDevicesCount = User::withCount('devices')->where('at_work', true)->whereHas('rule', function ($query) {
-                    $query->where('name', RuleNames::Technician);
-                })->get();
-                if ($usersWithDevicesCount->count() > 0) {
-                    $minDevicesCount = $usersWithDevicesCount->min('devices_count');
-                    $userWithMinDevicesCount = $usersWithDevicesCount->where('devices_count', $minDevicesCount)->shuffle()->first();
-                    $device->user_id = $userWithMinDevicesCount->id;
+                $userId=static::getTechnicianId();
+                if($userId!=null){
+                    $device->user_id=$userId;
                 }
             }
         });
@@ -143,8 +139,11 @@ class Device extends Model
         });
         static::created(function ($device) {
             event(new AddDevice($device->client_id));
-            if($device->customer!=null){
+            if ($device->customer != null) {
                 $device->customer->increment('devices_count');
+            }
+            if ($device->repaired_in_center) {
+                static::pushNotificationToTechnician($device);
             }
         });
 
@@ -184,5 +183,29 @@ class Device extends Model
     public function getSearchAbleColumns(): array
     {
         return $this->searchAbleColumns;
+    }
+
+    private static function generateUniqueCode(): string
+    {
+        $code = '';
+        do {
+            $code = Str::random(6);
+        } while (self::where('code', $code)->exists() || CompletedDevice::where('code', $code)->exists());
+        return $code;
+    }
+    private static function getTechnicianId():int|null
+    {
+        $usersWithDevicesCount = User::withCount('devices')->where('at_work', true)->whereHas('rule', function ($query) {
+            $query->where('name', RuleNames::Technician);
+        })->get();
+        if ($usersWithDevicesCount->count() > 0) {
+            $minDevicesCount = $usersWithDevicesCount->min('devices_count');
+            $userWithMinDevicesCount = $usersWithDevicesCount->where('devices_count', $minDevicesCount)->shuffle()->first();
+             return $userWithMinDevicesCount->id;
+        }
+        return null;
+    }
+    private static function pushNotificationToTechnician(Device $device){
+        $device->user->pushNotification(new NewDeviceToRapairNotification($device));
     }
 }
