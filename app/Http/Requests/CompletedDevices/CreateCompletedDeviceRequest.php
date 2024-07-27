@@ -44,6 +44,7 @@ class CreateCompletedDeviceRequest extends FormRequest
             'deliver_to_customer'=>'boolean',
             'customer_id' => 'integer|nullable|exists:customers,id',
             'repaired_in_center' => 'required|boolean',
+            'customer_complaint'=>'required|string',
         ];
     }
 }

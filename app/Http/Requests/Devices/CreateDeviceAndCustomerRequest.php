@@ -46,6 +46,7 @@ class CreateDeviceAndCustomerRequest extends FormRequest
             'phone' => 'required|string|size:10',
             'email' => 'nullable|email',
             'devices_count' => 'integer|min:0',
+            'customer_complaint'=>'required|string',
         ];
     }
 }
