@@ -54,7 +54,8 @@ class DeviceIsCheckedNotification extends Notification
             'التاريخ المتوقع للتسليم هو '.$this->device->Expected_date_of_delivery,
             'وتم اكتشاف العطل '.$this->device->problem,
             'وتكلفة تصليح هذا العطل '.$this->device->cost_to_client,
-            'هل تريد ان نبدأ العمل؟',
+            'يرجى الرد بالرفض أو الموافقة.',
+            // 'هل تريد ان نبدأ العمل؟',
         ];
         return [
             'title' => 'اشعار بعطل جهاز',

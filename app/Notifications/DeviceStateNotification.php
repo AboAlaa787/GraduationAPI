@@ -63,7 +63,7 @@ class DeviceStateNotification extends Notification
             'والذي كوده هو ' . $code,
             'في حالة ' . $status,
             'وأصبح قابل للاستلام من قبل حضرتكم. ',
-            $canOrder ? 'هل تريد أن نوصله إليك؟' : ''
+            // $canOrder ? 'هل تريد أن نوصله إليك؟' : ''
         ];
         return [
             'title' => 'اشعار بحالة جهاز',

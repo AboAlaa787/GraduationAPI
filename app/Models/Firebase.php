@@ -41,28 +41,44 @@ class Firebase
 
         $data = [
             'registration_ids' => $devicesTokens,
+            'notification' => [
+                'title' => $notificationTitle,
+                'body' => $notificationBody,
+                'sound' => 'default',
+            ],
             "data" => [
                 "actions" => $notificationActions,
-                'notification' => [
-                    'title' => $notificationTitle,
-                    'body' => $notificationBody,
-                    'sound' => 'default',
-                ],
                 "notifiable_id" => $notifiableId,
             ] + ($notificationData['data'] ?? [])
         ];
+
+        //new version
+
+        // $data = [
+        //     "message" => [
+        //         "token" => $devicesTokens[0],
+        //         'data' => [
+        //             'notification' => json_encode([
+        //                 'title' => $notificationTitle,
+        //                 'body' => $notificationBody,
+        //             ]),
+        //             "actions" => json_encode($notificationActions),
+        //             "notifiable_id" =>json_encode( $notifiableId),
+        //         ]
+        //     ]
+        // ];
         $dataString = json_encode($data);
         $headers = [
-
             'Authorization: key=' . $SERVER_API_KEY,
-
             'Content-Type: application/json',
-
         ];
 
         $ch = curl_init();
 
         curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+
+        //new version
+        // curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/v1/projects/firstproject-787/messages:send');
 
         curl_setopt($ch, CURLOPT_POST, true);
 
