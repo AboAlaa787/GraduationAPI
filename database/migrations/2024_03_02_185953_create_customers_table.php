@@ -19,7 +19,6 @@ return new class extends Migration
             $table->foreignId('client_id')->constrained()->cascadeOnDelete();
             $table->unique(['client_id','phone']);
             $table->string('phone',10);
-            $table->string('email')->nullable();
             $table->integer('devices_count')->default(0);
             $table->timestamps();
         });

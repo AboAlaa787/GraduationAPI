@@ -17,7 +17,6 @@ class Customer extends Model
         'national_id',
         'client_id',
         'phone',
-        'email',
         'devices_count',
     ];
     protected $relations=[

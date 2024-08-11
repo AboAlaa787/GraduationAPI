@@ -27,7 +27,6 @@ class UpdateCustomerRequest extends FormRequest
             'national_id' => 'nullable|string|size:11',
             'client_id' => 'integer|exists:clients,id',
             'phone' => 'filled|string|size:10|unique:customers,phone,NULL,id,client_id,' . $this->input('client_id'),
-            'email' => 'email|filled',
             'devices_count' => 'integer|min:0',
         ];
     }

@@ -21,7 +21,6 @@ class CustomerFactory extends Factory
             'last_name' => fake()->lastName,
             'national_id' => fake()->unique()->numerify('###########'),
             'phone' => fake()->numerify('##########'),
-            'email' => fake()->unique()->safeEmail,
             'devices_count' => fake()->numberBetween(1, 10),
             'client_id' => fake()->numberBetween(1,50),
         ];
