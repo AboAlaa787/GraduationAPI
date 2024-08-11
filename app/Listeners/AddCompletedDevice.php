@@ -24,11 +24,7 @@ class AddCompletedDevice
     {
         $device = $event->device;
         if ($device->deliver_to_customer) {
-            $customer = $device->customer;
-            if ($device->status === DeviceStatus::Ready->value) {
-                $customer->notify(new CustomerNotification($device));
-            }
-            $completedDevice = CompletedDevice::where('code', $device->code)->first();
+git            $completedDevice = CompletedDevice::where('code', $device->code)->first();
             if (!$completedDevice) {
                 $completedDevice = $device->toArray();
                 $completedDevice['client_name'] = $device->client?->name;
