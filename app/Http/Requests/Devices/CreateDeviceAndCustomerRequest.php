@@ -37,7 +37,7 @@ class CreateDeviceAndCustomerRequest extends FormRequest
             'date_receipt_from_customer' => 'nullable|date',
             'deliver_to_client' => 'nullable|boolean',
             'deliver_to_customer' => 'nullable|boolean',
-            'imei' => 'nullable|string',
+            'imei' => 'nullable|string|size:15',
             'Expected_date_of_delivery' => 'nullable|date',
             'repaired_in_center' => 'required|boolean',
             'name' => 'required|string|max:20|min:2',

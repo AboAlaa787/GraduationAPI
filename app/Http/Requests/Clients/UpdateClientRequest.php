@@ -24,14 +24,13 @@ class UpdateClientRequest extends FormRequest
     {
         return [
             'center_name' => 'string|filled',
-            'phone' => 'nullable|string|filled',
-            'devices_count' => 'nullable|integer|filled',
+            'phone' => 'nullable|string',
+            'devices_count' => 'nullable|integer',
             'email' => ['string','filled',new UniqueEmailAcrossTables],
-            'name' => 'string|filled|alpha',
-            'last_name' => 'string|filled|alpha',
+            'name' => 'string',
+            'last_name' => 'string',
             'rule_id' => 'integer|nullable|exists:rules,id|filled',
-            'email_verified_at' => 'nullable|date|filled',
-            'password' => 'string|filled',
+            'email_verified_at' => 'nullable|date',
             'address' => 'string|filled',
             'national_id' => 'filled|string|size:11|unique:clients,national_id',
         ];
