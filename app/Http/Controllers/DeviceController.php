@@ -136,7 +136,13 @@ class DeviceController extends Controller
         try {
             $this->authorize('create', Device::class);
             $this->authorize('create', Customer::class);
-            $customer = Customer::firstOrCreate(['phone' => $request->phone], $request->all());
+            $client=$request->user();
+            $customer = Customer::where('phone', $request->phone)
+                ->where('client_id', $client->id)
+                ->first();
+            if (!$customer) {
+                $customer = Customer::create($request->all());
+            }
             $request['customer_id'] = $customer->id;
             $device = Device::create($request->all());
             return $this->apiResponse([
