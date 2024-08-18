@@ -360,9 +360,12 @@ trait CRUDTrait
             $this->authorizeForModel($model->find($id), 'update');
             $columns = $request->keys();
             foreach ($columns as $column) {
-                if ($column !== 'password'&&$column !== 'client_priority' && $this->validateColumn($model->getTable(), $column)) {
+                if ($column !== 'password' && $column !== 'client_priority' && $column !== 'status' && $this->validateColumn($model->getTable(), $column)) {
                     $object->$column = $request[$column];
                 }
+            }
+            if (in_array('status', $columns)) {
+                $object->status = $request['status'];
             }
             $object->save();
             return $this->apiResponse($object, 200, 'Update successful');
