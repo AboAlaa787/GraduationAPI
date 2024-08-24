@@ -47,6 +47,11 @@ class Firebase
                 'sound' => 'default',
             ],
             "data" => [
+                'notification' => [
+                'title' => $notificationTitle,
+                'body' => $notificationBody,
+                'sound' => 'default',
+                ],
                 "actions" => $notificationActions,
                 "notifiable_id" => $notifiableId,
             ] + ($notificationData['data'] ?? [])
