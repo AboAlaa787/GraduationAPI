@@ -23,7 +23,7 @@ class NotificationResource extends ResourceCollection
             'id' => $notification['id'],
             'title' => $notificationData['title'] ?? 'No title',
             'body' => $notificationData['body'] ?? 'No body',
-            'notifiable_name' => $notifiable->name ?? 'Unknown',
+            'notifiable_name' => "$notifiable->name $notifiable->last_name" ?? 'Unknown',
             'notifiable_type' => end($notifiableType),
             'read_at' => $notification['read_at'],
             'created_at' => $notification['created_at'],
