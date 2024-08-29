@@ -26,8 +26,8 @@ class UpdateCenterRequest extends FormRequest
     {
         return [
             'status' => [ Rule::in(CenterStatus::values())],
-            'start_work' => 'nullable|date_format:H:i:s',
-            'end_work' => 'nullable|date_format:H:i:s|after:start_work',
+            'start_work' => 'filled|date_format:h:i A',
+            'end_work' => 'filled|date_format:h:i A|after:start_work',
         ];
     }
 }
