@@ -35,7 +35,8 @@ class CompletedDevice extends Model
         'client_date_warranty',
         'customer_date_warranty',
         'repaired_in_center',
-        'customer_complaint'
+        'customer_complaint',
+        'payment_status',
     ];
     protected $relations = [
         'client',

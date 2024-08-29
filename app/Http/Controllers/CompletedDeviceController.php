@@ -72,4 +72,5 @@ class CompletedDeviceController extends Controller
     {
         return $this->destroy_data($id, new CompletedDevice());
     }
+
 }

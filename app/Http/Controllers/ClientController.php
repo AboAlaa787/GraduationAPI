@@ -8,7 +8,6 @@ use App\Models\Client;
 use App\Notifications\Auth\EmailVerificationNotification;
 use App\Traits\CRUDTrait;
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -19,7 +18,6 @@ use Illuminate\Support\Facades\Hash;
 class ClientController extends Controller
 {
     use CRUDTrait;
-
     /**
      * @param Request $request
      * @queryParam with string To query related data. No-example
@@ -57,9 +55,9 @@ class ClientController extends Controller
             // $this->authorize('create', new Client());
             $request['password'] = Hash::make($request['password']);
             $response['client'] = Client::create($request->all());
-            $expiration=config('sanctum.expiration');
-            $expires_at=now()->addMinutes($expiration);
-            $response['token'] = $response['client']->createToken('register',['*'],$expires_at)->plainTextToken;
+            $expiration = config('sanctum.expiration');
+            $expires_at = now()->addMinutes($expiration);
+            $response['token'] = $response['client']->createToken('register', ['*'], $expires_at)->plainTextToken;
             $response['client']->notify(new EmailVerificationNotification());
             return $this->apiResponse($response, 200, 'Successful and verification message has been sent');
         } catch (AuthorizationException $e) {

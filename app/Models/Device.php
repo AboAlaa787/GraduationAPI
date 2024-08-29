@@ -46,7 +46,7 @@ class Device extends Model
         'at_work',
         'client_date_warranty',
         'customer_date_warranty',
-        'customer_complaint'
+        'customer_complaint',
     ];
     protected $relations = ['client', 'user', 'customer', 'orders',];
 
@@ -64,7 +64,7 @@ class Device extends Model
         static::creating(static function ($device) {
             $device->date_receipt_from_customer = now();
             //Automatic code generation
-            $code =static::generateUniqueCode();
+            $code = static::generateUniqueCode();
             $device->code = $code;
 
             //Automatic determination of client priority
@@ -76,9 +76,9 @@ class Device extends Model
 
             //Automatic selection of maintenance technician
             if ($device->repaired_in_center) {
-                $userId=static::getTechnicianId();
-                if($userId!=null){
-                    $device->user_id=$userId;
+                $userId = static::getTechnicianId();
+                if ($userId != null) {
+                    $device->user_id = $userId;
                 }
             }
         });
@@ -106,31 +106,31 @@ class Device extends Model
                     $completedDevice['client_name'] = $device->client?->name;
                     $completedDevice['user_name'] = $device->user?->name ?? 'فني صيانة';
                     $completedDevice = CompletedDevice::create($completedDevice);
-                    if ($completedDevice) {
+                    if ($completedDevice && $device->repaired_in_center == true) {
                         $device->client->decrement('devices_count');
                     }
                 }
-                $dateReceipt = Carbon::parse($device->date_receipt);
-                $difference = now()->diff($dateReceipt);
-                $diffString = ($difference->days > 0 ? $difference->days . ' days and ' : '') . $difference->h . ' hours';
-                $ser = Service::where('name', $device->problem)->where('device_model', $device->model)->first();
-                if ($ser === null) {
-                    if ($device->problem != null && $device->cost_to_client != null) {
-                        $ser = Service::create([
-                            'name' => $device->problem,
-                            'price' => $device->cost_to_client,
-                            'time_required' => $diffString,
-                            'device_model' => $device->model
-                        ]);
-                    }
-                } else {
-                    if ($device->cost_to_client != null) {
-                        $ser->update([
-                            'price' => $device->cost_to_client,
-                            'time_required' => $diffString,
-                        ]);
-                    }
-                }
+                // $dateReceipt = Carbon::parse($device->date_receipt);
+                // $difference = now()->diff($dateReceipt);
+                // $diffString = ($difference->days > 0 ? $difference->days . ' days and ' : '') . $difference->h . ' hours';
+                // $ser = Service::where('name', $device->problem)->where('device_model', $device->model)->first();
+                // if ($ser === null) {
+                //     if ($device->problem != null && $device->cost_to_client != null) {
+                //         $ser = Service::create([
+                //             'name' => $device->problem,
+                //             'price' => $device->cost_to_client,
+                //             'time_required' => $diffString,
+                //             'device_model' => $device->model
+                //         ]);
+                //     }
+                // } else {
+                //     if ($device->cost_to_client != null) {
+                //         $ser->update([
+                //             'price' => $device->cost_to_client,
+                //             'time_required' => $diffString,
+                //         ]);
+                //     }
+                // }
             }
             if ($device->isDirty('deliver_to_customer')) {
                 event(new DeleteDevice($device));
@@ -140,7 +140,9 @@ class Device extends Model
             }
         });
         static::created(function ($device) {
-            event(new AddDevice($device->client_id));
+            if ($device->repaired_in_center == true) {
+                event(new AddDevice($device->client_id));
+            }
             if ($device->customer != null) {
                 $device->customer->increment('devices_count');
             }
@@ -195,7 +197,7 @@ class Device extends Model
         } while (self::where('code', $code)->exists() || CompletedDevice::where('code', $code)->exists());
         return $code;
     }
-    private static function getTechnicianId():int|null
+    private static function getTechnicianId(): int|null
     {
         $usersWithDevicesCount = User::withCount('devices')->where('at_work', true)->whereHas('rule', function ($query) {
             $query->where('name', RuleNames::Technician);
@@ -203,11 +205,12 @@ class Device extends Model
         if ($usersWithDevicesCount->count() > 0) {
             $minDevicesCount = $usersWithDevicesCount->min('devices_count');
             $userWithMinDevicesCount = $usersWithDevicesCount->where('devices_count', $minDevicesCount)->shuffle()->first();
-             return $userWithMinDevicesCount->id;
+            return $userWithMinDevicesCount->id;
         }
         return null;
     }
-    private static function pushNotificationToTechnician(Device $device){
+    private static function pushNotificationToTechnician(Device $device)
+    {
         $device->user->pushNotification(new NewDeviceToRapairNotification($device));
     }
 }

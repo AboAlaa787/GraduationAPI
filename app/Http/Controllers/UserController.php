@@ -11,7 +11,6 @@ use App\Notifications\Auth\EmailVerificationNotification;
 use App\Traits\CRUDTrait;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -98,6 +97,7 @@ class UserController extends Controller
     {
         return $this->destroy_data($id, new User());
     }
+
     function areThereDelivery(): JsonResponse
     {
         try {

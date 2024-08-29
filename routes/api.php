@@ -37,13 +37,14 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
 Route::get("/login", function () {
     return response()->json('unauthenticated', 401);
 })->name("login");
 
 Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 
-Route::post('/clients', [ClientController::class,'store']);
+Route::post('/clients', [ClientController::class, 'store']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
 
@@ -56,7 +57,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::resource('/users', UserController::class);
 
-    Route::get('are_there_deliveries',[UserController::class,'areThereDelivery']);
+    Route::get('are_there_deliveries', [UserController::class, 'areThereDelivery']);
 
     Route::post('refresh_token', [AuthenticatedSessionController::class, 'refresh_token']);
 
@@ -75,11 +76,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::resource('/orders', OrderController::class);
 
     Route::resource('/devices', DeviceController::class);
-    Route::get('devices_grouped',[DeviceController::class,'getClientsFromGroupedDevices']);
+    Route::get('devices_grouped', [DeviceController::class, 'getClientsFromGroupedDevices']);
 
     Route::resource('/customers', CustomerController::class);
 
     Route::resource('/completed_devices', CompletedDeviceController::class);
+
 
     Route::resource('/permission_users', PermissionUserController::class);
     Route::delete('/permission_users/{userId}/{permissionId}', [PermissionUserController::class, 'delete']);
@@ -110,14 +112,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::delete('/delete/{id}', [NotificationController::class, 'deleteNotification']);
     });
 
-    Route::post('/devices/with_customer',[DeviceController::class,'storeDeviceAndCustomer']);
+    Route::post('/devices/with_customer', [DeviceController::class, 'storeDeviceAndCustomer']);
 
-    Route::post('firebase/store_token',[FirebaseNotificationsController::class,'storeToken']);
+    Route::post('firebase/store_token', [FirebaseNotificationsController::class, 'storeToken']);
 
-    Route::post('firebase/push',[FirebaseNotificationsController::class,'pushNotification']);
+    Route::post('firebase/push', [FirebaseNotificationsController::class, 'pushNotification']);
 
-    Route::get('dashboard_info',[DashboardController::class,'index']);
+    Route::get('dashboard_info', [DashboardController::class, 'index']);
 
-    Route::get('version',[AppVersionController::class,'getLatestVersion']);
+    Route::get('version', [AppVersionController::class, 'getLatestVersion']);
 });
-

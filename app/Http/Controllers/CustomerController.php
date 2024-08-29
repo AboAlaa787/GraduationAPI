@@ -59,7 +59,7 @@ class CustomerController extends Controller
      * @urlParam  id  integer required The ID of the Customer.
      * @return JsonResponse
      */
-    public function update(UpdateCustomerRequest $request,int $id): JsonResponse
+    public function update(UpdateCustomerRequest $request, int $id): JsonResponse
     {
         return $this->update_data($request, $id, new Customer());
     }

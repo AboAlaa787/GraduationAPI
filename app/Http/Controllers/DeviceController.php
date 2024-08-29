@@ -104,7 +104,6 @@ class DeviceController extends Controller
                 $device->client_priority = $newPriority;
                 $device->save();
             }
-
         } catch (ModelNotFoundException $exception) {
             $model = explode('\\', $exception->getModel());
             $model = end($model);
@@ -136,7 +135,7 @@ class DeviceController extends Controller
         try {
             $this->authorize('create', Device::class);
             $this->authorize('create', Customer::class);
-            $client=$request->user();
+            $client = $request->user();
             $customer = Customer::where('phone', $request->phone)
                 ->where('client_id', $client->id)
                 ->first();

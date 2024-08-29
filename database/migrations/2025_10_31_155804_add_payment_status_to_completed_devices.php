@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('customers', function (Blueprint $table) {
-            $table->dropColumn('email');
+        Schema::table('completed_devices', function (Blueprint $table) {
+            $table->boolean('payment_status');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('customers', function (Blueprint $table) {
-            //
+        Schema::table('completed_devices', function (Blueprint $table) {
+            $table->dropColumn('payment_status');
         });
     }
 };
