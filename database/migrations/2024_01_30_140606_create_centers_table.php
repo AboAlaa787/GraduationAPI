@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->enum('status',CenterStatus::values())->default(CenterStatus::Active->value);
             $table->string('address');
-            $table->time('start_work')->format('H:i')->nullable();
-            $table->time('end_work')->format('H:i')->nullable();
+            $table->string('start_work',10)->nullable();
+            $table->string('end_work',10)->nullable();
             $table->string('logo')->nullable();
             $table->timestamps();
         });
