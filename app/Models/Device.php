@@ -68,9 +68,11 @@ class Device extends Model
             $device->code = $code;
 
             //Automatic determination of client priority
-            $client_priority = self::where('client_id', $device->client_id)->max('client_priority');
-            $client_priority++;
-            $device->client_priority = $client_priority;
+            if($device->repaired_in_center){
+                $client_priority = self::where('client_id', $device->client_id)->max('client_priority');
+                $client_priority++;
+                $device->client_priority = $client_priority;
+            }
 
             //Automatic selection of maintenance technician
             if ($device->repaired_in_center) {

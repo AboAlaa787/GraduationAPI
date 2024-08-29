@@ -29,8 +29,8 @@ class CreateCenterRequest extends FormRequest
             'name' => 'required|unique:centers,name|alpha',
             'status' => ['required', Rule::in(CenterStatus::values())],
             'address' => 'required',
-            'start_work' => 'nullable|date_format:H:i',
-            'end_work' => 'nullable|date_format:H:i|after:start_work',
+            'start_work' => 'nullable|date_format:h:i A',
+            'end_work' => 'nullable|date_format:h:i A|after:start_work',
         ];
     }
 }
