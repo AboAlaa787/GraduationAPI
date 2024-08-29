@@ -40,11 +40,12 @@ class CreateCompletedDeviceRequest extends FormRequest
             'date_receipt_from_customer' => 'required|date',
             'date_delivery' => 'date',
             'date_warranty' => 'date',
-            'deliver_to_client'=>'boolean',
-            'deliver_to_customer'=>'boolean',
+            'deliver_to_client' => 'boolean',
+            'deliver_to_customer' => 'boolean',
             'customer_id' => 'integer|nullable|exists:customers,id',
             'repaired_in_center' => 'required|boolean',
-            'customer_complaint'=>'required|string',
+            'customer_complaint' => 'required|string',
+            'payment_status' => 'required|boolean',
         ];
     }
 }

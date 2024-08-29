@@ -16,7 +16,7 @@ use function PHPUnit\Framework\isEmpty;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable,FirebaseNotifiable,PermissionCheckTrait;
+    use HasApiTokens, HasFactory, Notifiable, FirebaseNotifiable, PermissionCheckTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -72,13 +72,13 @@ class User extends Authenticatable
     {
         parent::boot();
         static::deleting(static function ($user) {
-            $userRule=$user->rule->name;
+            $userRule = $user->rule->name;
             //If technician has been deleted put his devices to another technician
-            if (RuleNames::Technician->value==$userRule) {
+            if (RuleNames::Technician->value == $userRule) {
                 $userDevices = $user->devices;
                 if ($userDevices->count() > 0) {
                     foreach ($userDevices as $userDevice) {
-                        $usersWithDevicesCount = self::withCount('devices')->where('at_work', true)->where('id','!=',$user->id)->whereHas('rule', function ($query) {
+                        $usersWithDevicesCount = self::withCount('devices')->where('at_work', true)->where('id', '!=', $user->id)->whereHas('rule', function ($query) {
                             $query->where('name', RuleNames::Technician);
                         })->get();
                         if (!isEmpty($usersWithDevicesCount)) {
@@ -89,12 +89,12 @@ class User extends Authenticatable
                         }
                     }
                 }
-            }elseif (RuleNames::Delivery->value==$userRule) {
+            } elseif (RuleNames::Delivery->value == $userRule) {
                 //If delivery has been deleted put his orders to another technician
-                $userOrders = $user->orders()->where('deliver_to_user',false)->get();
+                $userOrders = $user->orders()->where('deliver_to_user', false)->get();
                 if ($userOrders->count() > 0) {
                     foreach ($userOrders as $userOrder) {
-                        $newDelivery=self::getDelivery();
+                        $newDelivery = self::getDelivery();
                         if (!is_null($newDelivery)) {
                             $userOrder->user_id = $newDelivery->id;
                             $userOrder->save();

@@ -22,7 +22,6 @@ class Center extends Model
         'users',
         'services',
         'clients',
-        'clients',
         'orders',
         'devices',
         'completed_devices'
@@ -57,5 +56,4 @@ class Center extends Model
     {
         return $this->hasMany(CompletedDevice::class);
     }
-
 }

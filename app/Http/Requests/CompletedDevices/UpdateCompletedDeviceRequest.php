@@ -40,10 +40,11 @@ class UpdateCompletedDeviceRequest extends FormRequest
             'date_receipt_from_customer' => 'date|filled',
             'date_delivery' => 'date|filled',
             'date_warranty' => 'date|filled',
-            'deliver_to_client'=>'boolean',
-            'deliver_to_customer'=>'boolean',
+            'deliver_to_client' => 'boolean',
+            'deliver_to_customer' => 'boolean',
             'customer_id' => 'nullable|exists:customers,id',
             'repaired_in_center' => 'filled|boolean',
+            'payment_status' => 'filled|boolean',
         ];
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Requests\Customers\CreateCustomerRequest;
 use App\Http\Requests\Customers\UpdateCustomerRequest;
 use App\Models\Customer;
 use App\Traits\CRUDTrait;
+use App\Traits\SearchTrait;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -15,6 +16,7 @@ use Illuminate\Http\Request;
 class CustomerController extends Controller
 {
     use CRUDTrait;
+    use SearchTrait;
 
     /**
      * @param Request $request
@@ -59,7 +61,7 @@ class CustomerController extends Controller
      * @urlParam  id  integer required The ID of the Customer.
      * @return JsonResponse
      */
-    public function update(UpdateCustomerRequest $request,int $id): JsonResponse
+    public function update(UpdateCustomerRequest $request, int $id): JsonResponse
     {
         return $this->update_data($request, $id, new Customer());
     }
@@ -72,5 +74,15 @@ class CustomerController extends Controller
     public function destroy(int $id): JsonResponse
     {
         return $this->destroy_data($id, new Customer());
+    }
+
+    /**
+     * @param $keyword
+     * @urlParam Keyword string required for search
+     * @return JsonResponse
+     */
+    public function search(string $keyword): JsonResponse
+    {
+        return $this->get_search(new Customer(), $keyword);
     }
 }

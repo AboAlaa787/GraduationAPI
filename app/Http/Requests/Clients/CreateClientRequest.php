@@ -26,7 +26,7 @@ class CreateClientRequest extends FormRequest
             'center_name' => 'required|string',
             'phone' => 'nullable|string|max:10',
             'devices_count' => 'nullable|integer',
-            'email' => ['required','email','string',new UniqueEmailAcrossTables],
+            'email' => ['required', 'email', 'string', new UniqueEmailAcrossTables],
             'name' => 'required|string',
             'last_name' => 'required|string',
             'rule_id' => 'nullable|exists:rules,id',
@@ -35,6 +35,7 @@ class CreateClientRequest extends FormRequest
             'password_confirmation' => 'required',
             'address' => 'required|string',
             'national_id' => 'required|string|size:11|unique:clients,national_id',
+            'deal_with_the_center' => 'required | boolean',
         ];
     }
 }

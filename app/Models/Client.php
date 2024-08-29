@@ -31,6 +31,7 @@ class Client extends Authenticatable
         'national_id',
         'remember_token',
         'account_active',
+        'deal_with_the_center',
     ];
 
     protected $relations = [

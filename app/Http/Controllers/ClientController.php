@@ -7,6 +7,7 @@ use App\Http\Requests\Clients\UpdateClientRequest;
 use App\Models\Client;
 use App\Notifications\Auth\EmailVerificationNotification;
 use App\Traits\CRUDTrait;
+use App\Traits\SearchTrait;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
@@ -19,6 +20,7 @@ use Illuminate\Support\Facades\Hash;
 class ClientController extends Controller
 {
     use CRUDTrait;
+    use SearchTrait;
 
     /**
      * @param Request $request
@@ -57,9 +59,9 @@ class ClientController extends Controller
             // $this->authorize('create', new Client());
             $request['password'] = Hash::make($request['password']);
             $response['client'] = Client::create($request->all());
-            $expiration=config('sanctum.expiration');
-            $expires_at=now()->addMinutes($expiration);
-            $response['token'] = $response['client']->createToken('register',['*'],$expires_at)->plainTextToken;
+            $expiration = config('sanctum.expiration');
+            $expires_at = now()->addMinutes($expiration);
+            $response['token'] = $response['client']->createToken('register', ['*'], $expires_at)->plainTextToken;
             $response['client']->notify(new EmailVerificationNotification());
             return $this->apiResponse($response, 200, 'Successful and verification message has been sent');
         } catch (AuthorizationException $e) {
@@ -86,5 +88,15 @@ class ClientController extends Controller
     public function destroy(int $id): JsonResponse
     {
         return $this->destroy_data($id, new Client());
+    }
+
+    /**
+     * @param $keyword
+     * @urlParam Keyword string required for search
+     * @return JsonResponse
+     */
+    public function search(string $keyword): JsonResponse
+    {
+        return $this->get_search(new Client(), $keyword);
     }
 }
