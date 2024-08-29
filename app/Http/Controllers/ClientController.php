@@ -7,9 +7,7 @@ use App\Http\Requests\Clients\UpdateClientRequest;
 use App\Models\Client;
 use App\Notifications\Auth\EmailVerificationNotification;
 use App\Traits\CRUDTrait;
-use App\Traits\SearchTrait;
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -20,8 +18,6 @@ use Illuminate\Support\Facades\Hash;
 class ClientController extends Controller
 {
     use CRUDTrait;
-    use SearchTrait;
-
     /**
      * @param Request $request
      * @queryParam with string To query related data. No-example
@@ -88,15 +84,5 @@ class ClientController extends Controller
     public function destroy(int $id): JsonResponse
     {
         return $this->destroy_data($id, new Client());
-    }
-
-    /**
-     * @param $keyword
-     * @urlParam Keyword string required for search
-     * @return JsonResponse
-     */
-    public function search(string $keyword): JsonResponse
-    {
-        return $this->get_search(new Client(), $keyword);
     }
 }

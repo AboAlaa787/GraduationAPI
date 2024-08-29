@@ -56,14 +56,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/change_password', [AuthenticatedSessionController::class, 'changePassword']);
 
     Route::resource('/users', UserController::class);
-    Route::get('/users/search/{keyword}', [UserController::class, 'search']);
 
     Route::get('are_there_deliveries', [UserController::class, 'areThereDelivery']);
 
     Route::post('refresh_token', [AuthenticatedSessionController::class, 'refresh_token']);
 
     Route::resource('/clients', ClientController::class)->except('store');
-    Route::get('/clients/search/{keyword}', [ClientController::class, 'search']);
 
     Route::resource('/centers', CenterController::class);
 
@@ -78,14 +76,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::resource('/orders', OrderController::class);
 
     Route::resource('/devices', DeviceController::class);
-    Route::get('/devices/search/{keyword}', [DeviceController::class, 'search']);
     Route::get('devices_grouped', [DeviceController::class, 'getClientsFromGroupedDevices']);
 
     Route::resource('/customers', CustomerController::class);
-    Route::get('/customers/search/{keyword}', [CustomerController::class, 'search']);
 
     Route::resource('/completed_devices', CompletedDeviceController::class);
-    Route::get('/completed_devices/search/{keyword}', [CompletedDeviceController::class, 'search']);
 
 
     Route::resource('/permission_users', PermissionUserController::class);

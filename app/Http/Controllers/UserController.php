@@ -9,10 +9,8 @@ use App\Models\Order;
 use App\Models\User;
 use App\Notifications\Auth\EmailVerificationNotification;
 use App\Traits\CRUDTrait;
-use App\Traits\SearchTrait;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,7 +24,6 @@ use Illuminate\Validation\ValidationException;
 class UserController extends Controller
 {
     use CRUDTrait;
-    use SearchTrait;
 
     /**
      * @param Request $request
@@ -115,15 +112,5 @@ class UserController extends Controller
         } catch (AuthorizationException $e) {
             return $this->apiResponse(null, 403, 'Error: ' . $e->getMessage());
         }
-    }
-
-    /**
-     * @param $keyword
-     * @urlParam Keyword string required for search
-     * @return JsonResponse
-     */
-    public function search(string $keyword): JsonResponse
-    {
-        return $this->get_search(new User(), $keyword);
     }
 }

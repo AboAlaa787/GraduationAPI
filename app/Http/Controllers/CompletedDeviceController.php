@@ -6,7 +6,6 @@ use App\Http\Requests\CompletedDevices\CreateCompletedDeviceRequest;
 use App\Http\Requests\CompletedDevices\UpdateCompletedDeviceRequest;
 use App\Models\CompletedDevice;
 use App\Traits\CRUDTrait;
-use App\Traits\SearchTrait;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -16,7 +15,6 @@ use Illuminate\Http\Request;
 class CompletedDeviceController extends Controller
 {
     use CRUDTrait;
-    use SearchTrait;
 
     /**
      * @param Request $request
@@ -75,13 +73,4 @@ class CompletedDeviceController extends Controller
         return $this->destroy_data($id, new CompletedDevice());
     }
 
-    /**
-     * @param $keyword
-     * @urlParam Keyword string required for search
-     * @return JsonResponse
-     */
-    public function search(string $keyword): JsonResponse
-    {
-        return $this->get_search(new CompletedDevice(), $keyword);
-    }
 }

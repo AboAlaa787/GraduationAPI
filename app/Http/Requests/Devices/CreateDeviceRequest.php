@@ -42,7 +42,8 @@ class CreateDeviceRequest extends FormRequest
             'imei' => 'nullable|string|size:15',
             'Expected_date_of_delivery' => 'nullable|date',
             'repaired_in_center' => 'required|boolean',
-            'customer_complaint'=>'required|string',
+            'customer_complaint' => 'required|string',
+            'payment_status' => 'required|boolean',
         ];
     }
 }

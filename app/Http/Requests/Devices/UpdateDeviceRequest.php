@@ -43,6 +43,7 @@ class UpdateDeviceRequest extends FormRequest
             'imei' => 'nullable|string|size:15',
             'Expected_date_of_delivery' => 'nullable|date',
             'repaired_in_center' => 'boolean|filled',
+            'payment_status' => 'filled|boolean',
         ];
     }
 }

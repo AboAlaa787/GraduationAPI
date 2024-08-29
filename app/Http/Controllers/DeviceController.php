@@ -8,7 +8,6 @@ use App\Http\Requests\Devices\UpdateDeviceRequest;
 use App\Models\Customer;
 use App\Models\Device;
 use App\Traits\CRUDTrait;
-use App\Traits\SearchTrait;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -22,7 +21,6 @@ use Illuminate\Support\Collection;
 class DeviceController extends Controller
 {
     use CRUDTrait;
-    use SearchTrait;
 
     /**
      * @param Request $request
@@ -178,15 +176,5 @@ class DeviceController extends Controller
         } catch (AuthorizationException $e) {
             return $this->apiResponse(null, 403, 'Error: ' . $e->getMessage());
         }
-    }
-
-    /**
-     * @param $keyword
-     * @urlParam Keyword string required for search
-     * @return JsonResponse
-     */
-    public function search(string $keyword): JsonResponse
-    {
-        return $this->get_search(new Device(), $keyword);
     }
 }
