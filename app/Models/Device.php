@@ -56,6 +56,15 @@ class Device extends Model
         'code',
         'problem',
         'status',
+        'client.name',
+        'client.last_name',
+        'client.phone',
+        'user.name',
+        'user.last_name',
+        'user.phone',
+        'customer.name',
+        'customer.last_name',
+        'customer.phone',
     ];
 
     protected static function boot(): void
@@ -68,7 +77,7 @@ class Device extends Model
             $device->code = $code;
 
             //Automatic determination of client priority
-            if($device->repaired_in_center){
+            if ($device->repaired_in_center) {
                 $client_priority = self::where('client_id', $device->client_id)->max('client_priority');
                 $client_priority++;
                 $device->client_priority = $client_priority;
