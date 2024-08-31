@@ -101,9 +101,10 @@ class Device extends Model
         });
         static::deleted(static function ($device) {
             $clientId = $device->client_id;
-
-            $devicesToUpdate = self::where('client_id', $clientId)->where('client_priority', '>', $device->client_priority)->get();
-
+            if (!$device->repaired_in_center) {
+                return;
+            }
+            $devicesToUpdate = self::where('client_id', $clientId)->where('client_priority', '>', $device->client_priority)->where('repaired_in_center', true)->get();
             foreach ($devicesToUpdate as $deviceToUpdate) {
                 $deviceToUpdate->update(['client_priority' => $deviceToUpdate->client_priority - 1]);
             }
