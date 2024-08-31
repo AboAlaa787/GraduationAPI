@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Enums\RuleNames;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\Builder;
@@ -51,7 +52,7 @@ trait CRUDTrait
             $relations = $this->parseRelations($with);
             $this->validateRelations($model, $relations);
 
-            $withCount = $this->parseRelations($request->get('withCount',''));
+            $withCount = $this->parseRelations($request->get('withCount', ''));
             $this->validateRelations($model, $withCount);
 
             $table = $model->getTable();
@@ -69,7 +70,7 @@ trait CRUDTrait
             return $this->filterAndOrder($query, $table, $keys, $orderBy, $orderDirection, $relations, $customKeys, $withCount, $page, $perPage, $allData, $search);
         } catch (AuthorizationException $e) {
             return $this->apiResponse(null, 403, 'Error: ' . $e->getMessage());
-        } catch (InvalidArgumentException|Exception $e) {
+        } catch (InvalidArgumentException | Exception $e) {
             return $this->apiResponse(null, 400, 'Error: ' . $e->getMessage());
         }
     }
@@ -252,13 +253,47 @@ trait CRUDTrait
 
         $query->with($relations);
         if ($search) {
+            $user = auth()->user();
+            $role = $user->rule->name;
             if (method_exists($query->getModel(), 'getSearchAbleColumns')) {
                 $searchColumns = $query->getModel()->getSearchAbleColumns();
-                    $query->whereAny($searchColumns,'LIKE', '%' . $search . '%');
+                $query->where(function ($query) use ($search, $searchColumns, $role) {
+                    foreach ($searchColumns as $searchColumn) {
+                        if (str_contains($searchColumn, '.')) {
+                            list($relatedSearch, $relatedColumn) = explode('.', $searchColumn);
+                            $query->orWhereHas($relatedSearch, function ($subQuery) use ($relatedColumn, $search, $role) {
+                                switch ($role) {
+                                    case RuleNames::Admin->value:
+                                        if (in_array($relatedColumn, ['user', 'client'])) {
+                                            $subQuery->where($relatedColumn, 'LIKE', '%' . $search . '%');
+                                        }
+                                        break;
+                                    case RuleNames::Technician->value:
+                                        if ($relatedColumn == 'client') {
+                                            $subQuery->where($relatedColumn, 'LIKE', '%' . $search . '%');
+                                        }
+                                        break;
+                                    case RuleNames::Client->value:
+                                        if ($relatedColumn == 'customer') {
+                                            $subQuery->where($relatedColumn, 'LIKE', '%' . $search . '%');
+                                        }
+                                        break;
+                                    case RuleNames::Delivery->value:
+                                        if ($relatedColumn == 'client') {
+                                            $subQuery->where($relatedColumn, 'LIKE', '%' . $search . '%');
+                                        }
+                                        break;
+                                }
+                            });
+                        } else {
+                            $query->orWhere($searchColumn, 'LIKE', '%' . $search . '%');
+                        }
+                    }
+                });
             }
         }
-        if ($allData==1){
-            $data=$query->withCount($withCount)->get();
+        if ($allData == 1) {
+            $data = $query->withCount($withCount)->get();
             return $this->apiResponse($data);
         }
         $data = $query->withCount($withCount)->paginate($perPage, page: $page);
@@ -273,8 +308,7 @@ trait CRUDTrait
             'prev_page_url' => $data->previousPageUrl(),
             'total' => $data->total()
         ];
-        return $this->apiResponse(body:$data->items(),pagination: $pagination);
-
+        return $this->apiResponse(body: $data->items(), pagination: $pagination);
     }
 
     /**
@@ -321,7 +355,7 @@ trait CRUDTrait
             $exceptionModel = explode('\\', $e->getModel());
             $exceptionModel = end($exceptionModel);
             return $this->apiResponse(null, 404, "Error: $exceptionModel with ID $id not found.");
-        } catch (InvalidArgumentException|Exception $e) {
+        } catch (InvalidArgumentException | Exception $e) {
             return $this->apiResponse(null, 400, 'Error: ' . $e->getMessage());
         }
     }
@@ -372,7 +406,7 @@ trait CRUDTrait
             $exceptionModel = explode('\\', $e->getModel());
             $exceptionModel = end($exceptionModel);
             return $this->apiResponse(null, 404, "Error: $exceptionModel with ID $id not found.");
-        } catch (InvalidArgumentException|Exception $e) {
+        } catch (InvalidArgumentException | Exception $e) {
             return $this->apiResponse(null, 400, 'Error: ' . $e->getMessage());
         }
     }
