@@ -261,30 +261,35 @@ trait CRUDTrait
                     foreach ($searchColumns as $searchColumn) {
                         if (str_contains($searchColumn, '.')) {
                             list($relatedSearch, $relatedColumn) = explode('.', $searchColumn);
-                            $query->orWhereHas($relatedSearch, function ($subQuery) use ($relatedColumn, $search, $role) {
-                                switch ($role) {
-                                    case RuleNames::Admin->value:
-                                        if (in_array($relatedColumn, ['user', 'client'])) {
-                                            $subQuery->where($relatedColumn, 'LIKE', '%' . $search . '%');
-                                        }
-                                        break;
-                                    case RuleNames::Technician->value:
-                                        if ($relatedColumn == 'client') {
-                                            $subQuery->where($relatedColumn, 'LIKE', '%' . $search . '%');
-                                        }
-                                        break;
-                                    case RuleNames::Client->value:
-                                        if ($relatedColumn == 'customer') {
-                                            $subQuery->where($relatedColumn, 'LIKE', '%' . $search . '%');
-                                        }
-                                        break;
-                                    case RuleNames::Delivery->value:
-                                        if ($relatedColumn == 'client') {
-                                            $subQuery->where($relatedColumn, 'LIKE', '%' . $search . '%');
-                                        }
-                                        break;
-                                }
-                            });
+                            $isSearchAble=true;
+                            switch ($role) {
+                                case RuleNames::Admin->value:
+                                    if (!in_array($relatedSearch, ['user', 'client'])) {
+                                        $isSearchAble=false;
+                                    }
+                                    break;
+                                case RuleNames::Technician->value:
+                                    if ($relatedSearch != 'client') {
+                                        $isSearchAble=false;
+                                    }
+                                    break;
+                                case RuleNames::Client->value:
+                                    if ($relatedSearch != 'customer') {
+                                        $isSearchAble=false;
+                                    }
+                                    break;
+                                case RuleNames::Delivery->value:
+                                    if ($relatedColumn != 'client') {
+                                        $isSearchAble=false;
+                                    }
+                                    break;
+                            }
+                            if($isSearchAble){
+                                $query->orWhereHas($relatedSearch, function ($subQuery) use ($relatedColumn, $search, $role) 
+                                {
+                                    $subQuery->where($relatedColumn, 'LIKE', '%' . $search . '%');
+                                });
+                            }
                         } else {
                             $query->orWhere($searchColumn, 'LIKE', '%' . $search . '%');
                         }
