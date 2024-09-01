@@ -52,6 +52,15 @@ class CompletedDevice extends Model
         'status',
         'client_name',
         'user_name',
+        'client.name',
+        'client.last_name',
+        'client.phone',
+        'user.name',
+        'user.last_name',
+        'user.phone',
+        'customer.name',
+        'customer.last_name',
+        'customer.phone',
     ];
     protected static function boot(): void
     {
