@@ -28,7 +28,7 @@ class SendDeviceNotifications
         $client = $device->client;
         $user = $device->user;
         //Notify the technician
-        if (in_array($device->status, [DeviceStatus::InProgress->value, DeviceStatus::NotAgree->value,])) {
+        if ($user && in_array($device->status, [DeviceStatus::InProgress->value, DeviceStatus::NotAgree->value,])) {
             $user->pushNotification(new ClientApprovalNotification($device));
         }
         //Notify the client
