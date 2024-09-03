@@ -221,6 +221,8 @@ class Device extends Model
     }
     private static function pushNotificationToTechnician(Device $device)
     {
-        $device->user->pushNotification(new NewDeviceToRapairNotification($device));
+        if ($device->user) {
+            $device->user->pushNotification(new NewDeviceToRapairNotification($device));
+        }
     }
 }
