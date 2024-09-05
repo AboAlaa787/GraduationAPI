@@ -26,7 +26,6 @@ class DashboardController extends Controller
             $devicesCount = Device::
             where('repaired_in_center', true)
                 ->where('deliver_to_client', false)
-                ->where('date_receipt','!=',null)
                 ->count();
             $response['devices_count'] = $devicesCount;
 
