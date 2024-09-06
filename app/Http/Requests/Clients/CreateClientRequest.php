@@ -35,7 +35,7 @@ class CreateClientRequest extends FormRequest
             'password_confirmation' => 'required',
             'address' => 'required|string',
             'national_id' => 'required|string|size:11|unique:clients,national_id',
-            'deal_with_the_center' => 'required | boolean',
+            'deal_with_the_center' => 'nullable | boolean',
         ];
     }
 }
