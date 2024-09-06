@@ -26,7 +26,9 @@ class UpdateServiceRequest extends FormRequest
             'name' => 'string|filled',
             'device_model' => [
                 'string',
-                Rule::unique('services')->ignore($this->service),
+                Rule::unique('services')->where(function ($query) {
+                    return $query->where('name', $this->input('name'));
+                }),
             ],
             'price' => 'numeric',
             'time_required' => 'string',
