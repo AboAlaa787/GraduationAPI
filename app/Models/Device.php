@@ -84,7 +84,7 @@ class Device extends Model
             }
 
             //Automatic selection of maintenance technician
-            if ($device->repaired_in_center) {
+            if ($device->repaired_in_center && $device->user_id == null) {
                 $userId = static::getTechnicianId();
                 if ($userId != null) {
                     $device->user_id = $userId;
