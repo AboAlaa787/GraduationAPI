@@ -49,12 +49,16 @@ trait CRUDTrait
             if (!$model instanceof DatabaseNotification) {
                 $this->authorizeForModel($model, 'viewAny');
             }
-            $relations = $this->parseRelations($with);
-            $this->validateRelations($model, $relations);
-
-            $withCount = $this->parseRelations($request->get('withCount', ''));
-            $this->validateRelations($model, $withCount);
-
+            $relations = [];
+            if ($with) {
+                $relations = $this->parseRelations($with);
+                $this->validateRelations($model, $relations);
+            }
+            $withCount = [];
+            if ($request->get('withCount', false)) {
+                $withCount = $this->parseRelations($request->get('withCount', ''));
+                $this->validateRelations($model, $withCount);
+            }
             $table = $model->getTable();
             [$keys, $customKeys] = $this->extractKeys($request);
 
@@ -298,10 +302,26 @@ trait CRUDTrait
             }
         }
         if ($allData == 1) {
-            $data = $query->withCount($withCount)->get();
+            if ($query->getModel() instanceof User && $withCount = 'devices') {
+                $data = $query->withCount([
+                    $withCount => function ($query) {
+                        $query->where('deliver_to_client', false);
+                    }
+                ])->get();
+            } else {
+                $data = $query->withCount($withCount)->get();
+            }
             return $this->apiResponse($data);
         }
-        $data = $query->withCount($withCount)->paginate($perPage, page: $page);
+        if ($query->getModel() instanceof User && $withCount = 'devices') {
+            $data = $query->withCount([
+                $withCount => function ($query) {
+                    $query->where('deliver_to_client', false);
+                }
+            ])->get();
+        } else {
+            $data = $query->withCount($withCount)->paginate($perPage, page: $page);
+        }
         $pagination = [
             'current_page' => $data->currentPage(),
             'first_page_url' => $data->url(1),
