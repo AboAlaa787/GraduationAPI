@@ -22,7 +22,7 @@ class IncreaseCountDevice
      */
     public function handle(AddDevice $event): void
     {
-        $client = Client::find($event->id)->first();
+        $client = Client::find($event->id);
         if ($client) {
             $client->increment('devices_count');
         }
