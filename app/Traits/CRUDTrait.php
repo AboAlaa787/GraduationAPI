@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
-
+use App\Models\User;
 trait CRUDTrait
 {
     use ApiResponseTrait;
@@ -302,7 +302,7 @@ trait CRUDTrait
             }
         }
         if ($allData == 1) {
-            if ($query->getModel() instanceof User && $withCount = 'devices') {
+            if ($query->getModel() instanceof User && in_array('devices', $withCount)) {
                 $data = $query->withCount([
                     $withCount => function ($query) {
                         $query->where('deliver_to_client', false);
@@ -313,7 +313,7 @@ trait CRUDTrait
             }
             return $this->apiResponse($data);
         }
-        if ($query->getModel() instanceof User && $withCount = 'devices') {
+        if ($query->getModel() instanceof User && in_array('devices', $withCount)) {
             $data = $query->withCount([
                 $withCount => function ($query) {
                     $query->where('deliver_to_client', false);
