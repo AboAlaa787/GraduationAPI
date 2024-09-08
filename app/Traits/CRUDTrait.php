@@ -304,7 +304,7 @@ trait CRUDTrait
         if ($allData == 1) {
             if ($query->getModel() instanceof User && in_array('devices', $withCount)) {
                 $data = $query->withCount([
-                    $withCount => function ($query) {
+                    'devices' => function ($query) {
                         $query->where('deliver_to_client', false);
                     }
                 ])->get();
@@ -315,10 +315,10 @@ trait CRUDTrait
         }
         if ($query->getModel() instanceof User && in_array('devices', $withCount)) {
             $data = $query->withCount([
-                $withCount => function ($query) {
+                'devices' => function ($query) {
                     $query->where('deliver_to_client', false);
                 }
-            ])->get();
+            ])->paginate($perPage, page: $page);
         } else {
             $data = $query->withCount($withCount)->paginate($perPage, page: $page);
         }
