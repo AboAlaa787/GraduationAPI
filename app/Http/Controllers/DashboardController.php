@@ -89,19 +89,26 @@ class DashboardController extends Controller
 
             //Get top 5 technicians and their successful job
             $techniciansWithReadyDevicesCount = User::
-            whereHas('rule', function ($rule) {
-                $rule->where('name', RuleNames::Technician);
-            })
+                whereHas('rule', function ($rule) {
+                    $rule->where('name', RuleNames::Technician);
+                })
                 ->whereHas('completed_devices')
-                ->withCount(['completed_devices' => function ($completedDevices) {
-                    $completedDevices->where('status', DeviceStatus::Ready->value);
-                }])
-                ->orderBy('completed_devices_count','desc')
+                ->withCount([
+                    'completed_devices' => function ($completedDevices) {
+                        $completedDevices->where('status', DeviceStatus::Ready->value);
+                    }
+                ])
+                ->orderBy('completed_devices_count', 'desc')
                 ->limit(5)
                 ->get()
-                ->select('name', 'completed_devices_count');
-
-            $response['technicians_with_ready_devices_count'] = $techniciansWithReadyDevicesCount;
+                ->select('name', 'last_name', 'completed_devices_count');
+            $formattedTechnicians = $techniciansWithReadyDevicesCount->map(function ($technician) {
+                return [
+                    'name' => $technician['name'] . ' ' . $technician['last_name'],
+                    'completed_devices_count' => $technician['completed_devices_count']
+                ];
+            });
+            $response['technicians_with_ready_devices_count'] = $formattedTechnicians;
 
             //Get top 4 clients and their contributions in this month
             $clients = Client::query()
