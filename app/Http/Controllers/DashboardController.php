@@ -95,7 +95,7 @@ class DashboardController extends Controller
                 ->whereHas('completed_devices')
                 ->withCount([
                     'completed_devices' => function ($completedDevices) {
-                        $completedDevices->where('status', DeviceStatus::Ready->value);
+                        $completedDevices->where('status', DeviceStatus::Ready->value)->whereMonth('date_delivery_client',now()->month);
                     }
                 ])
                 ->orderBy('completed_devices_count', 'desc')
