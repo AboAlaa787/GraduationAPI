@@ -75,6 +75,7 @@ class DashboardController extends Controller
             where('repaired_in_center', true)
                 ->where('date_receipt','!=',null)
                 ->where('status',DeviceStatus::NotReady->value)
+                ->where('status',DeviceStatus::NotMaintainable->value)
                 ->count();
             $response['unready_completed_devices_count'] = $unreadyCompletedDevicesCount;
 
