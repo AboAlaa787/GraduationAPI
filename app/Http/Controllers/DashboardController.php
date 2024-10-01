@@ -119,6 +119,7 @@ class DashboardController extends Controller
                         ->selectRaw('COUNT(*)')
                         ->whereColumn('client_id', 'clients.id')
                         ->whereRaw("MONTH(date_receipt) = MONTH(CURRENT_DATE())")
+                        ->whereRaw("deliver_to_client = 0")
                         ->whereRaw("YEAR(date_receipt) = YEAR(CURRENT_DATE())");
                 }, 'devices_count1')
                 ->selectSub(function ($query) {
