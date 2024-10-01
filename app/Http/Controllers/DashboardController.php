@@ -118,8 +118,9 @@ class DashboardController extends Controller
                     $query->from('devices')
                         ->selectRaw('COUNT(*)')
                         ->whereColumn('client_id', 'clients.id')
-                        ->whereRaw("MONTH(date_receipt) = MONTH(CURRENT_DATE())")
+                        ->whereRaw("repaired_in_center = 1")
                         ->whereRaw("deliver_to_client = 0")
+                        ->whereRaw("MONTH(date_receipt) = MONTH(CURRENT_DATE())")
                         ->whereRaw("YEAR(date_receipt) = YEAR(CURRENT_DATE())");
                 }, 'devices_count1')
                 ->selectSub(function ($query) {
@@ -154,10 +155,13 @@ class DashboardController extends Controller
         $dateCondition = $endDay ? "DAYOFMONTH(date_receipt) > $startDay AND DAYOFMONTH(date_receipt) <= $endDay"
             : "DAYOFMONTH(date_receipt) > $startDay";
         $devicesCountInWeek=$client->devices()
+            ->whereRaw("deliver_to_client = 0")
+            ->whereRaw("repaired_in_center = 1")
             ->whereRaw("MONTH(date_receipt) = MONTH(CURRENT_DATE())")
             ->whereRaw("YEAR(date_receipt) = YEAR(CURRENT_DATE())")
             ->whereRaw($dateCondition)->count();
         $completedDevicesCountInWeek=$client->completed_devices()
+            ->whereRaw("repaired_in_center = 1")
             ->whereRaw("MONTH(date_receipt) = MONTH(CURRENT_DATE())")
             ->whereRaw("YEAR(date_receipt) = YEAR(CURRENT_DATE())")
             ->whereRaw($dateCondition)->count();
